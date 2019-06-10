@@ -12,4 +12,6 @@ if [[ -d $XRES ]] ; then
     unset i
 fi
 
+xcompmgr -c &
+
 exec xmonad
