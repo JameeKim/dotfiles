@@ -1,7 +1,9 @@
 export DOTFILES_DIR=$HOME/dotfiles
 
+export ZSH_CONFIG_DIR=$DOTFILES_DIR/zsh
+
 # Path to your oh-my-zsh installation.
-export ZSH=$DOTFILES_DIR/zsh/oh-my-zsh
+export ZSH=$ZSH_CONFIG_DIR/oh-my-zsh
 
 if [[ ! -d $ZSH ]] ; then
     git clone https://github.com/robbyrussell/oh-my-zsh.git $ZSH
@@ -100,3 +102,9 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+
+if [[ -d $ZSH_CONFIG_DIR/zsh.d ]] ; then
+    for i in $ZSH_CONFIG_DIR/zsh.d/*.sh ; do
+        . $i
+    done
+fi
