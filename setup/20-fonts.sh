@@ -1,4 +1,4 @@
-$INSTALL_CMD ttf-ubuntu-font-family
+$INSTALL_CMD ttf-ubuntu-font-family adobe-source-han-sans-kr-fonts adobe-source-han-serif-kr-fonts
 
 DOWNLOAD_URL="https://github.com/powerline/powerline/raw/develop/font/"
 DEST_DIR="/usr/share/fonts/powerline"
