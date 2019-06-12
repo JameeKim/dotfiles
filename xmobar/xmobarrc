@@ -3,10 +3,12 @@ Config { position = TopW L 100
        , border = BottomB
        , bgColor = "black"
        , fgColor = "grey"
+       , lowerOnStart = True
+       , font = "xft:Ubuntu Mono:size=12"
        , sepChar = "%"
        , alignSep = "}{"
-       , template = "%StdinReader%}{%time%"
+       , template = "%UnsafeStdinReader%}{%time%"
        , commands = [ Run Date "%H:%M:%S" "time" 10
-                    , Run StdinReader
+                    , Run UnsafeStdinReader
                     ]
 }

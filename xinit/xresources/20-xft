@@ -1,0 +1,5 @@
+!! xft fonts
+
+Xft.antialias: true
+Xft.hinting: true
+Xft.hintstyle: hintfull

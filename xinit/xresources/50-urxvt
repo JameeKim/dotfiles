@@ -1,17 +1,64 @@
 !! URxvt Settings
 
-! do not scroll with output
-URxvt.scrollTtyOutput: false
+! set window title
+title: Terminal
+iconName: Terminal
 
-! scroll in relation to buffer (mouse scoll / Shift+PageUp)
-URxvt.scrollWithBuffer: true
+! set $TERM
+URxvt*termName: screen-256color
+
+! do not scroll with output
+URxvt*scrollTtyOutput: false
+
+! scroll in relation to buffer
+URxvt*scrollWithBuffer: true
 
 ! scroll back to the bottom on keypress
-URxvt.scrollTtyKeypresss: true
+URxvt*scrollTtyKeypress: true
 
 ! disable the scrollback buffer for the secondary screen
-URxvt.secondaryScreen: true
-URxvt.secondaryScroll: false
+URxvt*secondaryScreen: true
+URxvt*secondaryScroll: false
+
+! scrollbar
+URxvt*scrollstyle: plain
+URxvt*scrollBar: true
+URxvt*scrollBar_right: true
+URxvt*transpscrollbar: true
+URxvt*scrollBar_floating: true
+URxvt*scrollColor: 7
+URxvt*thickness: 2
+
+! fade out unfocused windows
+URxvt*fading: 30
+URxvt*fadeColor: black
 
 ! fonts
-!URxvt.font: xft:monaco:size=10
+URxvt*font: xft:Ubuntu Mono:size=12,xft:Source Code Pro:size=12
+URxvt*boldFont: xft:Ubuntu Mono:bold:size=12,xft:Source Code Pro:bold:size=12
+URxvt*italicFont: xft:Ubuntu Mono:italic:size=12,xft:Source Code Pro:italic:size=12
+URxvt*boldItalicFont: xft:Ubuntu Mono:bold:italic:size=12,xft:Source Code Pro:bold:italic:size=12
+
+! letter spacing
+lineSpace: 0
+
+! rely on what the fonts provide
+skipBuiltinGlyphs: true
+
+! disable perl extensions
+URxvt*perl-ext:
+URxvt*perl-ext-common:
+
+! bell
+mapAlert: false
+urgentOnBell: false
+visualBell: true
+
+! save lines
+saveLines: 10000
+
+! mouse pointer
+!pointerColor:
+!pointerColor2:
+!pointerBlank: true
+!pointerBlankDelay: 5
