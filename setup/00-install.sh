@@ -16,3 +16,13 @@ $INSTALL_CMD ${installs[@]}
 sudo chsh -s /bin/zsh root
 sudo chsh -s /bin/zsh $USER
 sudo useradd -D -s /bin/zsh
+
+# prepare local config directory
+if [[ -e $HOME/.config ]] ; then
+    if [[ $2 ]] || [[ ! -d $HOME/.config ]] ; then
+        rm -rf $HOME/.config
+    fi
+fi
+if [[ ! -e $HOME/.config ]] ; then
+    mkdir -p $HOME/.config
+fi

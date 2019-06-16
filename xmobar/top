@@ -1,0 +1,43 @@
+Config
+    { position = TopW L 100
+    , font = "xft:UbuntuMono Nerd Font Mono:size=16"
+    , additionalFonts =
+        [ "xft:UbuntuMono Nerd Font Mono:size=24"
+        , "xft:UbuntuMono Nerd Font Mono:size=12"
+        ]
+    , textOffsets = [24, 12]
+    , borderColor = "black"
+    , border = BottomB
+    , bgColor = "black"
+    , fgColor = "grey"
+    , lowerOnStart = False
+    , persistent = True
+    , overrideRedirect = False
+    , iconRoot = "/home/jamee/dotfiles/xmobar/icons"
+    , sepChar = "%"
+    , alignSep = "}{"
+    , template = "%UnsafeStdinReader%}{%time% | %battery% | <action=`rofi -e Brought\ to\ you\ by\ Haskell`><fc=purple><fn=1></fn></fc></action> "
+    , commands =
+        [ Run Date "%Y-%m-%d %a %H:%M:%S" "time" 10
+        , Run
+            Battery
+            [ "-t", "<acstatus> <leftipat> <left>%"
+            , "-h", "green"
+            , "-H", "50"
+            , "-n", "orange"
+            , "-L", "30"
+            , "-l", "red"
+            , "--"
+            , "--off-icon-pattern", "<icon=battery_%%.xpm/>"
+            , "--on-icon-pattern", "<icon=battery_%%.xpm/>"
+            , "--idle-icon-pattern", "<icon=battery_%%.xpm/>"
+            , "-O", "ﮣ"
+            , "-i", "ﮣ"
+            , "-o", "<fn=1>ﮤ</fn>"
+            ]
+            10
+        , Run UnsafeStdinReader
+        ]
+    }
+
+-- vim:ft=haskell:ts=4:shiftwidth=4:softtabstop=4:expandtab:

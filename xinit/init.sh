@@ -1,5 +1,7 @@
 #! /usr/bin/env sh
 
+export XDG_CONFIG_HOME=$HOME/.config
+
 URXVT_COLOR_SCHEME=monokai-dark
 
 XINIT_CONFIG_DIR=$DOTFILES_DIR/xinit
@@ -20,6 +22,6 @@ if [[ -d $XRES ]] ; then
     unset i
 fi
 
-xcompmgr -c &
+xcompmgr -cn &
 
 exec xmonad

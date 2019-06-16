@@ -7,6 +7,9 @@ URxvt.iconName: Terminal
 ! set $TERM
 URxvt.termName: screen-256color
 
+! set as a login shell
+URxvt.loginShell: true
+
 ! scroll behavior
 URxvt.scrollTtyOutput: false
 URxvt.scrollWithBuffer: true

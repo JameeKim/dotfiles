@@ -1,10 +1,10 @@
 DIR=$1/zsh
 POWERLEVEL_DIR=$DIR/custom/themes/powerlevel10k
 
-create_symlink $DIR/zshrc.sh $HOME/.zshrc $force
+create_symlink $DIR/zshrc.sh $HOME/.zshrc $2
 
 if [[ -e $POWERLEVEL_DIR ]] ; then
-    if [[ $force ]] || [[ ! -d $POWERLEVEL_DIR ]] ; then
+    if [[ $2 ]] || [[ ! -d $POWERLEVEL_DIR ]] ; then
         rm -rf $POWERLEVEL_DIR
     else
         echo "Powerlevel10K directory already exists!"

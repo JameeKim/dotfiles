@@ -7,11 +7,11 @@ create_symlink() {
     src=$1
     dest=$2
     force=$3
-    if [[ -z $force && -r $dest ]] ; then
+    if [[ ! $force && -r $dest ]] ; then
+        echo "$dest already exists"
         return
     fi
-    if [[ ! -z $force && -r $dest ]] ; then
-        echo "$dest already exists"
+    if [[ $force && -r $dest ]] ; then
         rm -f $dest
     fi
     ln -s $src $dest
