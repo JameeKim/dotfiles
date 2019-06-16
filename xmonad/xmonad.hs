@@ -150,7 +150,8 @@ keys' conf@(XConfig {modMask = modm, terminal = term}) = mkKeymap conf $
     -- rofi
     , ("M-d", spawn "rofi -show drun -modi drun") -- open a desktop-like launcher
     , ("M-p", spawn "rofi -show run -modi run") -- open a shell prompt
-    , ("M-S-/", spawn "rofi -show keys -modi keys -width 80") -- show help for rofi
+    , ("M-<Tab>", spawn "rofi -show run -modi run,drun,ssh,window -sidebar-mode") -- main
+    , ("M-S-/", spawn "rofi -theme Monokai -show keys -modi keys -width 80") -- show help for rofi
 
     -- scratchpad
     , ("<F12>", namedScratchpadAction myScratchpads "terminal") -- main terminal

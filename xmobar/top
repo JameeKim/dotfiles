@@ -16,7 +16,7 @@ Config
     , iconRoot = "/home/jamee/dotfiles/xmobar/icons"
     , sepChar = "%"
     , alignSep = "}{"
-    , template = "%UnsafeStdinReader%}{%time% | %battery% | <action=`rofi -e Brought\ to\ you\ by\ Haskell`><fc=purple><fn=1></fn></fc></action> "
+    , template = "%UnsafeStdinReader%}{%time% | %battery% | <action=`rofi -width 30 -theme gruvbox-dark-soft -e \ ﬦ\ Brought\ to\ you\ by\ Haskell`><fc=purple><fn=1></fn></fc></action> "
     , commands =
         [ Run Date "%Y-%m-%d %a %H:%M:%S" "time" 10
         , Run

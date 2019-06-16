@@ -2,6 +2,7 @@ module XMonad.Actions.MyCommands ( myCommands ) where
 
 import XMonad
 import XMonad.Actions.Commands
+import XMonad.Prompt.Notify
 
 import qualified XMonad.StackSet as W
 
@@ -23,10 +24,11 @@ myCommands = do
     otherCmds :: [(String, X ())]
     otherCmds =
         [ ("terminal", asks (terminal . config) >>= spawn)
+        , ("__sys_info", sysInfoPrompt def)
         ]
 
     mkListCmd :: [(String, X ())] -> (String, X ())
     mkListCmd cmds =
-        ("list", return ())
+        ("list", runCommand cmds)
 
 -- vim:ts=4:shiftwidth=4:softtabstop=4:expandtab:
