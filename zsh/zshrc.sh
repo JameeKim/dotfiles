@@ -13,7 +13,15 @@ fi
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-ZSH_THEME="fox"
+case $TERM in
+    screen-256color)
+        POWERLEVEL9K_MODE="nerdfont-complete"
+        ZSH_THEME="powerlevel10k/powerlevel10k"
+        ;;
+    *)
+        ZSH_THEME="console"
+        ;;
+esac
 
 # Which plugins would you like to load?
 # Standard plugins can be found in ~/.oh-my-zsh/plugins/*
@@ -73,7 +81,7 @@ COMPLETION_WAITING_DOTS="true"
 HIST_STAMPS="yyyy-mm-dd"
 
 # Would you like to use another custom folder than $ZSH/custom?
-# ZSH_CUSTOM=/path/to/new-custom-folder
+ZSH_CUSTOM=$ZSH_CONFIG_DIR/custom
 
 source $ZSH/oh-my-zsh.sh
 

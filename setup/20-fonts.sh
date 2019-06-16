@@ -1,20 +1,18 @@
-$INSTALL_CMD ttf-ubuntu-font-family adobe-source-han-sans-kr-fonts adobe-source-han-serif-kr-fonts
+FONTS_DIR=/usr/local/share/fonts/NerdFonts
+FONTS_REPO_DIR=$DOTFILES/fonts/nerd-fonts
 
-DOWNLOAD_URL="https://github.com/powerline/powerline/raw/develop/font/"
-DEST_DIR="/usr/share/fonts/powerline"
-
-if [[ ! -e $DEST_DIR ]] ; then
-    sudo mkdir -p $DEST_DIR
+if [[ -e $FONTS_DIR ]] ; then
+    if [[ $force ]] || [[ ! -d $FONTS_DIR ]] ; then
+        sudo rm -rf $FONTS_DIR
+    else
+        echo "Nerd fonts dir already exists!"
+    fi
 fi
 
-sudo wget -q -O $DEST_DIR/PowerlineSymbols.otf $DONWLOAD_URL/PowerlineSymbols.otf 
-sudo mkfontdir $DEST_DIR
-fc-cache -vf $DEST_DIR
+if [[ ! -e $FONTS_DIR ]] ; then
+    git clone --depth 1 https://github.com/ryanoasis/nerd-fonts.git $FONTS_REPO_DIR
+    sudo $FONTS_REPO_DIR/install.sh -S -q UbuntuMono
+fi
 
-sudo wget -q -O /etc/fonts/conf.avail/10-powerline-symbols.conf $DOWNLOAD_URL/10-powerline-symbols.conf
-sudo ln -s /etc/fonts/conf.avail/10-powerline-symbols.conf /etc/fonts/conf.d/10-powerline-symbols.conf
-
-unset DOWNLOAD_URL
-unset DEST_DIR
-
-sudo cp $DOTFILES/fonts/99-fonts.conf /usr/share/X11/xorg.conf.d/
+unset FONTS_DIR
+unset FONTS_REPO_DIR

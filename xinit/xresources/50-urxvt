@@ -7,14 +7,13 @@ URxvt.iconName: Terminal
 ! set $TERM
 URxvt.termName: screen-256color
 
-! do not scroll with output
+! scroll behavior
 URxvt.scrollTtyOutput: false
-
-! scroll in relation to buffer
 URxvt.scrollWithBuffer: true
-
-! scroll back to the bottom on keypress
 URxvt.scrollTtyKeypress: true
+URxvt.jumpScroll: false
+URxvt.skipScroll: true
+URxvt.mouseWheelScrollPage: false
 
 ! disable the scrollback buffer for the secondary screen
 URxvt.secondaryScreen: true
@@ -26,18 +25,20 @@ URxvt.scrollBar: true
 URxvt.scrollBar_right: true
 URxvt.transpscrollbar: true
 URxvt.scrollBar_floating: true
-URxvt.scrollColor: black
+URxvt.scrollColor: grey
+URxvt.troughColor: black
 URxvt.thickness: 2
+URxvt.scrollBar_align: centre
 
 ! fade out unfocused windows
 URxvt.fading: 30
 URxvt.fadeColor: black
 
 ! fonts
-URxvt.font: xft:Ubuntu Mono:size=12,xft:Source Code Pro:size=12
-URxvt.boldFont: xft:Ubuntu Mono:bold:size=12,xft:Source Code Pro:bold:size=12
-URxvt.italicFont: xft:Ubuntu Mono:italic:size=12,xft:Source Code Pro:italic:size=12
-URxvt.boldItalicFont: xft:Ubuntu Mono:bold:italic:size=12,xft:Source Code Pro:bold:italic:size=12
+URxvt.font: xft:UbuntuMono\ Nerd\ Font\ Mono:size=12
+URxvt.boldFont: xft:UbuntuMono\ Nerd\ Font\ Mono:bold:size=12
+URxvt.italicFont: xft:UbuntuMono\ Nerd\ Font\ Mono:italic:size=12
+URxvt.boldItalicFont: xft:UbuntuMono\ Nerd\ Font\ Mono:bold:italic:size=12
 
 ! letter spacing
 URxvt.lineSpace: 0
@@ -56,9 +57,3 @@ URxvt.visualBell: true
 
 ! save lines
 URxvt.saveLines: 10000
-
-! mouse pointer
-!URxvt.pointerColor:
-!URxvt.pointerColor2:
-!URxvt.pointerBlank: true
-!URxvt.pointerBlankDelay: 5
