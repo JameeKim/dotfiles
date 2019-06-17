@@ -3,7 +3,6 @@ import Graphics.X11.Xlib
 import Graphics.X11.Xlib.Extras
 import System.Environment
 import System.IO
---import XMonad
 
 main :: IO ()
 main = parse True "XMONAD_COMMAND" =<< getArgs

@@ -3,7 +3,7 @@ INSTALL_CMD="sudo pacman -S --needed --noconfirm"
 # sync and update packages
 sudo pacman -Syu --noconfirm
 
-install_utils=(openssh wget alsa-utils firefox)
+install_utils=(vim openssh wget alsa-utils firefox)
 install_zsh=(zsh terminus-font)
 install_x=(xorg xcompmgr xmonad-contrib xmobar xdotool xorg-xmessage xorg-xinit rxvt-unicode)
 install_fonts=(adobe-source-han-sans-kr-fonts adobe-source-han-serif-kr-fonts)

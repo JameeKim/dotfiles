@@ -20,5 +20,9 @@ if [[ ! -e $FONTS_DIR ]] ; then
     sudo $FONTS_REPO_DIR/install.sh -S -q UbuntuMono
 fi
 
+if [[ $2 ]] || [[ ! -e /etc/vconsole.conf ]] ; then
+    sudo cp $1/fonts/vconsole.conf /etc/
+fi
+
 unset FONTS_DIR
 unset FONTS_REPO_DIR
