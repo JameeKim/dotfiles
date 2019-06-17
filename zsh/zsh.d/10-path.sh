@@ -4,6 +4,6 @@ checkAndAddToPath() {
     fi
 }
 
-checkAndAddToPath $HOME/.bin
-checkAndAddToPath $DOTFILES_DIR/bin
-checkAndAddToPath $HOME/.cargo/bin
+#checkAndAddToPath $HOME/.bin
+#checkAndAddToPath $DOTFILES_DIR/bin
+#checkAndAddToPath $HOME/.cargo/bin

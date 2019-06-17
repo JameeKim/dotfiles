@@ -1,12 +1,16 @@
-export DOTFILES_DIR=$HOME/dotfiles
-
-export ZSH_CONFIG_DIR=$DOTFILES_DIR/zsh
+ZSH_CONFIG_DIR=$DOTFILES_DIR/zsh
 
 # Path to your oh-my-zsh installation.
 export ZSH=$ZSH_CONFIG_DIR/oh-my-zsh
 
+# install oh-my-zsh if it is not installed
 if [[ ! -d $ZSH ]] ; then
     git clone https://github.com/robbyrussell/oh-my-zsh.git $ZSH
+fi
+
+# install powerlevel10k if it is not installed
+if [[ ! -d $ZSH_CONFIG_DIR/custom/themes/powerlevel10k ]] ; then
+    git clone https://github.com/romkatv/powerlevel10k.git $ZSH_CONFIG_DIR/custom/themes/powerlevel10k
 fi
 
 # Set name of the theme to load --- if set to "random", it will
@@ -14,7 +18,7 @@ fi
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
 case $TERM in
-    screen-256color)
+    *"256"*)
         POWERLEVEL9K_MODE="nerdfont-complete"
         ZSH_THEME="powerlevel10k/powerlevel10k"
         ;;
@@ -116,3 +120,5 @@ if [[ -d $ZSH_CONFIG_DIR/zsh.d ]] ; then
         . $i
     done
 fi
+
+#[[ $XDG_VTNR -le 1 ]] && tbsm

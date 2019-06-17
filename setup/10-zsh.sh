@@ -2,6 +2,7 @@ DIR=$1/zsh
 POWERLEVEL_DIR=$DIR/custom/themes/powerlevel10k
 
 create_symlink $DIR/zshrc.sh $HOME/.zshrc $2
+create_symlink $DIR/profile.sh $HOME/.zprofile $2
 
 if [[ -e $POWERLEVEL_DIR ]] ; then
     if [[ $2 ]] || [[ ! -d $POWERLEVEL_DIR ]] ; then
