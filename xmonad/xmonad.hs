@@ -36,6 +36,7 @@ workspaceTitles :: [String]
 workspaceTitles =
     [ "\xf120" -- terminal
     , "\xf269" -- firefox
+    , "\xf5aa" -- graphics
     , "\xf6d7" -- etc
     ]
 
