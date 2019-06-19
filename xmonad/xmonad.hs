@@ -1,6 +1,7 @@
 import XMonad
 import XMonad.Actions.CycleWS
 import XMonad.Actions.MyCommands
+import XMonad.Actions.WindowGo
 --import XMonad.Hooks.DebugKeyEvents
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks
@@ -12,6 +13,7 @@ import XMonad.Prompt.Notify
 import XMonad.Util.EZConfig (mkKeymap)
 import XMonad.Util.NamedScratchpad
 import XMonad.Util.Run (spawnPipe)
+import XMonad.Util.Tmux
 import XMonad.Util.WorkspaceCompare (getSortByIndex)
 
 import Data.Monoid (All)
@@ -99,8 +101,8 @@ myLogHook bar = do
         , ppUrgent = xmobarColor "red" "cyan"
         , ppSep = wrap " " " " $ xmobarFont 1 "\xf48b"
         , ppWsSep = ""
-        , ppTitle = xmobarColor "cyan" "" . shorten 40
-        , ppTitleSanitize = xmobarRaw
+        , ppTitle = xmobarColor "cyan" "" . xmobarRaw . shorten 40
+        , ppTitleSanitize = id
         , ppOrder = id
         , ppSort = fmap (. namedScratchpadFilterOutWorkspace) getSortByIndex
         , ppExtras = []
@@ -142,10 +144,11 @@ keys' conf@(XConfig {modMask = modm, terminal = term}) = mkKeymap conf $
     , ("M-.", sendMessage $ IncMasterN 1) -- increase
 
     -- spawn programs
-    , ("M-<Return>", spawn term) -- default terminal
-    , ("M-f", spawn "firefox") -- web browser
+    , ("M-<Return>", attachOrCreateTmuxSession) -- default terminal
+    , ("M-f", runOrRaise "firefox" $ className =? "Firefox") -- web browser
     , ("M-v", spawn $ term ++ " -name Vim -e vim") -- vim editor
-    , ("M-S-v", spawn $ term ++ " - name Vim -e vim ~/.xmonad/xmonad.hs") -- edit xmonad config
+    , ("M-S-v", spawn $ term ++ " -name Vim -e vim ~/.xmonad/xmonad.hs") -- edit xmonad config
+    , ("M-S-<Return>", spawnNewTmuxSession)
 
     -- rofi
     , ("M-d", spawn "rofi -show drun -modi drun") -- open a desktop-like launcher
@@ -217,6 +220,8 @@ main = do
         , handleEventHook = docksEventHook <+> myEventHook
         , keys = keys'
         , mouseBindings = mouse
+        , focusFollowsMouse = False
+        , clickJustFocuses = False
         }
 
 -- | Wrap the input text with the xmobar additional font tag

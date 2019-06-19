@@ -1,0 +1,9 @@
+[X] create utilities to use tmux with urxvt
+[ ] audio
+[ ] explore `safeSpawn`
+[ ] what is firefox `--safe-mode` option?
+[ ] urxvt keybindings
+[ ] tmux settings (especially keybindings)
+[ ] vim settings
+[ ] fix transparency issues
+[ ] change window title dynamically
