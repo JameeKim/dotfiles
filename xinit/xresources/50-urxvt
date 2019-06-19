@@ -24,7 +24,7 @@ URxvt.secondaryScroll: false
 
 ! scrollbar
 URxvt.scrollstyle: plain
-URxvt.scrollBar: true
+URxvt.scrollBar: false
 URxvt.scrollBar_right: true
 URxvt.transpscrollbar: true
 URxvt.scrollBar_floating: true
@@ -55,8 +55,8 @@ URxvt.perl-ext-common:
 
 ! bell
 URxvt.mapAlert: false
-URxvt.urgentOnBell: false
-URxvt.visualBell: true
+URxvt.urgentOnBell: true
+URxvt.visualBell: false
 
 ! save lines
-URxvt.saveLines: 10000
+URxvt.saveLines: 0
