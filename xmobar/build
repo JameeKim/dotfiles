@@ -1,0 +1,5 @@
+#! /usr/bin/env sh
+
+ghc --make top.hs -dynamic -i -ilib -fforce-recomp -main-is main -v0 -o $1
+
+# vim:ft=sh:ts=4:sw=4:sts=4:expandtab:

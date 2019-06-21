@@ -4,7 +4,8 @@ import XMonad.Actions.MyCommands
 import XMonad.Actions.WindowGo
 --import XMonad.Hooks.DebugKeyEvents
 import XMonad.Hooks.DynamicLog
-import XMonad.Hooks.ManageDocks
+import XMonad.Hooks.EwmhDesktops ( ewmh )
+import XMonad.Hooks.ManageDocks ( ToggleStruts(..), avoidStruts, docks )
 import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.ServerMode
 import XMonad.Layout.ToggleLayouts
@@ -13,6 +14,7 @@ import XMonad.Prompt.Notify
 import XMonad.Util.EZConfig (mkKeymap)
 import XMonad.Util.NamedScratchpad
 import XMonad.Util.Run (spawnPipe)
+import XMonad.Util.Stalonetray
 import XMonad.Util.Tmux
 import XMonad.Util.WorkspaceCompare (getSortByIndex)
 
@@ -37,6 +39,7 @@ workspaceTitles =
     [ "\xf120" -- terminal
     , "\xf269" -- firefox
     , "\xf5aa" -- graphics
+    , "\xf868" -- messengers
     , "\xf6d7" -- etc
     ]
 
@@ -75,11 +78,12 @@ myStartupHook = return ()
 -- | Set window creation event handler
 myManageHook :: ManageHook
 myManageHook = namedScratchpadManageHook myScratchpads <+> composeAll
-    [ className =? "MPlayer"     --> doFloat
-    , className =? "stalonetray" --> doIgnore
-    , className =? "Xmessage"    --> doFloat
-    , className =? "Firefox"     --> doShift (myWorkspaces !! 1)
-    , isDialog                   --> doCenterFloat
+    [ className =? "MPlayer"         --> doFloat
+    , className =? "stalonetray"     --> doIgnore
+    , className =? "Xmessage"        --> doFloat
+    , className =? "Firefox"         --> doShift (myWorkspaces !! 1)
+    , className =? "TelegramDesktop" --> doShift (myWorkspaces !! 3)
+    , isDialog                       --> doCenterFloat
     ]
 
 -- | Set window layouts
@@ -149,7 +153,7 @@ keys' conf@(XConfig {modMask = modm, terminal = term}) = mkKeymap conf $
     , ("M-f", runOrRaise "firefox" $ className =? "Firefox") -- web browser
     , ("M-v", spawn $ term ++ " -name Vim -e vim") -- vim editor
     , ("M-S-v", spawn $ term ++ " -name Vim -e vim ~/.xmonad/xmonad.hs") -- edit xmonad config
-    , ("M-S-<Return>", spawnNewTmuxSession)
+    , ("M-S-<Return>", spawnNewTmuxSession) -- create a new session
 
     -- rofi
     , ("M-d", spawn "rofi -show drun -modi drun") -- open a desktop-like launcher
@@ -210,15 +214,16 @@ mouse conf@(XConfig {modMask = modm}) = M.fromList
 main :: IO ()
 main = do
     statusBar <- spawnPipe "xmobar ~/.config/xmobar/top"
-    xmonad $ def
+    trayKillAndSpawn 1
+    xmonad . ewmh . docks $ def
         { modMask = myModMask
         , terminal = myTerminal
         , workspaces = myWorkspaces
-        , startupHook = docksStartupHook <+> myStartupHook
-        , manageHook = manageDocks <+> myManageHook
+        , startupHook = myStartupHook
+        , manageHook = myManageHook
         , layoutHook = avoidStruts myLayoutHook
         , logHook = myLogHook statusBar
-        , handleEventHook = docksEventHook <+> myEventHook
+        , handleEventHook = myEventHook
         , keys = keys'
         , mouseBindings = mouse
         , focusFollowsMouse = False

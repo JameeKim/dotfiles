@@ -1,0 +1,14 @@
+background black
+decorations none
+dockapp_mode none
+fuzzy_edges 0
+geometry 1x1-32+1
+grow_gravity NE
+icon_gravity NE
+icon_size 24
+kludges force_icons_size,fix_window_pos
+skip_taskbar true
+sticky true
+transparent false
+window_layer top
+window_type dock

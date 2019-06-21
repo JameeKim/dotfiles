@@ -1,0 +1,29 @@
+#! /usr/bin/env sh
+
+TRAY_PANEL_NAME="stalonetray"
+
+create_icon() {
+    local timestamp=$(date)
+    local pixels=$(for i in `seq $1`; do echo -n "."; done)
+
+    cat << EOF > "$2"
+/* XPM */
+static char *trayer_pad_xpm[] = {
+    "${1} 1 1 1",
+    ". c none",
+    "${pixels}"
+};
+EOF
+}
+
+width=$(xprop -name ${TRAY_PANEL_NAME} | grep 'program specified minimum size' | cut -d ' ' -f 5)
+
+icon_file="/tmp/trayer-padding-${width}px.xpm"
+
+if [[ ! -f $icon_file ]] ; then
+    create_icon $width $icon_file
+fi
+
+echo $icon_file
+
+# vim:filetype=sh:ts=4:shiftwidth=4:softtabstop=4:expandtab:
