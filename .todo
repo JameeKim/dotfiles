@@ -2,8 +2,8 @@
 [ ] audio
 [ ] explore `safeSpawn`
 [ ] what is firefox `--safe-mode` option?
-[ ] urxvt keybindings
-[ ] tmux settings (especially keybindings)
+[X] urxvt keybindings
+[X] tmux settings (especially keybindings)
 [ ] vim settings
 [ ] fix transparency issues
 [ ] change window title dynamically

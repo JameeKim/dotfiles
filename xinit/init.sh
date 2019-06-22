@@ -1,6 +1,6 @@
 #! /usr/bin/env sh
 
-URXVT_COLOR_SCHEME=monokai-dark
+URXVT_COLOR_SCHEME=hund
 
 # set the dotfiles dir env var if not defined already
 if [[ -v DOTFILES_DIR ]] ; then

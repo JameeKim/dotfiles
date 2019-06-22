@@ -60,3 +60,7 @@ URxvt.visualBell: false
 
 ! save lines
 URxvt.saveLines: 0
+
+! keybindings
+URxvt.keysym.Home: \033[1~
+URxvt.keysym.End: \033[4~

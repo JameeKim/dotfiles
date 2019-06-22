@@ -11,14 +11,14 @@ import XMonad.Hooks.ServerMode
 import XMonad.Layout.ToggleLayouts
 import XMonad.Prompt
 import XMonad.Prompt.Notify
-import XMonad.Util.EZConfig (mkKeymap)
+import XMonad.Util.EZConfig ( mkKeymap )
 import XMonad.Util.NamedScratchpad
-import XMonad.Util.Run (spawnPipe)
+import XMonad.Util.Run ( spawnPipe )
 import XMonad.Util.Stalonetray
 import XMonad.Util.Tmux
-import XMonad.Util.WorkspaceCompare (getSortByIndex)
+import XMonad.Util.WorkspaceCompare ( getSortByIndex )
 
-import Data.Monoid (All)
+import Data.Monoid ( All )
 import System.Exit
 import System.IO
 

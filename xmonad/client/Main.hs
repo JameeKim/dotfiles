@@ -4,48 +4,80 @@ import Graphics.X11.Xlib.Extras
 import System.Environment
 import System.IO
 
+-- | Main function
 main :: IO ()
 main = parse True "XMONAD_COMMAND" =<< getArgs
 
+-- | Parse the args
 parse :: Bool -> String -> [String] -> IO ()
 parse input addr args = case args of
-    ["--"] | input -> repl addr
-           | otherwise -> return ()
-    ("--":xs) -> sendAll addr xs
-    ("-a":a:xs) -> parse input a xs
-    ("-h":_) -> showHelp
-    ("--help":_) -> showHelp
-    ("-?":_) -> showHelp
-    (a@('-':_):_) -> hPutStrLn stderr $ "Unknown option: " ++ a
-    (x:xs) -> sendCommand addr x >> parse False addr xs
-    [] | input -> repl addr
-       | otherwise -> return ()
+    ["--"]
+        -- get commands from stdin
+        | input -> repl addr
+        -- finish
+        | otherwise -> return ()
 
+    -- send all commands
+    ("--":xs) -> sendAll addr xs
+
+    -- parse the rest of the args with the given atom name
+    ("-a":a:xs) -> parse input a xs
+
+    -- show help
+    ("-h":_) -> showHelp
+
+    -- show help
+    ("--help":_) -> showHelp
+
+    -- show help
+    ("-?":_) -> showHelp
+
+    -- unknown option error
+    (a@('-':_):_) -> hPutStrLn stderr $ "Unknown option: " ++ a
+
+    -- send the command, then parse the rest
+    (x:xs) -> sendCommand addr x >> parse False addr xs
+
+    -- empty args
+    []
+        -- get commands from stdin
+        | input -> repl addr
+        -- finish
+        | otherwise -> return ()
+
+-- | Get commands from stdin and send
 repl :: String -> IO ()
 repl addr = do
+    -- check if the input is eof
     e <- isEOF
     case e of
+        -- finish
         True -> return ()
+        -- send the command and wait for another input
         False -> do
             l <- getLine
             sendCommand addr l
             repl addr
 
+-- | Send all of the commands
 sendAll :: String -> [String] -> IO ()
 sendAll addr ss = foldr (\a b -> sendCommand addr a >> b) (return ()) ss
 
+-- | Send the single command with the specified atom name
 sendCommand :: String -> String -> IO ()
 sendCommand addr s = do
     d <- openDisplay ""
     rw <- rootWindow d $ defaultScreen d
     a <- internAtom d addr False
     m <- internAtom d s False
+    -- allocate memory for the event, set the data, and send it
     allocaXEvent $ \e -> do
         setEventType e clientMessage
         setClientMessageEvent e rw a 32 m currentTime
         sendEvent d rw False structureNotifyMask e
         sync d False
 
+-- | Print out the help message
 showHelp :: IO ()
 showHelp = do
     pn <- getProgName
