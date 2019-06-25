@@ -119,6 +119,7 @@ if [[ -d $ZSH_CONFIG_DIR/zsh.d ]] ; then
     for i in $ZSH_CONFIG_DIR/zsh.d/*.sh ; do
         . $i
     done
+    unset i
 fi
 
 #[[ $XDG_VTNR -le 1 ]] && tbsm

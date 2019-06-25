@@ -8,6 +8,8 @@
 [ ] fix transparency issues
 [ ] change window title dynamically
 [ ] layout per workspace
-[ ] powerlevel10k config
+[X] powerlevel10k config
 [X] icon tray
 [ ] fcitx
+[ ] more keybindings to xmonad
+[ ] background image
