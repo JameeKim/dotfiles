@@ -9,7 +9,7 @@ install_x=(xorg xcompmgr xmonad-contrib xmobar xdotool xorg-xmessage xorg-xinit 
 install_fonts=(adobe-source-han-sans-kr-fonts adobe-source-han-serif-kr-fonts)
 install_sns=(telegram-desktop)
 
-installs=(install_utils install_zsh install_x install_fonts install_sns)
+installs=(${install_utils[@]} ${install_zsh[@]} ${install_x[@]} ${install_fonts[@]} ${install_sns[@]})
 
 $INSTALL_CMD ${installs[@]}
 

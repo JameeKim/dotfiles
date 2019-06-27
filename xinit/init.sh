@@ -33,4 +33,7 @@ xsetroot -cursor_name left_ptr &
 # enable compositing
 xcompmgr -n &
 
+# launch startup apps
+. $XINIT_CONFIG_DIR/startups.sh
+
 exec xmonad

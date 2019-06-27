@@ -1,4 +1,2 @@
-#! /usr/bin/env sh
-
 telegram-desktop &
 pasystray &

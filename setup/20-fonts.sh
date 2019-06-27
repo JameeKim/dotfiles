@@ -18,10 +18,16 @@ if [[ ! -e $FONTS_DIR ]] ; then
         git rebase origin/master
     fi
     sudo $FONTS_REPO_DIR/install.sh -S -q UbuntuMono
+    sudo mkfontdir $FONTS_DIR
+    fc-cache -f $FONTS_DIR
 fi
 
 if [[ $2 ]] || [[ ! -e /etc/vconsole.conf ]] ; then
     sudo cp $1/fonts/vconsole.conf /etc/
+fi
+
+if [[ $2 ]] || [[ ! -e /usr/share/X11/xorg.conf.d/90-userfonts.conf ]] ; then
+    sudo cp $1/fonts/90-userfonts.conf /usr/share/X11/xorg.conf.d/
 fi
 
 unset FONTS_DIR
