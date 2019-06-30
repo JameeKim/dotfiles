@@ -1,0 +1,167 @@
+" install vim-plug if not installed
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+        \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
+" plugins
+call plug#begin('~/.vim/plugged')
+Plug 'airblade/vim-gitgutter' "show git diff on the left
+Plug 'itchyny/lightline.vim' "fancy status line
+Plug 'jeffkreeftmeijer/vim-numbertoggle' "automatically toggle line number mode
+Plug 'junegunn/vim-plug' "get help text of vim-plug
+Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' } "directory viewer
+Plug 'terryma/vim-multiple-cursors' "multiple cursors
+Plug 'tpope/vim-eunuch' "add unix file operations
+Plug 'tpope/vim-fugitive' "git commands
+Plug 'tpope/vim-repeat' "enable custom text object repeat
+Plug 'tpope/vim-sensible' "convenient defaults
+Plug 'tpope/vim-surround' "parens utility
+Plug 'w0rp/ale' "lint
+call plug#end()
+
+
+""""""""""""
+" Behavior "
+""""""""""""
+
+" reduce vim update interval
+set updatetime=1000
+
+
+"'""""""""""""
+" Appearance "
+"'""""""""""""
+
+" line numbers on the left
+set number relativenumber
+
+" do not hide the sign column
+set signcolumn=yes
+
+" show special characters
+set list
+set listchars=eol:,tab:←‒→,space:·,trail:,extends:,precedes:,nbsp:+
+"set listchars=eol:`,tab:<‒>,space:·,trail:X,extends:<,precedes:>,nbsp:+
+highlight NonText ctermfg=8
+highlight SpecialKey ctermfg=8
+
+
+"""""""""""""""
+" Keybindings "
+"""""""""""""""
+
+" source this config file
+nnoremap <leader>r :source $MYVIMRC<CR>
+
+" vim-plug commands
+nnoremap <leader>pi :PlugInstall<CR>
+nnoremap <leader>pu :PlugUpdate<CR>
+nnoremap <leader>pr :PlugClean<CR>
+nnoremap <leader>pc :PlugClean<CR>
+nnoremap <leader>pg :PlugUpgrade<CR>
+nnoremap <leader>ps :PlugStatus<CR>
+nnoremap <leader>pd :PlugDiff<CR>
+nnoremap <leader>ph :PlugSnapshot
+
+" show/hide directory structure
+nnoremap <leader>d :NERDTreeToggle<CR>
+
+" vim-fugitive commands
+nnoremap <leader>gs :Gstatus<CR>
+nnoremap <leader>gd :Gdiff<CR>
+
+
+"""""""""""
+" Plugins "
+"""""""""""
+
+" vim-gitgutter
+let g:gitgutter_max_signs = 500
+let g:gitgutter_map_keys = 0
+let g:gitgutter_sign_added = '+'
+let g:gitgutter_sign_modified = '*'
+let g:gitgutter_sign_removed = '-'
+let g:gitgutter_sign_removed_first_line = '-'
+let g:gitgutter_sign_modified_removed = '*-'
+
+" lightline (status bar)
+set noshowmode
+let g:lightline = {
+      \   'active': {
+      \     'left': [
+      \       ['mode', 'paste'],
+      \       ['readonly', 'filename', 'modified'],
+      \       ['gitinfo'],
+      \     ],
+      \     'right': [
+      \       ['lineinfo'],
+      \       ['percent'],
+      \       ['fileformat', 'fileencoding', 'filetype'],
+      \     ],
+      \   },
+      \   'inactive': {
+      \     'left': [
+      \       ['paste'],
+      \       ['readonly', 'filename', 'modified'],
+      \     ],
+      \     'right': [
+      \       ['lineinfo'],
+      \       ['percent'],
+      \       ['filetype'],
+      \     ],
+      \   },
+      \   'component': {
+      \     'filename': '%f',
+      \   },
+      \   'component_function': {
+      \     'mode': 'LightlineMode',
+      \     'readonly': 'LightlineReadonly',
+      \     'fileformat': 'LightlineFileformat',
+      \     'fileencoding': 'LightlineFileencoding',
+      \     'filetype': 'LightlineFiletype',
+      \     'lineinfo': 'LightlineLineinfo',
+      \     'git': 'LightlineGit',
+      \     'gitinfo': 'fugitive#statusline',
+      \   },
+      \ }
+function! ShouldShow(hide_help)
+  let l:help = a:hide_help ? '|help' : ''
+  return &filetype !~# '\v(nerdtree|fugitive' . l:help . ')'
+endfunction
+function! LightlineMode()
+  return ShouldShow(0) ? split(lightline#mode(), '\zs')[0]: ''
+endfunction
+function! LightlineReadonly()
+  return &readonly && ShouldShow(1) ? 'RO' : ''
+endfunction
+function! LightlineFileformat()
+  return winwidth(0) > 70 ? &fileformat : ''
+endfunction
+function! LightlineFileencoding()
+  return winwidth(0) > 70 ? &fileencoding : ''
+endfunction
+function! LightlineFiletype()
+  return winwidth(0) > 70 ? (&filetype !=# '' ? &filetype : 'unknown') : ''
+endfunction
+function! LightlineLineinfo()
+  return ShouldShow(0) ? '' . line('.') . ' ' . virtcol('.') : ''
+endfunction
+function! LightlineGit()
+  let l:branch = fugitive#head()
+  return strchars(l:branch) ? ' ' . l:branch : ''
+endfunction
+
+" ale (asynchronous lint engine)
+let g:ale_linters_explicit = 1
+let g:ale_fix_on_save = 1
+let g:ale_linters = {
+      \   'vim': ['ale_custom_linting_rules']
+      \ }
+let g:ale_fixers = {
+      \   '*': ['remove_trailing_lines', 'trim_whitespace'],
+      \ }
+
+
+" vim:ft=vim:ts=2:sts=2:sw=2:expandtab
