@@ -12,6 +12,16 @@ fi
 unset XS_DIR
 unset F_NAME
 
+if [[ ! -e $HOME/pkg/dark-arch-sddm ]] ; then
+    mkdir -p $HOME/pkg
+    git clone https://github.com/simonesestito/dark-arch-sddm.git $HOME/pkg/dark-arch-sddm
+fi
+
+cd $HOME/pkg/dark-arch-sddm
+git pull
+./install.sh
+cd $1
+
 if [[ $2 ]] && [[ -e /etc/sddm.conf ]] ; then
     sudo rm -f /etc/sddm.conf
 fi
