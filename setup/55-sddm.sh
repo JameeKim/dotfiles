@@ -11,3 +11,11 @@ fi
 
 unset XS_DIR
 unset F_NAME
+
+if [[ $2 ]] && [[ -e /etc/sddm.conf ]] ; then
+    sudo rm -f /etc/sddm.conf
+fi
+
+if [[ ! -e /etc/sddm.conf ]] ; then
+    sudo ln -s $1/sddm/sddm.conf /etc/
+fi
