@@ -15,7 +15,7 @@ spawnNewTmuxSession :: X ()
 spawnNewTmuxSession = do
     sName <- menuArgs
         "dmenu"
-        ["-p", "New session name"]
+        ["-p", "New session name: "]
         []
     runInTerm "" $ tmuxCreateNewSessionCmd sName
                 ++ " && "
@@ -34,7 +34,7 @@ attachTmuxSession' :: [String] -> X ()
 attachTmuxSession' lsList = do
     sName <- menuMapArgs
         "dmenu"
-        ["-p", "Select session to attach to"]
+        ["-p", "Select session to attach to: "]
         (fromList . map (\l -> (l, l)) $ lsList)
     case sName of
         Just s -> runInTerm "" $
@@ -60,9 +60,6 @@ tmuxAttachToSessionCmd name = "tmux attach -t " ++ cmdEscape name
 
 -- | Get a list of currently running sessions
 tmuxGetRunningSessions :: X [String]
--- tmuxGetRunningSessions = do
-    -- listStr <- runProcessWithInput "tmux" ["ls"] ""
-    -- return $ lines listStr
 tmuxGetRunningSessions = lines <$> runProcessWithInput "tmux" ["ls"] ""
 
 -- vim:ts=4:shiftwidth=4:softtabstop=4:expandtab:

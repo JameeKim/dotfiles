@@ -20,6 +20,7 @@ cmdEscape = wrap "\"" "\"" . concat . map doEscape
     where
     doEscape :: Char -> String
     doEscape '"' = "\\\""
+    doEscape '$' = "\\$"
     doEscape c = [c]
 
 -- vim:ts=4:shiftwidth=4:softtabstop=4:expandtab:

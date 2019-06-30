@@ -6,7 +6,7 @@ if [[ $2 ]] && [[ -e $XS_DIR/$F_NAME ]] ; then
 fi
 
 if [[ ! -e $XS_DIR/$F_NAME ]] ; then
-    sudo ln -s $1/xinit/$F_NAME $XS_DIR/$F_NAME
+    sudo cp -s $1/xinit/$F_NAME $XS_DIR
 fi
 
 unset XS_DIR
