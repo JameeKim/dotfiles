@@ -8,6 +8,7 @@ import XMonad.Hooks.EwmhDesktops ( ewmh )
 import XMonad.Hooks.ManageDocks ( ToggleStruts(..), avoidStruts, docks )
 import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.ServerMode
+import XMonad.Layout.PerWorkspace
 import XMonad.Layout.ToggleLayouts
 import XMonad.Prompt
 import XMonad.Prompt.Notify
@@ -54,7 +55,7 @@ myWorkspaces = (map mapToAction) . zip workspaceKeys $ workspaceTitles
     mapToAction :: (String, String) -> String
     mapToAction (num, title) =
         xmobarAction
-            ("xdotool key " ++ modToString myModMask ++  "+" ++ num)
+            ("xdotool key " ++ modToString myModMask ++ "+" ++ num)
             "123"
             (num ++ ":" ++ xmobarFont 1 title)
 
@@ -87,7 +88,14 @@ myManageHook = namedScratchpadManageHook myScratchpads <+> composeAll
     ]
 
 -- | Set window layouts
-myLayoutHook = toggleLayouts Full $ Tall 1 (3/100) (1/2)
+myLayoutHook =
+    onWorkspaces [myWorkspaces !! 1] webLayout $
+    onWorkspaces [myWorkspaces !! 2, myWorkspaces !! 3] Full $
+    lFullTall
+    where
+    webLayout = flip toggleLayouts Full $ myTall ||| Mirror myTall
+    lFullTall = toggleLayouts Full myTall
+    myTall = Tall 1 (3/100) (1/2)
 
 -- | Set the log hook for the status bar
 myLogHook :: Handle -> X ()
@@ -141,19 +149,19 @@ keys' conf@(XConfig {modMask = modm, terminal = term}) = mkKeymap conf $
     , ("M-S-m", windows W.swapMaster) -- move window to master area
 
     -- resize master window
-    , ("M-S-h", sendMessage Shrink) -- decrease
-    , ("M-S-l", sendMessage Expand) -- increase
+    , ("M-C-h", sendMessage Shrink) -- decrease
+    , ("M-C-l", sendMessage Expand) -- increase
 
     -- adjust the number of windows in the master area
-    , ("M-,", sendMessage $ IncMasterN $ -1) -- decrease
-    , ("M-.", sendMessage $ IncMasterN 1) -- increase
+    , ("M-,", sendMessage . IncMasterN $ -1) -- decrease
+    , ("M-.", sendMessage . IncMasterN $ 1) -- increase
 
     -- spawn programs
     , ("M-<Return>", attachOrCreateTmuxSession) -- default terminal
+    , ("M-S-<Return>", spawnNewTmuxSession) -- create a new tmux session
     , ("M-f", runOrRaise "firefox" $ className =? "Firefox") -- web browser
     , ("M-v", spawn $ term ++ " -name Vim -e vim") -- vim editor
     , ("M-S-v", spawn $ term ++ " -name Vim -e vim ~/.xmonad/xmonad.hs") -- edit xmonad config
-    , ("M-S-<Return>", spawnNewTmuxSession) -- create a new session
 
     -- rofi
     , ("M-d", spawn "rofi -show drun -modi drun") -- open a desktop-like launcher
@@ -172,6 +180,14 @@ keys' conf@(XConfig {modMask = modm, terminal = term}) = mkKeymap conf $
 
     -- push a floating window back into tiling
     , ("M-t", withFocused $ windows . W.sink)
+
+    -- multimedia keys
+    -- TODO test on a real computer
+    , ("<XF86AudioRaiseVolume>", spawn "amixer -q sset Master 5%+") -- volume up
+    , ("<XF86AudioLowerVolume>", spawn "amixer -q sset Master 5%-") -- volume down
+    , ("<XF86AudioMute>", spawn "amixer -q sset Master toggle") -- toggle volume mute and unmute
+    , ("<XF86MonBrightnessUp>", sendMessage NextLayout) -- brightness up
+    , ("<XF86MonBrightnessDown>", sendMessage NextLayout) -- brightness down
 
     -- cycle through the workspaces
     , ("M-l", avoidNSP nextWS) -- move to next workspace
@@ -193,7 +209,7 @@ keys' conf@(XConfig {modMask = modm, terminal = term}) = mkKeymap conf $
         ++ "fi"
 
     -- cycle through workspaces without getting into the named scratchpad ws
-    avoidNSP :: X () ->  X ()
+    avoidNSP :: X () -> X ()
     avoidNSP move = do
         move
         ws <- withWindowSet $ pure . W.currentTag
