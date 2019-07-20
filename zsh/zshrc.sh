@@ -1,4 +1,6 @@
+export DOTFILES_DIR=$HOME/dotfiles
 ZSH_CONFIG_DIR=$DOTFILES_DIR/zsh
+SYSTEM_ZSH_PLUGINS_DIR=/usr/share/zsh/plugins
 
 # Path to your oh-my-zsh installation.
 export ZSH=$ZSH_CONFIG_DIR/oh-my-zsh
@@ -122,4 +124,10 @@ if [[ -d $ZSH_CONFIG_DIR/zsh.d ]] ; then
     unset i
 fi
 
-#[[ $XDG_VTNR -le 1 ]] && tbsm
+# enable system plugins
+if [[ -r $SYSTEM_ZSH_PLUGINS_DIR/zsh-autosuggestions/zsh-autosuggestions.zsh ]] ; then
+    source $SYSTEM_ZSH_PLUGINS_DIR/zsh-autosuggestions/zsh-autosuggestions.zsh
+fi
+if [[ -r $SYSTEM_ZSH_PLUGINS_DIR/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]] ; then
+    source $SYSTEM_ZSH_PLUGINS_DIR/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+fi
