@@ -10,8 +10,6 @@ import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.ServerMode
 import XMonad.Layout.PerWorkspace
 import XMonad.Layout.ToggleLayouts
-import XMonad.Prompt
-import XMonad.Prompt.Notify
 import XMonad.Util.EZConfig ( mkKeymap )
 import XMonad.Util.NamedScratchpad
 import XMonad.Util.Run ( spawnPipe )
@@ -46,18 +44,18 @@ workspaceTitles =
 
 -- | Keyboard bindings for workspaces
 workspaceKeys :: [String]
-workspaceKeys = flip (++) ["0", "-", "="] $ map show [1..9]
+workspaceKeys = flip (++) ["0", "-", "="] $ map show ([1..9] :: [Integer])
 
 -- | Set workspaces titles
 myWorkspaces :: [String]
 myWorkspaces = (map mapToAction) . zip workspaceKeys $ workspaceTitles
     where
     mapToAction :: (String, String) -> String
-    mapToAction (num, title) =
+    mapToAction (num, ws_title) =
         xmobarAction
             ("xdotool key " ++ modToString myModMask ++ "+" ++ num)
             "123"
-            (num ++ ":" ++ xmobarFont 1 title)
+            (num ++ ":" ++ xmobarFont 1 ws_title)
 
     modToString :: KeyMask -> String
     modToString m
@@ -88,6 +86,10 @@ myManageHook = namedScratchpadManageHook myScratchpads <+> composeAll
     ]
 
 -- | Set window layouts
+myLayoutHook :: PerWorkspace
+                    (ToggleLayouts (Choose Tall (Mirror Tall)) Full)
+                    (PerWorkspace Full (ToggleLayouts Full Tall))
+                    Window
 myLayoutHook =
     onWorkspaces [myWorkspaces !! 1] webLayout $
     onWorkspaces [myWorkspaces !! 2, myWorkspaces !! 3] Full $
@@ -127,12 +129,12 @@ myEventHook = serverModeEventHookCmd' myCommands
 
 -- | Set custom keybindings
 keys' :: XConfig Layout -> M.Map (ButtonMask, KeySym) (X ())
-keys' conf@(XConfig {modMask = modm, terminal = term}) = mkKeymap conf $
+keys' conf@(XConfig {modMask = _modm, terminal = term}) = mkKeymap conf $
     -- toggle status bar
     [ ("M-z", sendMessage ToggleStruts)
 
     -- stop or restart xmonad
-    , ("M-q", spawn restart) -- reload xmonad
+    , ("M-q", spawn restart_cmd) -- reload xmonad
     , ("M-S-q", io $ exitWith ExitSuccess) -- exit xmonad
 
     -- kill current window
@@ -201,8 +203,8 @@ keys' conf@(XConfig {modMask = modm, terminal = term}) = mkKeymap conf $
 
     where
     -- string to restart xmonad
-    restart :: String
-    restart =
+    restart_cmd :: String
+    restart_cmd =
         "if type xmonad; then "
         ++ "xmonad --recompile && xmonad --restart; "
         ++ "else xmessage xmonad not in \\$PATH: \"$PATH\"; "
@@ -220,7 +222,7 @@ keys' conf@(XConfig {modMask = modm, terminal = term}) = mkKeymap conf $
 
 -- | Mouse bindings
 mouse :: XConfig l -> M.Map (KeyMask, Button) (Window -> X ())
-mouse conf@(XConfig {modMask = modm}) = M.fromList
+mouse _conf@(XConfig {modMask = modm}) = M.fromList
     [ ((modm, button1), \w -> focus w >> mouseMoveWindow w >> windows W.shiftMaster)
     , ((modm, button2), windows . (W.shiftMaster .) . W.focusWindow)
     , ((modm, button3), \w -> focus w >> mouseResizeWindow w >> windows W.shiftMaster)
@@ -229,7 +231,7 @@ mouse conf@(XConfig {modMask = modm}) = M.fromList
 -- | Main configuration
 main :: IO ()
 main = do
-    statusBar <- spawnPipe "xmobar ~/.config/xmobar/top"
+    statusBarTop <- spawnPipe "xmobar ~/.config/xmobar/top"
     trayKillAndSpawn 1
     xmonad . ewmh . docks $ def
         { modMask = myModMask
@@ -238,7 +240,7 @@ main = do
         , startupHook = myStartupHook
         , manageHook = myManageHook
         , layoutHook = avoidStruts myLayoutHook
-        , logHook = myLogHook statusBar
+        , logHook = myLogHook statusBarTop
         , handleEventHook = myEventHook
         , keys = keys'
         , mouseBindings = mouse

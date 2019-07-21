@@ -3,7 +3,7 @@ module XMonad.Actions.MyCommands ( myCommands ) where
 import XMonad
 import XMonad.Actions.Commands
 import XMonad.Prompt.Notify
-import XMoand.Util.Tmux ( spawnNewTmuxSession, attachOrCreateTmuxSession )
+import XMonad.Util.Tmux ( spawnNewTmuxSession, attachOrCreateTmuxSession )
 
 import qualified XMonad.StackSet as W
 

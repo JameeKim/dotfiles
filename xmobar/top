@@ -1,11 +1,11 @@
 Config
     { position = TopW L 100
-    , font = "xft:UbuntuMono Nerd Font Mono:size=16,NanumGothicCoding:size=16"
+    , font = "xft:TerminessTTF Nerd Font Mono:size=16,NanumGothicCoding:size=16"
     , additionalFonts =
-        [ "xft:UbuntuMono Nerd Font Mono:size=24,NanumGothicCoding:size=24"
-        , "xft:UbuntuMono Nerd Font Mono:size=12,NanumGothicCoding:size=12"
+        [ "xft:TerminessTTF Nerd Font Mono:size=24,NanumGothicCoding:size=24"
+        , "xft:TerminessTTF Nerd Font Mono:size=12,NanumGothicCoding:size=12"
         ]
-    , textOffsets = [24, 12]
+    , textOffsets = [42, 12]
     , borderColor = "black"
     , border = BottomB
     , bgColor = "black"

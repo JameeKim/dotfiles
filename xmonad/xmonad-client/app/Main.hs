@@ -1,3 +1,5 @@
+module Main ( main ) where
+
 import Data.Char
 import Graphics.X11.Xlib
 import Graphics.X11.Xlib.Extras

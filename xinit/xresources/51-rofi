@@ -13,7 +13,7 @@ rofi.modi:                           window,run,ssh,drun
 
 ! "Font to use" Set from: Default
 !rofi.font:                           mono 12
-rofi.font:                           UbuntuMono\ Nerd\ Font\ Mono 12
+rofi.font:                           TerminessTTF\ Nerd\ Font\ Mono 12
 
 ! "Border width" Set from: Default
 !rofi.bw:                             1
