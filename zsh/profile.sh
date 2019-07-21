@@ -15,3 +15,4 @@ checkAndAddToPath $HOME/.bin
 checkAndAddToPath $DOTFILES_DIR/bin
 checkAndAddToPath $HOME/.cabal/bin
 checkAndAddToPath $HOME/.cargo/bin
+checkAndAddToPath $HOME/.local/bin

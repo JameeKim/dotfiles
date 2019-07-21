@@ -1,0 +1,72 @@
+#!/bin/sh
+# does the same thing as 'ghc-pkg unregister' but allows multiple arguments at once!
+set -e
+
+append() {
+    eval _1=\$"$1"_n
+    eval "$1"_"$_1"='$2'
+    eval "$1"_n='`expr "$_1" + 1`'
+}
+
+# filter the arguments and regroup them into two pseudo-arrays:
+#   args - positional arguments
+#   opts - optional flags
+args_n=0
+opts_n=0
+if [ "$CABAL_SANDBOX_CONFIG" ]
+then
+    append opts cabal
+    append opts sandbox
+    append opts hc-pkg
+    append opts --
+else
+    append opts ghc-pkg
+fi
+parse=t
+for arg
+do
+    if [ "$parse" ]
+    then
+        case $arg in
+            --)
+                parse=
+                continue;;
+            -*)
+                append opts "$arg"
+                continue;;
+        esac
+    fi
+    append args "$arg"
+done
+append opts unregister
+
+# iterate over every element of the 'args' pseudo-array
+i=0
+err=0
+while [ "$i" -lt "$args_n" ]
+do
+    eval arg=\$args_"$i"
+    i=`expr "$i" + 1`
+
+    # load the 'opts' pseudo-array into the argument array
+    set --
+    j=0
+    while [ "$j" -lt "$opts_n" ]
+    do
+        eval opt=\$opts_"$j"
+        j=`expr "$j" + 1`
+        set -- "$@" "$opt"
+    done
+
+    # execute the command
+    set +e
+    "$@" -- "$arg"
+    e=$?
+    set -e
+    if [ $err -eq 0 ]
+    then
+        err=$e
+    fi
+done
+
+exit $err

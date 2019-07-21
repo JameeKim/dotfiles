@@ -1,0 +1,193 @@
+#!/bin/sh
+set -e
+usage() {
+    cat <<EOF
+usage: `basename "$0"` [OPTIONS] [CABALDIR [ARCH-OS-ghc-VERSION]]
+
+A script to help automate the process of removing unregistered Cabal packages.
+As a precautionary measure, the script does not actually remove the packages
+unless '-r' is specified.  It is highly recommended to run this command
+without '-r' first to make sure it doesn't remove anything important.
+
+Note: packages whose name and version coincide with those of a
+      globally-installed package are not detected.
+
+For a tutorial, see:
+
+  https://rufflewind.com/2015-02-01/cabal-gc
+
+Options:
+
+  -h, --help    Display this help
+  -r, --remove  Remove the unregistered packages.  It is highly
+                recommended to run this command without '-r' first to make
+                sure it doesn't remove anything important.
+
+Arguments:
+
+  CABALDIR      Path to the Cabal directory (default if empty: \$HOME/.cabal).
+  ARCH          Architecture (e.g. x86_64)
+  OS            Operating system (e.g. linux)
+  VERSION       Version of GHC (e.g. 7.8.4)
+
+EOF
+}
+
+# parse arguments
+unset cabaldir
+unset subdir
+unset remove
+parse=t
+for arg
+do
+    if [ "$parse" ]
+    then
+        case $arg in
+            -h|--help)
+                usage
+                exit 0;;
+            -r|--remove)
+                remove=t
+                continue;;
+            --)
+                parse=
+                continue;;
+            -*)
+                usage >&2
+                exit 1;;
+        esac
+    fi
+    if [ -z "${cabaldir+x}" ]
+    then
+        cabaldir=$arg
+    elif [ -z "${subdir+x}" ]
+    then
+        subdir=$arg
+    else
+        usage >&2
+        exit 1
+    fi
+done
+
+# detect reasonable defaults for cabaldir
+if [ -z "$cabaldir" ]
+then
+    if [ "$CABAL_SANDBOX_CONFIG" ]
+    then
+        if [ ! -f "$CABAL_SANDBOX_CONFIG" ]
+        then
+            prog=`basename "$0"`
+            printf >&2 '%s: cannot read: %s\n' "$prog" "$CABAL_SANDBOX_CONFIG"
+            printf >&2 '%s: note: CABAL_SANDBOX_CONFIG is set\n' "$prog"
+            exit 1
+        fi
+        filter='^[[:space:]]*prefix:'
+        pattern='s/^[[:space:]]*prefix:[[:space:]]*\(.*\)[[:space:]]*$/\1/'
+        cabaldir=`grep "$filter" "$CABAL_SANDBOX_CONFIG" | sed "$pattern"`
+        if [ ! -d "$cabaldir" ]
+        then
+            prog=`basename "$0"`
+            printf >&2 '%s: does not exist: %s\n' "$prog" "$cabaldir"
+            printf >&2 '%s: note: CABAL_SANDBOX_CONFIG is set\n' "$prog"
+            exit 1
+        fi
+    elif [ "$HOME" ] && [ -d "$HOME/.cabal" ]
+    then
+        cabaldir=$HOME/.cabal
+    elif [ "$APPDATA" ] && [ -d "$APPDATA/cabal" ]
+    then
+        cabaldir=$APPDATA/cabal
+    else
+        prog=`basename "$0"`
+        printf >&2 '%s: failed to detect Cabal directory\n' "$prog"
+        printf >&2 '%s: must specify CABALDIR argument \n' "$prog"
+        exit 1
+    fi
+elif [ ! -d "$cabaldir" ]
+then
+    prog=`basename "$0"`
+    printf >&2 '%s: directory does not exist: %s\n' "$prog" "$cabaldir"
+    exit 1
+fi
+
+# detect reasonable defaults for subdir
+if [ -z "${subdir+x}" ]
+then
+    pattern='s/.*[^0-9.]\([0-9]\{1,\}\(\.[0-9]\{1,\}\)*\).*/\1/'
+    version=`ghc --version | sed "$pattern"`
+    if [ -z "$version" ]
+    then
+        prog=`basename "$0"`
+        printf >&2 '%s: failed to detect version of GHC\n' "$prog"
+        printf >&2 '%s: must specify VERSION argument \n' "$prog"
+        exit 1
+    fi
+    unset subdir
+    for d in "$cabaldir/lib/"*"-ghc-$version"
+    do
+        if [ ! -d "$d" ]
+        then
+            continue
+        elif [ "${subdir+x}" ]
+        then
+            prog=`basename "$0"`
+            printf >&2 '%s: %s\n' "$prog" "not sure which one to use:"
+            for x in "$cabaldir/lib/"*"-ghc-$version"
+            do
+                printf >&2 '  %s\n' "$x"
+            done
+            printf >&2 '%s: must specify ARCH-OS-ghc-VERSION argument\n' \
+                       "$prog"
+            exit 1
+        else
+            subdir=`basename "$d"`
+        fi
+    done
+    if [ -z "${subdir+x}" ]
+    then
+        prog=`basename "$0"`
+        printf >&2 '%s: %s\n' "$prog" \
+                   "can't find package directory for ghc-$version"
+        printf >&2 '%s: must specify ARCH-OS-ghc-VERSION argument\n' "$prog"
+        exit 1
+    fi
+fi
+
+# find directories that don't correspond to any registered package
+dumpfile=${TMP:-/tmp}/cabal-gc.hc-pkg-dump.tmp
+if [ "$CABAL_SANDBOX_CONFIG" ]
+then cabal sandbox hc-pkg dump >"$dumpfile"
+else ghc-pkg dump >"$dumpfile"
+fi
+for group in lib share share/doc
+do
+    dir=$cabaldir/$group/$subdir
+    if [ ! -d "$dir" ]
+    then
+        prog=`basename "$0"`
+        printf >&2 '%s: directory does not exist: %s\n' "$prog" "$dir"
+        exit 1
+    fi
+    for pkgpath in "$dir/"*
+    do
+        if [ ! -d "$pkgpath" ] # guard against empty blobs and unknown files
+        then
+            continue
+        fi
+        pkg=`basename "$pkgpath"`
+        case $group in
+            lib) pattern="key: $pkg";;
+            *)   pattern="id: $pkg";;
+        esac
+        if grep "$pattern" "$dumpfile" >/dev/null 2>&1
+        then :
+        elif [ "$remove" ]
+        then
+            rm -r -- "$pkgpath"
+            printf "removed: %s\n" "$pkgpath"
+        else
+            printf "can be removed: %s\n" "$pkgpath"
+        fi
+    done
+done
+rm -f "$dumpfile"
