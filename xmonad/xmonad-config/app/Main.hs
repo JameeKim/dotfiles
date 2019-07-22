@@ -10,6 +10,7 @@ import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.ServerMode
 import XMonad.Layout.PerWorkspace
 import XMonad.Layout.ToggleLayouts
+import XMonad.Util.Cursor ( setDefaultCursor, xC_left_ptr )
 import XMonad.Util.EZConfig ( mkKeymap )
 import XMonad.Util.NamedScratchpad
 import XMonad.Util.Run ( spawnPipe )
@@ -72,7 +73,8 @@ myScratchpads =
 
 -- | Startup hook
 myStartupHook :: X ()
-myStartupHook = return ()
+myStartupHook = do
+    setDefaultCursor xC_left_ptr
 
 -- | Set window creation event handler
 myManageHook :: ManageHook

@@ -17,9 +17,11 @@ spawnNewTmuxSession = do
         "dmenu"
         ["-p", "New session name: "]
         []
-    runInTerm "" $ tmuxCreateNewSessionCmd sName
-                ++ " && "
-                ++ tmuxAttachToSessionCmd sName
+    if null sName
+    then return ()
+    else runInTerm "" $ tmuxCreateNewSessionCmd sName
+                     ++ " && "
+                     ++ tmuxAttachToSessionCmd sName
 
 -- | Attach to the selected session after checking if any exist
 attachTmuxSession :: X ()
@@ -32,15 +34,21 @@ attachTmuxSession = do
 -- | Attach to the selected session, not checking if any exist
 attachTmuxSession' :: [String] -> X ()
 attachTmuxSession' lsList = do
-    sName <- menuMapArgs
+    sName <- menuArgs
         "dmenu"
         ["-p", "Select session to attach to: "]
-        (fromList . map (\l -> (l, l)) $ lsList)
-    case sName of
-        Just s -> runInTerm "" $
-            tmuxAttachToSessionCmd $ takeWhile (/= ':') s
-        -- TODO: do not show this when cancelled
-        Nothing -> rofiMessage "Wrong session name given!"
+        lsList
+        -- (fromList . map (\l -> (l, l)) $ lsList)
+    -- case sName of
+    --     Just s -> runInTerm "" $
+    --         tmuxAttachToSessionCmd $ takeWhile (/= ':') s
+    --     -- TODO: do not show this when cancelled
+    --     Nothing -> rofiMessage "Wrong session name given!"
+    if null sName
+    then return ()
+    else if sName `elem` lsList
+        then runInTerm "" $ tmuxAttachToSessionCmd $ takeWhile (/= ':') sName
+        else rofiMessage "Wrong session name given!"
 
 -- | Attach to an existing session or create a new one
 attachOrCreateTmuxSession :: X ()
@@ -60,6 +68,13 @@ tmuxAttachToSessionCmd name = "tmux attach -t " ++ cmdEscape name
 
 -- | Get a list of currently running sessions
 tmuxGetRunningSessions :: X [String]
-tmuxGetRunningSessions = lines <$> runProcessWithInput "tmux" ["ls"] ""
+tmuxGetRunningSessions = fmap lines $ runProcessWithInput
+    "tmux"
+    [ "ls"
+    , "-F"
+    , "#S:#{session_id} - #{session_windows} windows"
+    ++ " - #{session_attached} attached#{?session_alerts, (#{session_alerts}),}"
+    ]
+    ""
 
 -- vim:ts=4:shiftwidth=4:softtabstop=4:expandtab:

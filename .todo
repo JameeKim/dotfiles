@@ -4,12 +4,14 @@
 [ ] what is firefox `--safe-mode` option?
 [X] urxvt keybindings
 [X] tmux settings (especially keybindings)
-[ ] vim settings
+[X] vim settings
 [ ] fix transparency issues
 [ ] change window title dynamically
 [X] layout per workspace
 [X] powerlevel10k config
 [X] icon tray
-[ ] fcitx
+[ ] ibus
 [X] more keybindings to xmonad
 [ ] background image
+[ ] xmobar+stalonetray vs polybar vs taffybar
+[ ] dunst (also volume, monitor brightness adjusting)
