@@ -3,7 +3,7 @@ import XMonad.Actions.CycleWS
 import XMonad.Actions.MyCommands
 import XMonad.Actions.WindowGo
 --import XMonad.Hooks.DebugKeyEvents
-import XMonad.Hooks.DynamicLog
+--import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.EwmhDesktops ( ewmh )
 import XMonad.Hooks.ManageDocks ( ToggleStruts(..), avoidStruts, docks )
 import XMonad.Hooks.ManageHelpers
@@ -13,14 +13,14 @@ import XMonad.Layout.ToggleLayouts
 import XMonad.Util.Cursor ( setDefaultCursor, xC_left_ptr )
 import XMonad.Util.EZConfig ( mkKeymap )
 import XMonad.Util.NamedScratchpad
-import XMonad.Util.Run ( spawnPipe )
-import XMonad.Util.Stalonetray
+--import XMonad.Util.Run ( spawnPipe )
+--import XMonad.Util.Stalonetray
 import XMonad.Util.Tmux
-import XMonad.Util.WorkspaceCompare ( getSortByIndex )
+--import XMonad.Util.WorkspaceCompare ( getSortByIndex )
 
 import Data.Monoid ( All )
 import System.Exit
-import System.IO
+--import System.IO
 
 import qualified Data.Map as M
 import qualified XMonad.StackSet as W
@@ -36,11 +36,12 @@ myTerminal = "urxvt"
 -- | Titles of the workspaces
 workspaceTitles :: [String]
 workspaceTitles =
-    [ "\xf120" -- terminal
-    , "\xf269" -- firefox
-    , "\xf5aa" -- graphics
-    , "\xf868" -- messengers
-    , "\xf6d7" -- etc
+    [ "cli" -- terminal
+    , "web" -- firefox
+    , "graphics" -- graphics
+    , "chat" -- messengers
+    , "vscode" -- source code editing
+    , "etc" -- etc
     ]
 
 -- | Keyboard bindings for workspaces
@@ -49,6 +50,8 @@ workspaceKeys = flip (++) ["0", "-", "="] $ map show ([1..9] :: [Integer])
 
 -- | Set workspaces titles
 myWorkspaces :: [String]
+myWorkspaces = workspaceTitles
+{-
 myWorkspaces = (map mapToAction) . zip workspaceKeys $ workspaceTitles
     where
     mapToAction :: (String, String) -> String
@@ -62,6 +65,7 @@ myWorkspaces = (map mapToAction) . zip workspaceKeys $ workspaceTitles
     modToString m
         | m == mod1Mask = "alt"
         | otherwise = "super"
+-}
 
 myScratchpads :: [NamedScratchpad]
 myScratchpads =
@@ -84,6 +88,8 @@ myManageHook = namedScratchpadManageHook myScratchpads <+> composeAll
     , className =? "Xmessage"        --> doFloat
     , className =? "Firefox"         --> doShift (myWorkspaces !! 1)
     , className =? "TelegramDesktop" --> doShift (myWorkspaces !! 3)
+    , className =? "discord"         --> doShift (myWorkspaces !! 3)
+    , className =? "code-oss"        --> doShift (myWorkspaces !! 4)
     , isDialog                       --> doCenterFloat
     ]
 
@@ -94,7 +100,7 @@ myLayoutHook :: PerWorkspace
                     Window
 myLayoutHook =
     onWorkspaces [myWorkspaces !! 1] webLayout $
-    onWorkspaces [myWorkspaces !! 2, myWorkspaces !! 3] Full $
+    onWorkspaces [myWorkspaces !! 2, myWorkspaces !! 3, myWorkspaces !! 4] Full $
     lFullTall
     where
     webLayout = flip toggleLayouts Full $ myTall ||| Mirror myTall
@@ -102,6 +108,7 @@ myLayoutHook =
     myTall = Tall 1 (3/100) (1/2)
 
 -- | Set the log hook for the status bar
+{-
 myLogHook :: Handle -> X ()
 myLogHook bar = do
     statusBarLog bar
@@ -124,6 +131,7 @@ myLogHook bar = do
         , ppSort = fmap (. namedScratchpadFilterOutWorkspace) getSortByIndex
         , ppExtras = []
         }
+-}
 
 -- | Event hooks
 myEventHook :: Event -> X All
@@ -233,8 +241,9 @@ mouse _conf@(XConfig {modMask = modm}) = M.fromList
 -- | Main configuration
 main :: IO ()
 main = do
-    statusBarTop <- spawnPipe "xmobar ~/.config/xmobar/top"
-    trayKillAndSpawn 1
+    -- statusBarTop <- spawnPipe "xmobar ~/.config/xmobar/top"
+    -- trayKillAndSpawn 1
+    _ <- spawn "polybar_start"
     xmonad . ewmh . docks $ def
         { modMask = myModMask
         , terminal = myTerminal
@@ -242,7 +251,7 @@ main = do
         , startupHook = myStartupHook
         , manageHook = myManageHook
         , layoutHook = avoidStruts myLayoutHook
-        , logHook = myLogHook statusBarTop
+        , logHook = return ()
         , handleEventHook = myEventHook
         , keys = keys'
         , mouseBindings = mouse
@@ -251,7 +260,7 @@ main = do
         }
 
 -- | Wrap the input text with the xmobar additional font tag
-xmobarFont :: Int -> String -> String
-xmobarFont idx input = "<fn=" ++ show idx ++ ">" ++ input ++ "</fn>"
+--xmobarFont :: Int -> String -> String
+--xmobarFont idx input = "<fn=" ++ show idx ++ ">" ++ input ++ "</fn>"
 
 -- vim:ts=4:shiftwidth=4:softtabstop=4:expandtab:

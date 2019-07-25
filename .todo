@@ -13,5 +13,8 @@
 [ ] ibus
 [X] more keybindings to xmonad
 [ ] background image
-[ ] xmobar+stalonetray vs polybar vs taffybar
+[ ] change to polybar
 [ ] dunst (also volume, monitor brightness adjusting)
+[ ] map tab and backslash to super
+[ ] setup script
+[ ] multimedia keymaps

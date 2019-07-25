@@ -1,0 +1,13 @@
+#!/usr/bin/env sh
+
+# kill already running instances
+killall -q polybar
+
+# wait until all previous instances are stopped
+while pgrep -u $UID -x polybar >/dev/null ; do
+    sleep 1
+done
+
+# launch
+polybar top &
+polybar bottom &

@@ -3,12 +3,3 @@
 set -e
 
 stack install xmonad-config --local-bin-path bin/ --verbosity error && mv bin/xmonad-config "$1"
-
-#exec stack ghc -- \
-#  --make xmonad.hs \
-#  -i \
-#  -ilib \
-#  -fforce-recomp \
-#  -main-is main \
-#  -v0 \
-#  -o "$1"

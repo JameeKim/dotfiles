@@ -14,7 +14,7 @@ X_COLOR_SCHEME_DIR=$XINIT_CONFIG_DIR/colors
 # set the color theme
 if [[ -d $X_COLOR_SCHEME_DIR ]] ; then
     if [[ -r $X_COLOR_SCHEME_DIR/$URXVT_COLOR_SCHEME ]] ; then
-	    xrdb -merge $X_COLOR_SCHEME_DIR/$URXVT_COLOR_SCHEME
+        xrdb -merge $X_COLOR_SCHEME_DIR/$URXVT_COLOR_SCHEME
     fi
 fi
 

@@ -1,0 +1,10 @@
+monitor = ${env:MONITOR:eDP1}
+height = 48
+font-0 = "TerminessTTF Nerd Font Mono:pixelsize=16"
+font-1 = "TerminessTTF Nerd Font Mono:pixelsize=24;3"
+font-2 = "TerminessTTF Nerd Font Mono:pixelsize=16"
+line-size = 6
+tray-maxsize = 48
+tray-scale = 1.0
+
+; vim:ft=dosini
