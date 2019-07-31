@@ -1,16 +1,16 @@
 configuration {
-/*	modi: "window,run,ssh";*/
+	modi: "window,run,ssh,drun";
 /*	width: 50;*/
 /*	lines: 15;*/
 /*	columns: 1;*/
-/*	font: "mono 12";*/
+	font: "Nanum Pen Script,나눔손글씨 펜 16";
 /*	bw: 1;*/
 /*	location: 0;*/
 /*	padding: 5;*/
 /*	yoffset: 0;*/
 /*	xoffset: 0;*/
 /*	fixed-num-lines: true;*/
-/*	show-icons: false;*/
+	show-icons: true;
 /*	terminal: "rofi-sensible-terminal";*/
 /*	ssh-client: "ssh";*/
 /*	ssh-command: "{terminal} -e {ssh-client} {host}";*/
@@ -18,10 +18,10 @@ configuration {
 /*	run-list-command: "";*/
 /*	run-shell-command: "{terminal} -e {cmd}";*/
 /*	window-command: "xkill -id {window}";*/
-/*	window-match-fields: "all";*/
+	window-match-fields: "all";
 /*	icon-theme: ;*/
 /*	drun-match-fields: "name,generic,exec,categories";*/
-/*	drun-show-actions: false;*/
+	drun-show-actions: true;
 /*	drun-display-format: "{name} [<span weight='light' size='small'><i>({generic})</i></span>]";*/
 /*	disable-history: false;*/
 /*	sort: false;*/
@@ -34,7 +34,7 @@ configuration {
 /*	parse-hosts: false;*/
 /*	parse-known-hosts: true;*/
 /*	combi-modi: "window,run";*/
-/*	matching: "normal";*/
+	matching: "fuzzy";
 /*	tokenize: true;*/
 /*	m: "-5";*/
 /*	line-margin: 2;*/
@@ -44,15 +44,15 @@ configuration {
 /*	hide-scrollbar: false;*/
 /*	fullscreen: false;*/
 /*	fake-transparency: false;*/
-/*	dpi: -1;*/
+	dpi: 1;
 /*	threads: 0;*/
 /*	scrollbar-width: 8;*/
 /*	scroll-method: 0;*/
 /*	fake-background: "screenshot";*/
-/*	window-format: "{w}    {i}{c}   {t}";*/
+	window-format: "[{w}] {t}";
 /*	click-to-exit: true;*/
 /*	show-match: true;*/
-	theme: "sidebar";
+	theme: "matcha-dark-aliz";
 /*	color-normal: ;*/
 /*	color-urgent: ;*/
 /*	color-active: ;*/
@@ -61,13 +61,13 @@ configuration {
 /*	combi-hide-mode-prefix: false;*/
 /*	matching-negate-char: '-' /* unsupported */;*/
 /*	pid: "/run/user/1000/rofi.pid";*/
-/*	display-window: ;*/
+	display-window: "Open Windows";
 /*	display-windowcd: ;*/
-/*	display-run: ;*/
-/*	display-ssh: ;*/
-/*	display-drun: ;*/
+	display-run: "Command";
+	display-ssh: "SSH Hosts";
+	display-drun: "Applications";
 /*	display-combi: ;*/
-/*	display-keys: ;*/
+	display-keys: "Keys";
 /*	kb-primary-paste: "Control+V,Shift+Insert";*/
 /*	kb-secondary-paste: "Control+v,Insert";*/
 /*	kb-clear-line: "Control+w";*/

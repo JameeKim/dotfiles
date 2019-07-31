@@ -56,6 +56,7 @@ dpi = ${xrdb:Xft.dpi:0}
 font-0 = ${custom.font-0}
 font-1 = ${custom.font-1}
 font-2 = ${custom.font-2}
+font-3 = ${custom.font-3}
 
 background = ${colors.background}
 foreground = ${colors.foreground}
@@ -76,16 +77,16 @@ tray-scale = ${custom.tray-scale}
 tray-background = ${root.background}
 modules-left = workspaces
 modules-center = window-title
-modules-right = pulseaudio backlight date
+modules-right = battery pulseaudio backlight date
 
 [bar/bottom]
 inherit = bar/top
 bottom = true
 
 tray-position = none
-modules-left =
+modules-left = desktop-apps temperature cpu
 modules-center =
-modules-right = temperature
+modules-right =
 
 [module/workspaces]
 type = internal/xworkspaces
@@ -119,7 +120,7 @@ label-urgent-foreground = ${colors.red-0}
 [module/window-title]
 type = internal/xwindow
 
-format = <label>
+format = %{T4}<label>%{T-}
 format-foreground = ${colors.primary}
 label = %title:0:50:...%
 
@@ -128,7 +129,7 @@ type = internal/date
 interval = 0.1
 
 format = <label>
-format-prefix = 
+format-prefix = %{T2}%{T-}
 label = %date% %time%
 format-underline = ${colors.blue-0}
 
@@ -142,7 +143,7 @@ time-alt = %H:%M:%S
 type = internal/xbacklight
 enable-scroll = true
 
-format = <ramp> <label>
+format = %{T2}<ramp>%{T-} <label>
 label = %percentage:3%%
 format-underline = ${colors.yellow-1}
 
@@ -164,6 +165,8 @@ ramp-14 = 
 
 [module/pulseaudio]
 type = internal/pulseaudio
+use-ui-max = false
+interval = 3
 
 format-volume = <ramp-volume> <label-volume>
 label-volume = %percentage:3%%
@@ -178,6 +181,64 @@ format-muted-underline = ${colors.red-0}
 ramp-volume-0 = 奄
 ramp-volume-1 = 奔
 ramp-volume-2 = 墳
+
+[module/battery]
+type = internal/battery
+battery = ${custom.battery-battery}
+adapter = ${custom.battery-adapter}
+full-at = 99
+poll-interval = 5
+
+format-charging = <ramp-capacity> <label-charging>
+label-charging = %percentage:3%%
+format-charging-underline = ${colors.green-0}
+
+format-discharging = <ramp-capacity> <label-discharging>
+label-discharging = ${self.label-charging}
+format-discharging-underline = ${colors.red-0}
+
+format-full = <ramp-capacity> <label-full>
+label-full = ${self.label-charging}
+format-full-underline = ${colors.blue-0}
+
+ramp-capacity-0 = 
+ramp-capacity-1 = 
+ramp-capacity-2 = 
+ramp-capacity-3 = 
+ramp-capacity-4 = 
+ramp-capacity-5 = 
+ramp-capacity-6 = 
+ramp-capacity-7 = 
+ramp-capacity-8 = 
+ramp-capacity-9 = 
+ramp-capacity-10 = 
+
+[module/desktop-apps]
+type = custom/text
+
+content = %{T2}%{T-}
+content-foreground = #34be5b
+
+click-left = xdotool key super+d
+
+[module/cpu]
+type = internal/cpu
+interval = 1
+
+format-prefix = "%{T2}%{T-} "
+format = <label> <ramp-coreload>
+label = %percentage:3%%
+format-underline = ${colors.blue-0}
+
+ramp-coreload-spacing = 1
+ramp-coreload-0 = ▁
+ramp-coreload-1 = ▂
+ramp-coreload-2 = ▃
+ramp-coreload-3 = ▄
+ramp-coreload-4 = ▅
+ramp-coreload-5 = ▆
+ramp-coreload-6 = ▇
+ramp-coreload-7 = █
 
 [module/temperature]
 type = internal/temperature
@@ -373,14 +434,6 @@ inherit = module/xbacklight
 type = internal/backlight
 card = intel_backlight
 
-[module/cpu]
-type = internal/cpu
-interval = 2
-format-prefix = " "
-format-prefix-foreground = ${colors.foreground-alt}
-format-underline = #f90000
-label = %percentage:2%%
-
 [module/memory]
 type = internal/memory
 interval = 2
@@ -454,68 +507,6 @@ bar-volume-fill-font = 2
 bar-volume-empty = ─
 bar-volume-empty-font = 2
 bar-volume-empty-foreground = ${colors.foreground-alt}
-
-[module/battery]
-type = internal/battery
-battery = BAT0
-adapter = ADP1
-full-at = 98
-
-format-charging = <animation-charging> <label-charging>
-format-charging-underline = #ffb52a
-
-format-discharging = <animation-discharging> <label-discharging>
-format-discharging-underline = ${self.format-charging-underline}
-
-format-full-prefix = " "
-format-full-prefix-foreground = ${colors.foreground-alt}
-format-full-underline = ${self.format-charging-underline}
-
-ramp-capacity-0 = 
-ramp-capacity-1 = 
-ramp-capacity-2 = 
-ramp-capacity-foreground = ${colors.foreground-alt}
-
-animation-charging-0 = 
-animation-charging-1 = 
-animation-charging-2 = 
-animation-charging-foreground = ${colors.foreground-alt}
-animation-charging-framerate = 750
-
-animation-discharging-0 = 
-animation-discharging-1 = 
-animation-discharging-2 = 
-animation-discharging-foreground = ${colors.foreground-alt}
-animation-discharging-framerate = 750
-
-[module/powermenu]
-type = custom/menu
-
-expand-right = true
-
-format-spacing = 1
-
-label-open = 
-label-open-foreground = ${colors.secondary}
-label-close =  cancel
-label-close-foreground = ${colors.secondary}
-label-separator = |
-label-separator-foreground = ${colors.foreground-alt}
-
-menu-0-0 = reboot
-menu-0-0-exec = menu-open-1
-menu-0-1 = power off
-menu-0-1-exec = menu-open-2
-
-menu-1-0 = cancel
-menu-1-0-exec = menu-open-0
-menu-1-1 = reboot
-menu-1-1-exec = sudo reboot
-
-menu-2-0 = power off
-menu-2-0-exec = sudo poweroff
-menu-2-1 = cancel
-menu-2-1-exec = menu-open-0
 
 [settings]
 screenchange-reload = true

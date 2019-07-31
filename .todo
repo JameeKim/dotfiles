@@ -12,9 +12,11 @@
 [X] icon tray
 [ ] ibus
 [X] more keybindings to xmonad
-[ ] background image
-[ ] change to polybar
+[X] background image
+[X] change to polybar
 [ ] dunst (also volume, monitor brightness adjusting)
 [ ] map tab and backslash to super
 [ ] setup script
 [ ] multimedia keymaps
+[ ] option to print out xserver atom value
+[ ] power menu off and reboot functionalities

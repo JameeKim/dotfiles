@@ -30,8 +30,11 @@ fi
 # set the default cursor to a pointer, not X
 xsetroot -cursor_name left_ptr &
 
+# set the wallpaper
+~/.fehbg &
+
 # enable compositing
-xcompmgr -n &
+compton -f &
 
 # launch startup apps
 . $XINIT_CONFIG_DIR/startups.sh

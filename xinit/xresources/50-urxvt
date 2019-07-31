@@ -1,8 +1,9 @@
 !! URxvt Settings
 
-! set window title
+! set window properties
 URxvt.title: Terminal
 URxvt.iconName: Terminal
+URxvt.iconFile: /usr/share/icons/Paper/32x32/apps/utilities-terminal.png
 
 ! set $TERM
 URxvt.termName: screen-256color
