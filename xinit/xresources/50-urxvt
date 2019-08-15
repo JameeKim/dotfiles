@@ -1,9 +1,9 @@
 !! URxvt Settings
 
 ! set window properties
-URxvt.title: Terminal
-URxvt.iconName: Terminal
-URxvt.iconFile: /usr/share/icons/Paper/32x32/apps/utilities-terminal.png
+!URxvt.title: Terminal
+!URxvt.iconName: Terminal
+!URxvt.iconFile: /usr/share/icons/Paper/32x32/apps/utilities-terminal.png
 
 ! set $TERM
 URxvt.termName: screen-256color
@@ -35,8 +35,8 @@ URxvt.thickness: 2
 URxvt.scrollBar_align: centre
 
 ! fade out unfocused windows
-URxvt.fading: 30
-URxvt.fadeColor: black
+!URxvt.fading: 30
+!URxvt.fadeColor: black
 
 ! fonts
 URxvt.font: xft:TerminessTTF\ Nerd\ Font\ Mono:size=12,xft:NanumGothicCoding:size=12

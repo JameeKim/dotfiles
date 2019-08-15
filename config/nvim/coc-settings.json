@@ -1,0 +1,171 @@
+{
+  "npm.binPath": "npm",
+
+  "suggest.enablePreview": true,
+  "suggest.floatEnable": true,
+  "suggest.detailField": "menu",
+  "suggest.autoTrigger": "always",
+  "suggest.numberSelect": false,
+  "suggest.snippetIndicator": " ",
+  "suggest.timeout": 2000,
+  "suggest.minTriggerInputLength": 1,
+  "suggest.triggerCompletionWait": 60,
+  "suggest.noselect": true,
+  "suggest.completionItemKindLabels": {
+    "text": "",
+    "unit": "U",
+    "enum": "E",
+    "file": "",
+    "field": "",
+    "class": "C",
+    "value": "פֿ",
+    "color": "",
+    "event": "",
+    "method": "M",
+    "module": "",
+    "folder": "",
+    "struct": "",
+    "keyword": "",
+    "snippet": "",
+    "default": "",
+    "function": "",
+    "variable": "",
+    "property": "",
+    "constant": "",
+    "operator": "",
+    "interface": "I",
+    "reference": "",
+    "enumMember": "e",
+    "typeParameter": ""
+  },
+
+  "diagnostic.level": "hint",
+  "diagnostic.messageTarget": "float",
+  "diagnostic.joinMessageLines": false,
+  "diagnostic.refreshOnInsertMode": false,
+  "diagnostic.refreshAfterSave": false,
+  "diagnostic.displayByAle": false,
+
+  "refactor.openCommand": "vsplit",
+  "refactor.beforeContext": 3,
+  "refactor.afterContext": 3,
+
+  "coc.preferences.extensionUpdateCheck": "daily",
+  "coc.preferences.hoverTarget": "float",
+  "coc.preferences.colorSupport": true,
+  "coc.preferences.previewAutoClose": true,
+  "coc.preferences.currentFunctionSymbolAutoUpdate": false,
+  "coc.preferences.formatOnSaveFiletypes": [
+    "haskell",
+    "rust"
+  ],
+  "coc.preferences.rootPatterns": [
+    ".vim",
+    ".git",
+    ".hg",
+    ".projections.json"
+  ],
+  "coc.preferences.jumpCommand": "tab drop",
+  "coc.preferences.bracketEnterImprove": true,
+
+  // coc-highlight extension settings
+  "highlight.document.enable": false,
+  "highlight.colors.enable": true,
+
+  // coc-pairs extension settings
+  "pairs.disableLanguages": [],
+  "pairs.enableCharacters": [
+    "(",
+    "[",
+    "{",
+    "<",
+    "'",
+    "\"",
+    "`"
+  ],
+  "pairs.enableBackspace": true,
+
+  // coc-snippets extension settings
+  "snippets.autoTrigger": true,
+  "snippets.snipmate.enable": false,
+  "snippets.ultisnips.enable": false,
+  "snippets.loadFromExtensions": true,
+  "snippets.extends": {
+    "javascriptreact": ["javascript"],
+    "typescript": ["javascript"],
+    "typescriptreact": ["javascript"]
+  },
+
+  // custom language server settings
+  "languageserver": {
+    "haskell": {
+      "command": "hie-wrapper",
+      "rootPatterns": [".vim", ".git", "stack.yaml", "*.cabal"],
+      "filetypes": ["hs", "lhs", "haskell"],
+      "initializationOptions": {},
+      "args": ["--lsp"],
+      "settings": {
+        "languageServerHaskell": {
+          "hlintOn": true,
+          "completionSnippetsOn": true,
+          "formattingProvider": "brittany"
+        }
+      }
+    }
+  },
+
+  // coc-css extension settings
+  "css.enable": true,
+  "css.colorDecorators.enable": true,
+
+  // coc-eslint extension settings
+  "eslint.enable": false,
+  "eslint.run": "onType",
+  "eslint.autoFixOnSave": true,
+  "eslint.filetypes": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact"
+  ],
+
+  // coc-html extension settings
+  "html.enable": true,
+  "html.format.enable": true,
+  "html.suggest.html5": true,
+  "html.suggest.angular1": false,
+  "html.validate.html": true,
+  "html.filetypes": [
+    "html",
+    "handlebars"
+  ],
+
+  // coc-json extension settings
+  "json.enable": true,
+  "json.format.enable": true,
+
+  // coc-rls extension settings
+  "rust-client.logToFile": true,
+  "rust-client.updateOnStartup": true,
+
+  // coc-tsserver & coc-tslint-plugin extension settings
+  "tsserver.enable": true,
+  "tsserver.enableJavascript": true,
+  "tslint.jsEnable": true,
+  "tslint.autoFixOnSave": true,
+  "tslint.packageManager": "npm",
+  "tslint.ignoreDefinitionFiles": true,
+  "tslint.suppressWhileTypeErrorsPresent": false,
+
+  // coc-vimlsp extension settings
+  "vimlsp.diagnostic.enable": true,
+  "vimlsp.indexes.runtimepath": true,
+  "vimlsp.suggest.fromVimruntime": true,
+
+  // coc-yaml extension settings
+  "yaml.format.enable": true,
+  "yaml.format.bracketSpacing": true,
+  "yaml.hover": true,
+  "yaml.schemas": {}
+}
+// vim:ts=2:sw=2:sts=2:et:

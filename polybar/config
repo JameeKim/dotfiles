@@ -85,8 +85,8 @@ bottom = true
 
 tray-position = none
 modules-left = desktop-apps temperature cpu
-modules-center =
-modules-right =
+modules-center = filesystem
+modules-right = wireless
 
 [module/workspaces]
 type = internal/xworkspaces
@@ -94,17 +94,20 @@ pin-workspaces = false
 enable-click = true
 enable-scroll = false
 
-icon-0 = cli;
+icon-0 = dev;
 icon-1 = web;
 icon-2 = graphics;
 icon-3 = chat;
 icon-4 = vscode;
 icon-5 = etc;
+icon-6 = dev/rust;
+icon-7 = dev/haskell;
 icon-default = 
 
 format = <label-state>
 
 label-active = " %index%:%{T2}%icon%%{T-} "
+;label-active = " %index%:%{T2}%name%%{T-} "
 label-active-foreground = ${colors.primary}
 label-active-underline = ${colors.primary}
 
@@ -261,6 +264,46 @@ ramp-2 = 
 ramp-3 = 
 ramp-4 = 
 
+[module/filesystem]
+type = internal/fs
+interval = 30
+fixed-values = false
+spacing = 2
+
+mount-0 = /
+
+format-mounted = <label-mounted>
+label-mounted = %{F#0a81f5}%mountpoint%%{F-}: %percentage_used%% of %total%
+
+format-unmounted = <label-unmounted>
+label-unmounted = %mountpoint% not mounted
+label-unmounted-foreground = ${colors.foreground-alt}
+
+[module/wireless]
+type = internal/network
+interface = wlp1s0
+interval = 1
+
+format-connected = <ramp-signal> <label-connected>
+format-connected-underline = #9f78e1
+label-connected = %essid% %upspeed% %downspeed%
+
+format-disconnected =
+;format-disconnected = <label-disconnected>
+;format-disconnected-underline = ${self.format-connected-underline}
+;label-disconnected = %ifname% disconnected
+;label-disconnected-foreground = ${colors.foreground-alt}
+
+ramp-signal-0 = ▁
+ramp-signal-1 = ▂
+ramp-signal-2 = ▃
+ramp-signal-3 = ▄
+ramp-signal-4 = ▅
+ramp-signal-5 = ▆
+ramp-signal-6 = ▇
+ramp-signal-7 = █
+ramp-signal-foreground = ${colors.foreground-alt}
+
 [bar/example]
 ;monitor = ${env:MONITOR:HDMI-1}
 width = 100%
@@ -328,16 +371,6 @@ label-indicator-padding = 2
 label-indicator-margin = 1
 label-indicator-background = ${colors.secondary}
 label-indicator-underline = ${colors.secondary}
-
-[module/filesystem]
-type = internal/fs
-interval = 25
-
-mount-0 = /
-
-label-mounted = %{F#0a81f5}%mountpoint%%{F-}: %percentage_used%%
-label-unmounted = %mountpoint% not mounted
-label-unmounted-foreground = ${colors.foreground-alt}
 
 [module/bspwm]
 type = internal/bspwm
@@ -441,28 +474,6 @@ format-prefix = " "
 format-prefix-foreground = ${colors.foreground-alt}
 format-underline = #4bffdc
 label = %percentage_used%%
-
-[module/wlan]
-type = internal/network
-interface = net1
-interval = 3.0
-
-format-connected = <ramp-signal> <label-connected>
-format-connected-underline = #9f78e1
-label-connected = %essid%
-
-format-disconnected =
-;format-disconnected = <label-disconnected>
-;format-disconnected-underline = ${self.format-connected-underline}
-;label-disconnected = %ifname% disconnected
-;label-disconnected-foreground = ${colors.foreground-alt}
-
-ramp-signal-0 = 
-ramp-signal-1 = 
-ramp-signal-2 = 
-ramp-signal-3 = 
-ramp-signal-4 = 
-ramp-signal-foreground = ${colors.foreground-alt}
 
 [module/eth]
 type = internal/network

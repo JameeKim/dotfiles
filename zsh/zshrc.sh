@@ -125,9 +125,19 @@ if [[ -d $ZSH_CONFIG_DIR/zsh.d ]] ; then
 fi
 
 # enable system plugins
-if [[ -r $SYSTEM_ZSH_PLUGINS_DIR/zsh-autosuggestions/zsh-autosuggestions.zsh ]] ; then
-    source $SYSTEM_ZSH_PLUGINS_DIR/zsh-autosuggestions/zsh-autosuggestions.zsh
-fi
-if [[ -r $SYSTEM_ZSH_PLUGINS_DIR/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]] ; then
-    source $SYSTEM_ZSH_PLUGINS_DIR/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-fi
+applySystemPlugin() {
+    local filepath=$SYSTEM_ZSH_PLUGINS_DIR/$1/$1.zsh
+    if [[ -r $filepath ]] ; then
+        source $filepath
+    fi
+}
+applySystemPlugin "zsh-autosuggestions"
+applySystemPlugin "zsh-syntax-highlighting"
+#if [[ -r $SYSTEM_ZSH_PLUGINS_DIR/zsh-autosuggestions/zsh-autosuggestions.zsh ]] ; then
+#    source $SYSTEM_ZSH_PLUGINS_DIR/zsh-autosuggestions/zsh-autosuggestions.zsh
+#fi
+#if [[ -r $SYSTEM_ZSH_PLUGINS_DIR/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]] ; then
+#    source $SYSTEM_ZSH_PLUGINS_DIR/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+#fi
+
+# vim:ts=4:sw=4:sts=4:et:

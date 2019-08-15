@@ -2,5 +2,6 @@
 /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
 
 # autostart apps
-telegram-desktop &
+#telegram-desktop &
 discord &
+pamac-tray &
