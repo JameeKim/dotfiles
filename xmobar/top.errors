@@ -1,7 +1,0 @@
-
-top.hs:1:1: error:
-    Bad interface file: /usr/lib/x86_64-linux-ghc-8.6.5/xmobar-0.29.5-4M58Urc8tYv8JQqLGaD9k9/Xmobar.dyn_hi
-        Something is amiss; requested module  xmobar-0.29.5:Xmobar differs from name found in the interface file xmobar-0.29.5-4M58Urc8tYv8JQqLGaD9k9:Xmobar (if these names look the same, try again with -dppr-debug)
-  |
-1 | import Xmobar
-  | ^^^^^^^^^^^^^

@@ -74,6 +74,7 @@
 
   // coc-pairs extension settings
   "pairs.disableLanguages": [],
+  "pairs.enableBackspace": true,
   "pairs.enableCharacters": [
     "(",
     "[",
@@ -83,7 +84,6 @@
     "\"",
     "`"
   ],
-  "pairs.enableBackspace": true,
 
   // coc-snippets extension settings
   "snippets.autoTrigger": true,
@@ -100,10 +100,10 @@
   "languageserver": {
     "haskell": {
       "command": "hie-wrapper",
-      "rootPatterns": [".vim", ".git", "stack.yaml", "*.cabal"],
-      "filetypes": ["hs", "lhs", "haskell"],
-      "initializationOptions": {},
       "args": ["--lsp"],
+      "filetypes": ["hs", "lhs", "haskell"],
+      "rootPatterns": [".vim", ".git", "stack.yaml", "*.cabal"],
+      "initializationOptions": {},
       "settings": {
         "languageServerHaskell": {
           "hlintOn": true,
@@ -111,6 +111,12 @@
           "formattingProvider": "brittany"
         }
       }
+    },
+    "bash": {
+      "command": "bash-language-server",
+      "args": ["start"],
+      "filetypes": ["sh", "bash"],
+      "ignoredRootPaths": ["~"]
     }
   },
 

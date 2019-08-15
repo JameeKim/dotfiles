@@ -1,0 +1,6 @@
+#!/bin/sh
+
+set -e
+
+stack install config --local-bin-path bin/ --verbosity error
+mv bin/config "$1"

@@ -1,0 +1,29 @@
+name:                config
+version:             0.1.0.0
+license:             BSD3
+author:              "Jamee Kim"
+maintainer:          "jameekim@nodaplife.me"
+copyright:           "2019 Jamee Kim"
+
+dependencies:
+- base >= 4.7 && < 5
+- containers
+- process
+- xmonad >= 0.15 && < 0.16
+- xmonad-contrib >= 0.15 && < 0.16
+
+library:
+  source-dirs: src
+
+executables:
+  config:
+    main:                Main.hs
+    source-dirs:         app
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    - -Wall
+    - -Werror
+    dependencies:
+    - config

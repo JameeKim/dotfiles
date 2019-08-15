@@ -1,0 +1,54 @@
+#!/usr/bin/env sh
+
+confirm_res=0
+prompt_base="Do you really want to"
+
+confirm () {
+    if [[ $1 = "Cancel" ]] ; then
+        exit 0
+    fi
+    local answer_options=("No" "Yes")
+    local lowercase=`echo "$1" | awk '{print tolower($0)}'`
+    local prompt="$prompt_base $lowercase?"
+    local answer=`for j in "${answer_options[@]}" ; do echo $j ; done | dmenu -no-custom -p "$prompt"`
+    case $answer in
+        "Yes")
+            confirm_res=1
+            ;;
+        *)
+            confirm_res=0
+            ;;
+    esac
+}
+
+execute_power_option () {
+    confirm "$1"
+    if [[ $confirm_res -gt 0 ]] ; then
+        case $1 in
+            "Power Off")
+                # TODO
+                echo poweroff
+                ;;
+            "Log Out")
+                xdotool key super+shift+q
+                ;;
+            "Reboot")
+                # TODO
+                echo reboot
+                ;;
+            *)
+                ;;
+        esac
+    fi
+}
+
+POWER_OPTIONS=("Power Off" "Log Out" "Reboot" "Cancel")
+CHOSEN_OPTION=`for i in "${POWER_OPTIONS[@]}" ; do echo $i ; done | dmenu -no-custom -p "Power Menu"`
+
+RETURN=$?
+
+if [ $RETURN -eq 0 ] ; then
+    execute_power_option "$CHOSEN_OPTION"
+fi
+
+# vim:ft=sh:ts=4:sw=4:sts=4:et:

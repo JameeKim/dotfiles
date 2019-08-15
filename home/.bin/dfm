@@ -1,0 +1,282 @@
+#! /usr/bin/env bash
+
+set -e
+
+# constans
+def_cmd=help
+check_install_prefix="pamac search '^("
+check_install_prefix_="pacman -Ss '^("
+check_install_middle=")\$' | rg '^[^\\( ]*("
+check_install_suffix=")\\s+[^\\[]*(\\[[iI]nstalled\\])?' -or '0\$2' | rg '^0\$'"
+
+# packages to install
+installs=(openssh wget tlp alsa-utils pulseaudio pulseaudio-alsa pulseaudio-ctl firefox zsh terminus-font nerd-fonts-terminus tmux xorg compton xdotool xorg-xinit xorg-xmessage xorg-xprop feh rxvt-unicode polybar rofi gdm ibus-hangul telegram-desktop discord lxappearance-gtk3 matcha-gtk-theme paper-icon-theme-git qt5ct kvantum-qt5 kvantum-theme-matcha seahorse dunst ghc-static pamac-gtk ripgrep)
+manjaro=(manjaro-hello manjaro-gdm-theme manjaro-gdm-tweak manjaro-alsa manjaro-pulse manjaro-application-utility manjaro-aur-support manjaro-settings-manager-notifier manjaro-browser-settings manjaro-zsh-config manjaro-gnome-assets)
+aur=(dropbox neovim-nightly nvm ttf-ms-fonts ttf-nanum ttf-nanumgothic_coding)
+
+
+# basic info
+name='DotFiles Manager'
+version=0.1
+exe_name='dfm'
+
+# basic info printing
+print_header() {
+    echo "$name v$version"
+    echo "By Jamee Kim <jameekim@nodaplife.me>"
+    echo ""
+}
+
+
+#################
+### UTILITIES ###
+#################
+
+is_manjaro=0
+if [[ $(uname -r) =~ "MANJARO" ]] ; then
+    is_manjaro=1
+fi
+
+# function from https://stackoverflow.com/a/17841619
+join_res=""
+join_by() { local IFS="$1"; shift; join_res="$*"; }
+
+# function from https://stackoverflow.com/a/677212
+cmd_exists=0
+check_command() {
+    cmd_exists=1
+    type $1 > /dev/null 2>&1 || { cmd_exists=0; }
+}
+
+dfm_path=$(realpath $0)
+df_dir=$(dirname $dfm_path)
+df_dir=$(dirname $df_dir)
+df_dir=$(dirname $df_dir)
+df_name=$(basename $df_dir)
+
+
+##################
+### CMD - HELP ###
+##################
+
+print_help() {
+    echo "    Usage: $exe_name [command] [options]"
+    echo ""
+    echo "help        Print this help message"
+    echo "info        Print current environment information"
+    echo "status      Show the status of installation and linking"
+    echo "install     Install necessary packages"
+    echo "link        Create symbolic links to config files"
+    echo "is_manjaro  Check if current OS is manjaro"
+}
+
+
+##################
+### CMD - INFO ###
+##################
+
+print_info() {
+    local yes='yes'
+    local no='no'
+    local not_i='not '
+
+    local manj=$yes
+    local i_rg=''
+    local i_pamac=''
+
+    if [ $is_manjaro -eq 0 ] ; then
+        manj=$no
+    fi
+    check_command rg
+    if [ $cmd_exists -eq 0 ] ; then
+        i_rg=$not_i
+    fi
+    check_command pamac
+    if [ $cmd_exists -eq 0 ]; then
+        i_pamac=$not_i
+    fi
+
+    echo "Version           : $version"
+    echo "Dotfiles Directory: $df_dir"
+    echo "Manjaro linux     : $manj (installs and checks additional manjaro packages)"
+    echo "Essential Packages:"
+    echo "    ripgrep - ${i_rg}installed (enables installed package checking)"
+    echo "    pamac   - ${i_pamac}installed (enables AUR package install and checking)"
+}
+
+
+####################
+### CMD - STATUS ###
+####################
+
+check_install() {
+    check_command rg
+    if [ $cmd_exists -eq 0 ] ; then
+        echo "Package 'ripgrep' is not installed"
+        echo "Cannot proceed"
+        exit 1
+    fi
+    local use_pamac=1
+    check_command pamac
+    if [ $cmd_exists -gt 0 ] ; then
+    #if [ $cmd_exists -eq 0 ] ; then
+        echo "Package 'pamac' is not installed; cannot check AUR packages"
+        use_pamac=0
+    fi
+
+    local pkgs=()
+    pkgs+=(${installs[@]})
+
+    if [ $is_manjaro -gt 0 ] ; then
+        pkgs+=(${manjaro[@]})
+    fi
+
+    if [ $use_pamac -gt 0 ] ; then
+        local prefix=$check_install_prefix
+        pkgs+=(${aur[@]})
+    else
+        local prefix=$check_install_prefix_
+    fi
+
+    join_by '|' "${pkgs[@]}"
+
+    local check_status=0
+    local check_cmd_str="$prefix$join_res$check_install_middle$join_res$check_install_suffix"
+    #echo $check_cmd_str ; exit 0
+
+    echo "Checking if all packages are installed..."
+    $check_cmd_str #> /dev/null 2>&1 || { check_status=1; } #FIXME
+    #echo $check_status
+}
+
+print_status() {
+    check_install
+}
+
+
+#####################
+### CMD - INSTALL ###
+#####################
+
+print_install_help() {
+    echo "    Usage: $exe_name install [install AUR]"
+    echo ""
+    echo "install AUR  whether to install packages from AUR (default 1)"
+}
+
+do_install() {
+    if [[ $1 == "help" ]] ; then
+        print_install_help
+        return 0
+    fi
+
+    echo "Updating package database and packages..."
+    sudo pacman -Syu --noconfirm
+
+    echo ""
+    echo "Installing packages by pacman..."
+    sudo pacman -S --needed --noconfirm ${installs[@]}
+
+    if [ check_if_manjaro ] ; then
+        echo ""
+        echo "Installing manjaro-specific packages..."
+        sudo pacman -S --needed --noconfirm ${manjaro[@]}
+    fi
+
+    if [ ${1:-1} -gt 0 ]; then
+        echo "Installing packages from AUR..."
+        pamac build --no-confirm ${aur[@]}
+    fi
+
+    echo "Package installation finished"
+}
+
+
+##################
+### CMD - LINK ###
+##################
+
+make_symlink() {
+    if [ ${3:-0} -gt 0 ] ; then
+        local do_sudo='sudo'
+    else
+        local do_sudo=''
+    fi
+    $do_sudo ln -sfv $1 $2
+}
+
+# $1 - name
+# $2 - target dir
+# $3 - source dir name (relative path to dotfiles dir)
+# $4 - source dir relative path prefix from target dir
+link_all_in_dir() {
+    local i=''
+    local tmp=''
+
+    echo "Creating symlinks for $1 directory..."
+    cd $2
+    for i in $(find -P $df_dir/$3 -mindepth 1 -maxdepth 1) ; do
+        tmp=$(basename $i)
+        make_symlink "$4$df_name/$3/$tmp" "$tmp"
+        #echo "$tmp -> $4$df_name/$3/$tmp"
+    done
+}
+
+make_links() {
+    local cur_src=$df_dir
+    local tmp=''
+
+    link_all_in_dir "home" "$HOME" "home" ""
+    echo ""
+    link_all_in_dir "config" "$HOME/.config" "config" "../"
+    echo ""
+    link_all_in_dir "local/share" "$HOME/.local/share" "local_share" "../../"
+
+    echo ""
+    echo "Creating misc symlinks..."
+    make_symlink /usr/bin/rofi /usr/bin/dmenu 1
+
+    exit 0
+}
+
+
+#############
+### START ###
+#############
+
+print_header
+
+cmd=${1:-$def_cmd}
+case $cmd in
+    help)
+        print_help
+        ;;
+    info)
+        print_info
+        ;;
+    status)
+        echo "unimplemented"
+        exit 1
+        print_status
+        ;;
+    install)
+        do_install $2
+        ;;
+    link)
+        make_links
+        ;;
+    is_manjaro)
+        if [ $is_manjaro -gt 0 ] ; then
+            echo "Yes"
+        else
+            echo "No"
+        fi
+        ;;
+    *)
+        echo "Unknown option: $cmd"
+        echo "Use command 'help' to print the usage."
+        exit 1
+        ;;
+esac
+
+# vim:ts=4:sw=4:sts=4:et:wrap:
