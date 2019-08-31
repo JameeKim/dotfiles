@@ -21,17 +21,10 @@ myLayouts
                  (PerWorkspace Full (ToggleLayouts Full Tall))
            )
            a
-myLayouts = applySpacing myLayouts'
-
--- | The layout before applying the spacing
-myLayouts'
-    :: Show a
-    => PerWorkspace
-           (ToggleLayouts (Choose Tall (Mirror Tall)) Full)
-           (PerWorkspace Full (ToggleLayouts Full Tall))
-           a
-myLayouts' = onWorkspaces ["web"] layoutWeb
-    $ onWorkspaces ["graphics", "chat", "vscode"] Full layoutFullAndTall
+myLayouts = applySpacing $ onWorkspaces ["web"] layoutWeb $ onWorkspaces
+    ["graphics", "chat", "vscode"]
+    Full
+    layoutFullAndTall
 
 -- | "web" workspace layout
 layoutWeb :: Show a => ToggleLayouts (Choose Tall (Mirror Tall)) Full a

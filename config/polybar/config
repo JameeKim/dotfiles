@@ -75,7 +75,7 @@ tray-position = right
 tray-maxsize = ${custom.tray-maxsize}
 tray-scale = ${custom.tray-scale}
 tray-background = ${root.background}
-modules-left = workspaces
+modules-left = ws
 modules-center = window-title
 modules-right = battery pulseaudio backlight date
 
@@ -87,6 +87,12 @@ tray-position = none
 modules-left = desktop-apps temperature cpu
 modules-center = filesystem
 modules-right = wireless
+
+[module/ws]
+type = custom/script
+exec = tail -F /tmp/.xmonad-$USER-ws-log
+exec-if = [ -p /tmp/.xmonad-$USER-ws-log ]
+tail = true
 
 [module/workspaces]
 type = internal/xworkspaces

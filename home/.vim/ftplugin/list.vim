@@ -1,2 +1,0 @@
-setlocal number
-setlocal norelativenumber

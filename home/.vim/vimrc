@@ -18,7 +18,7 @@ Plug 'junegunn/vim-plug' "get help text of vim-plug
 " general
 Plug 'junegunn/fzf' "nice selection ui
 Plug 'junegunn/fzf.vim' " fzf wrapper for vim
-Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' } "directory viewer
+Plug 'scrooloose/nerdtree' "directory viewer
 Plug 'terryma/vim-multiple-cursors' "multiple cursors
 Plug 'tpope/vim-eunuch' "add unix file operations
 Plug 'tpope/vim-repeat' "enable custom keymap repeat
@@ -32,7 +32,6 @@ Plug 'jeffkreeftmeijer/vim-numbertoggle' "automatically toggle line number mode
 Plug 'mgee/lightline-bufferline' "alternative tab bar for lightline
 
 " git plugins
-Plug 'airblade/vim-gitgutter' "show git diff on the left
 Plug 'xuyuanp/nerdtree-git-plugin' "show git status in nerdtree
 Plug 'tpope/vim-fugitive' "git commands
 
@@ -43,12 +42,15 @@ Plug 'neoclide/coc.nvim', {
       \ 'do': { -> coc#util#install() }
       \ } "language server client
 Plug 'tpope/vim-dispatch' "run build or other commands async
-"Plug 'w0rp/ale' "lint
+Plug 'w0rp/ale' "lint
 
-" syntax plugins
-Plug 'neovimhaskell/haskell-vim', { 'for': 'haskell' }
-Plug 'plasticboy/vim-markdown', { 'for': 'markdown' }
-"Plug 'sheerun/vim-polyglot'
+" language specific plugins
+Plug 'jackguo380/vim-lsp-cxx-highlight' "symantic highlighting for c/c++
+Plug 'chrisbra/csv.vim' "show data in csv
+Plug 'jalvesaq/Nvim-R', { 'tag': '*' } "R integration
+Plug 'neovimhaskell/haskell-vim', { 'for': 'haskell' } "haskell syntax
+Plug 'rust-lang/rust.vim'
+Plug 'tpope/vim-markdown', { 'for': 'markdown' } "markdown syntax
 
 " end of the plugin section
 call plug#end()
@@ -73,6 +75,7 @@ set clipboard=""
 
 " set the leader key to space, which is much easier to reach
 let mapleader = ' '
+let maplocalleader = ';'
 
 " enable swap and undo
 set swapfile
@@ -80,16 +83,34 @@ set directory=~/.vim/swap
 set undofile
 set undodir=~/.vim/undo
 
+" interpret *.h files as c
+let g:c_syntax_for_h = 1
+
 
 "'""""""""""""
 " Appearance "
 "'""""""""""""
+
+" colorscheme
+colorscheme MyMonokai
 
 " output message height
 set cmdheight=1
 
 " line numbers on the left
 set number relativenumber
+augroup number_set
+  autocmd!
+  if has('nvim')
+    autocmd TermOpen * setlocal nonumber norelativenumber
+  endif
+  autocmd FileType list,rbrowser setlocal nonumber norelativenumber
+augroup END
+"augroup numbertoggle
+"  autocmd!
+"  autocmd BufEnter,FocusGained,InsertLeave,WinEnter * if &nu | set rnu | end
+"  autocmd BufLeave,FocusLost,InsertEnter,WinLeave * if &nu | set nornu | end
+"augroup END
 
 " show the line the cursor is on
 set cursorline
@@ -110,8 +131,6 @@ if has('vim')
 else
   set listchars=eol:,tab:>-,space:·,trail:,extends:,precedes:,nbsp:+
 endif
-highlight NonText ctermfg=8
-highlight SpecialKey ctermfg=8
 
 " use terminus font if running in gui
 if has('gui_running')
@@ -128,7 +147,7 @@ nnoremap <silent> <leader>q :q<CR>
 nnoremap <silent> <leader>w :w<CR>
 nnoremap <silent> <leader>e :e %<CR>
 nnoremap          <leader>t :tabnew
-nnoremap <silent> <leader>l :ls<CR>
+"nnoremap <silent> <leader>l :ls<CR>
 
 " source this config file
 nnoremap <silent> <leader>r :source $MYVIMRC<CR>
@@ -151,19 +170,36 @@ nnoremap <silent> <leader>gs :Gstatus<CR>
 nnoremap <silent> <leader>gd :Gdiff<CR>
 
 " coc.nvim commands
+nmap     <silent><expr> <ESC>
+      \ coc#util#has_float() ? "\<Plug>(coc-float-hide)" : ""
 nnoremap <silent>       <leader>cr  :CocRestart<CR>
 nnoremap                <leader>cc  Qvnew<CR>CocConfig<CR>visual<CR>
 nnoremap <silent>       <leader>cl  :CocList<CR>
-nnoremap <silent>       <leader>ce  :CocList extensions<CR>
+nnoremap <silent>       <leader>ce  :CocList --normal extensions<CR>
 nnoremap <silent>       <leader>cm  :CocList marketplace<CR>
 nnoremap <silent>       <leader>cd  :CocList --normal diagnostics<CR>
+nnoremap <silent>       <leader>co  :CocList outline<CR>
+nnoremap <silent>       <leader>cs  :CocList -I symbols<CR>
+nnoremap <silent>       <leader>ca  :CocList --normal actions<CR>
+nnoremap <silent>       <leader>cq  :CocList --normal quickfix<CR>
+nnoremap <silent>       <leader>l   :CocList --normal buffers<CR>
+nnoremap <silent>       <leader>a   :CocAction quickfix<CR>
 nnoremap <silent>       K           :call <SID>show_doc()<CR>
-nnoremap <silent>       <F5>        <Plug>(coc-codeaction)
-nnoremap <silent>       <C-j>       <Plug>(coc-diagnostic-next)
-nnoremap <silent>       <C-k>       <Plug>(coc-diagnostic-prev)
+nmap     <silent>       ]c          <Plug>(coc-diagnostic-next)
+nmap     <silent>       [c          <Plug>(coc-diagnostic-prev)
+nmap     <silent>       ]e          <Plug>(coc-diagnostic-next-error)
+nmap     <silent>       [e          <Plug>(coc-diagnostic-prev-error)
+nmap     <silent>       <F2>        <Plug>(coc-rename)
+nmap     <silent>       <leader>f   <Plug>(coc-fix-current)
+nmap     <silent>       <leader>cf  <Plug>(coc-refactor)
+nnoremap <silent><expr> <C-f>
+      \ coc#util#has_float() ? coc#util#float_scroll(1) : "\<C-f>"
+nnoremap <silent><expr> <C-b>
+      \ coc#util#has_float() ? coc#util#float_scroll(0): "\<C-b>"
 inoremap <silent><expr> <TAB>
       \ pumvisible() ? coc#_select_confirm() :
-      \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump', ''])\<CR>" :
+      \ coc#expandableOrJumpable() ?
+      \ "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump', ''])\<CR>" :
       \ <SID>check_back_space() ? "\<TAB>" :
       \ coc#refresh()
 function! s:show_doc()
@@ -177,14 +213,12 @@ function! s:check_back_space() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1] =~# '\s'
 endfunction
-augroup coc_buffer_settings
-  autocmd!
-  "autocmd File
-augroup END
+inoremap <silent><expr> <C-space> coc#refresh()
+inoremap <silent><expr> <CR> "\<C-g>u\<CR>\<C-r>=coc#on_enter()\<CR>"
 
 " show what syntax group is used for the token on the cursor
 nnoremap <leader>st :call <SID>SynStack()<CR>
-function! <SID>SynStack()
+function! s:SynStack()
   if !exists('*synstack')
     return
   endif
@@ -196,13 +230,20 @@ endfunction
 " Plugins "
 """""""""""
 
-" vim-colorschemes
-colorscheme Monokai
-highlight NonText ctermbg=NONE guibg=NONE
-highlight SpecialKey ctermbg=NONE guibg=NONE
-highlight Identifier gui=None
-
 " NERDTree (directory tree)
+let g:NERDTreeNaturalSort = 1
+let g:NERDTreeSortHiddenFirst = 1
+let g:NERDTreeIgnore = ['\~$', '^\.git$']
+let g:NERDTreeMouseMode = 2
+let g:NERDTreeShowBookmarks = 1
+let g:NERDTreeShowFiles = 1
+let g:NERDTreeShowHidden = 1
+let g:NERDTreeShowLineNumbers = 0
+let g:NERDTreeCascadeSingleChildDir = 0
+let g:NERDTreeCascadeOpenSingleChildDir = 0
+let g:NERDTreeAutoDeleteBuffer = 1
+let g:NERDTreeRemoveFileCmd = 'mv -t ~/Trash/ '
+let g:NERDTreeRemoveDirCmd = 'mv -t ~/Trash/ '
 let g:NERDTreeDirArrowExpandable = ''
 let g:NERDTreeDirArrowCollapsible = ''
 let g:NERDTreeShowIgnoredStatus = 1
@@ -236,9 +277,12 @@ let s:not_these_fts = [
       \   'vim-plug',
       \   'list',
       \   'qf',
+      \   'rbrowser',
       \ ]
-let g:lightline_condition_filetype = '&filetype !~# "\\v('.join(s:not_these_fts, '|').')"'
-let g:lightline_even_wo_help = '&filetype !~# "\\v('.join(s:not_these_fts, '|').'|help)"'
+let g:lightline_condition_filetype =
+      \ '&filetype !~# "\\v('.join(s:not_these_fts, '|').')"'
+let g:lightline_even_wo_help =
+      \ '&filetype !~# "\\v('.join(s:not_these_fts, '|').'|help)"'
 let g:lightline_condition_winwidth = 'winwidth(0) > 70'
 let g:lightline = {}
 let g:lightline.enable = { 'statusline': 1, 'tabline': 1 }
@@ -251,17 +295,16 @@ let g:lightline.active = {
       \   'left': [
       \     ['mode', 'paste'],
       \     ['readonly', 'filename', 'modified'],
-      \     ['gitinfo'],
+      \     ['git'],
       \   ],
       \   'right': [
       \     ['lineinfo', 'filetype'],
       \     ['percent'],
-      \     ['fileformat', 'fileencoding'],
+      \     ['coc_status', 'fileformat', 'fileencoding'],
       \   ],
       \ }
 let g:lightline.inactive = {
       \   'left': [
-      \     ['paste'],
       \     ['readonly', 'filename', 'modified'],
       \   ],
       \   'right': [
@@ -277,25 +320,34 @@ let g:lightline.tabline = {
       \     ['close'],
       \   ],
       \ }
-let g:lightline.component = {
-      \   'readonly': '%{&readonly && '.g:lightline_even_wo_help.' ? "" : ""}',
-      \   'filename': '%f',
-      \   'modified': '%{'.g:lightline_even_wo_help.' && (&modified || !&modifiable) ? (&modified ? "+" : "-") : ""}',
-      \   'gitinfo': '%{'.g:lightline_condition_filetype.' ? fugitive#statusline() : ""}',
-      \   'filetype': '%{&filetype !=# "" ? &filetype : ""}',
-      \   'lineinfo': '%{'.g:lightline_condition_filetype.' ? "" . line(".") . " " . virtcol(".") : ""}',
-      \   'fileformat': '%{'.g:lightline_condition_winwidth.' ? &ff : ""}',
-      \   'fileencoding': '%{'.g:lightline_condition_winwidth.' ? (&fenc!=#""?&fenc:&enc) : ""}',
-      \ }
 let g:lightline.component_visible_condition = {
-      \   'readonly': '&readonly && '.g:lightline_even_wo_help,
-      \   'modified': g:lightline_even_wo_help.' && (&modified || !&modifiable)',
-      \   'lineinfo': g:lightline_condition_filetype,
-      \   'percent': g:lightline_condition_filetype,
-      \   'fileformat': g:lightline_condition_winwidth,
+      \   'readonly'    : '&readonly && '.g:lightline_even_wo_help,
+      \   'modified'    : g:lightline_even_wo_help.' && (&modified || !&modifiable)',
+      \   'gitinfo'     : g:lightline_condition_filetype,
+      \   'lineinfo'    : g:lightline_condition_filetype,
+      \   'percent'     : g:lightline_condition_filetype,
+      \   'fileformat'  : g:lightline_condition_winwidth,
       \   'fileencoding': g:lightline_condition_winwidth,
       \ }
+let g:lightline.component = {
+      \   'readonly'    : '%{'.g:lightline.component_visible_condition.readonly
+      \                   .' ? "" : ""}',
+      \   'filename'    : '%f',
+      \   'modified'    : '%{'.g:lightline.component_visible_condition.modified
+      \                   .' ? (&modified ? "+" : "-") : ""}',
+      \   'gitinfo'     : '%{'.g:lightline.component_visible_condition.gitinfo
+      \                   .' ? fugitive#statusline() : ""}',
+      \   'filetype'    : '%{&filetype !=# "" ? &filetype : ""}',
+      \   'lineinfo'    : '%{'.g:lightline.component_visible_condition.lineinfo
+      \                   .' ? "" . line(".") . " " . virtcol(".") : ""}',
+      \   'fileformat'  : '%{'.g:lightline.component_visible_condition.fileformat
+      \                   .' ? &ff : ""}',
+      \   'fileencoding': '%{'.g:lightline.component_visible_condition.fileencoding
+      \                   .' ? (&fenc!=#""?&fenc:&enc) : ""}',
+      \ }
 let g:lightline.component_function = {
+      \   'coc_status': 'coc#status',
+      \   'git': 'LightlineGitStatus',
       \ }
 let g:lightline.component_expand = {
       \   'buffers': 'lightline#bufferline#buffers',
@@ -304,60 +356,54 @@ let g:lightline.component_type = {
       \   'buffers': 'tabsel',
       \ }
 let g:lightline.mode_map = {
-      \   'n': 'N ',
-      \   'i': 'I ',
-      \   'R': 'R ',
-      \   'v': 'V ',
-      \   'V': 'VL',
+      \   'n'     : 'N ',
+      \   'i'     : 'I ',
+      \   'R'     : 'R ',
+      \   'v'     : 'V ',
+      \   'V'     : 'VL',
       \   "\<C-v>": 'VB',
-      \   'c': 'C ',
-      \   's': 'S ',
-      \   'S': 'SL',
+      \   'c'     : 'C ',
+      \   's'     : 'S ',
+      \   'S'     : 'SL',
       \   "\<C-s>": 'SB',
-      \   't': 'T ',
+      \   't'     : 'T ',
       \ }
+function! LightlineGitStatus()
+  return winwidth(0) > 70 ? get(g:, 'coc_git_status', '') : ''
+endfunction
+augroup lightline_custom_update
+  autocmd!
+  autocmd User CocStatusChange,CocDiagnosticChange call lightline#update()
+augroup END
 
-" polyglot (improved syntax)
-let g:polyglot_disabled = ['rust']
-
-" ale (asynchronous lint engine)
-let g:ale_linters_explicit = 1
-let g:ale_lint_on_text_changed = 0
-let g:ale_lint_on_insert_leave = 0
-let g:ale_lint_on_enter = 1
-let g:ale_lint_on_save = 1
-let g:ale_lint_on_filetype_changed = 1
-let g:ale_disable_lsp = 1
-let g:ale_linters = {}
-let g:hdevtools_stack = 1
-let g:hdevtools_options = '-g -fdefer-type-errors'
+" ale (asynchronous lint engine - for fix only)
 let g:ale_fix_on_save = 1
 let g:ale_fixers = {
       \   '*': ['remove_trailing_lines', 'trim_whitespace'],
       \ }
-let g:ale_set_balloons = 0
+let g:ale_linters_explicit = 1
+let g:ale_lint_on_text_changed = 0
+let g:ale_lint_on_insert_leave = 0
+let g:ale_lint_on_enter = 0
+let g:ale_lint_on_save = 0
+let g:ale_lint_on_filetype_changed = 0
+let g:ale_set_loclist = 0
+let g:ale_set_quickfix = 0
+let g:ale_set_highlights = 0
+let g:ale_set_signs = 0
+let g:ale_echo_cursor = 0
 let g:ale_virtualtext_cursor = 0
 let g:ale_cursor_detail = 0
-let g:ale_completion_enabled = 1
-function! ALE_maps()
-  if has_key(g:ale_linters, &filetype)
-    nnoremap <buffer> <leader>ad :ALEDetail<CR>
-    nnoremap <buffer> <leader>aj :ALENext<CR>
-    nnoremap <buffer> <leader>ak :ALEPrevious<CR>
-    nnoremap <buffer> <leader>an :ALENextWrap<CR>
-    nnoremap <buffer> <leader>ap :ALEPreviousWrap<CR>
-    nnoremap <buffer> <leader>ah :ALEFirst<CR>
-    nnoremap <buffer> <leader>al :ALELast<CR>
-  endif
-endfunction
-augroup ale_hooks
-  autocmd!
-  autocmd FileType * call ALE_maps()
-augroup END
+let g:ale_set_balloons = 0
+let g:ale_disable_lsp = 1
+let g:ale_linters = {}
+let g:ale_completion_enabled = 0
 
 " coc language server client
 let g:coc_snippet_next = '<TAB>'
 let g:coc_snippet_prev = '<S-TAB>'
+let g:coc_status_error_sign = 'E'
+let g:coc_status_warning_sign = 'W'
 let g:coc_global_extensions = [
       \   'coc-marketplace',
       \   'coc-highlight',
@@ -365,9 +411,12 @@ let g:coc_global_extensions = [
       \   'coc-snippets',
       \   'coc-css',
       \   'coc-eslint',
+      \   'coc-git',
       \   'coc-html',
       \   'coc-json',
+      \   'coc-lists',
       \   'coc-rls',
+      \   'coc-r-lsp',
       \   'coc-tslint-plugin',
       \   'coc-tsserver',
       \   'coc-vimlsp',
@@ -378,3 +427,35 @@ let g:coc_global_extensions = [
 let g:haskell_classic_highlighting = 1
 let g:haskell_enable_quantification = 1
 let g:haskell_indent_disable = 1
+
+" markdown syntax highlighting
+let g:markdown_fenced_languages = ['html', 'python', 'rs=rust', 'rust']
+let g:markdown_syntax_conceal = 1
+let g:markdown_minlines = 50
+
+" R config
+let R_in_buffer = 1
+let R_esc_term = 1
+let R_close_term = 1
+let R_assign = 3
+let R_assign_map = '_'
+let R_objbr_place = 'script,left'
+let R_objbr_w = 40
+let R_objbr_h = 10
+let R_objbr_opendf = 1
+let R_objbr_openlist = 0
+let R_objbr_allnames = 0
+let R_objbr_labelerr = 1
+let R_nvimpager = 'horizontal'
+let R_editor_w = 80
+let Rout_more_colors = 0
+let R_routnotab = 0
+let R_rcomment_string = '# '
+let R_rconsole_height = 15
+let R_rconsole_width = 0 "disable vertical split
+let R_clear_line= 0
+let R_nvim_wd = 1
+
+" rust config
+let g:rust_recommended_style = 1
+let g:rust_fold = 1

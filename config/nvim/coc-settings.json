@@ -1,16 +1,49 @@
 {
   "npm.binPath": "npm",
 
+  "list.indicator": ">",
+  "list.signOffset": 900,
+  "list.selectedSignText": "*",
+  "list.maxHeight": 10,
+  "list.autoResize": true,
+  "list.limitLines": 30000,
+  "list.maxPreviewHeight": 12,
+  "list.previewHighlightGroup": "Search",
+  "list.previewSplitRight": false,
+  "list.nextKeymap": "<C-n>",
+  "list.previousKeymap": "<C-p>",
+  "list.extendedSearchMode": true,
+  "list.normalMappings": {},
+  "list.insertMappings": {},
+  "list.interactiveDebounceTime": 100,
+
+  "suggest.autoTrigger": "always",
+  "suggest.triggerAfterInsertEnter": true,
+  "suggest.keepCompleteopt": false,
   "suggest.enablePreview": true,
   "suggest.floatEnable": true,
-  "suggest.detailField": "menu",
-  "suggest.autoTrigger": "always",
+  "suggest.detailField": "preview",
+  "suggest.disableKind": false,
+  "suggest.disableMenu": false,
+  "suggest.localityBonus": true,
+  "suggest.languageSourcePriority": 99,
+  "suggest.echodocSupport": false,
+  "suggest.disableMenuShortcut": false,
+  "suggest.labelMaxLength": 200,
+  "suggest.maxPreviewWidth": 80,
+  "suggest.detailMaxLength": 100,
+  "suggest.maxCompleteItemCount": 100,
+  //"suggest.lowPrioritySourceLimit": 0,
+  //"suggest.highPrioritySourceLimit": 0,
+  "suggest.fixInsertedWord": true,
   "suggest.numberSelect": false,
-  "suggest.snippetIndicator": " ",
-  "suggest.timeout": 2000,
-  "suggest.minTriggerInputLength": 1,
-  "suggest.triggerCompletionWait": 60,
   "suggest.noselect": true,
+  "suggest.preferCompleteThanJumpPlaceholder": false,
+  "suggest.acceptSuggestionOnCommitCharacter": false,
+  "suggest.timeout": 2000,
+  "suggest.triggerCompletionWait": 60,
+  "suggest.minTriggerInputLength": 1,
+  "suggest.snippetIndicator": " ",
   "suggest.completionItemKindLabels": {
     "text": "",
     "unit": "U",
@@ -39,9 +72,57 @@
     "typeParameter": ""
   },
 
+  "coc.source.file.enable": true,
+  "coc.source.file.shortcut": "F",
+  "coc.source.file.priority": 10,
+  "coc.source.file.ignoreHidden": true,
+  "coc.source.file.ignorePatterns": [],
+  "coc.source.file.disableSyntaxes": [],
+  "coc.source.file.triggerCharacters": [
+    "/"
+  ],
+  "coc.source.file.trimSameExts": [
+    ".ts",
+    ".js"
+  ],
+  "coc.source.around.enable": true,
+  "coc.source.around.shortcut": "A",
+  "coc.source.around.priority": 1,
+  "coc.source.around.firstMatch": true,
+  "coc.source.around.disableSyntaxes": [],
+  "coc.source.buffer.enable": true,
+  "coc.source.buffer.shortcut": "B",
+  "coc.source.buffer.priority": 1,
+  "coc.source.buffer.firstMatch": true,
+  "coc.source.buffer.ignoreGitignore": true,
+  "coc.source.buffer.disableSyntaxes": [],
+  "coc.source.issues.enable": true,
+  "coc.source.issues.priority": 99,
+  "coc.source.issues.shortcut": "I",
+  "coc.source.issues.filetypes": [
+    "gitcommit",
+    "gina-commit"
+  ],
+
+  "diagnostic.enable": true,
   "diagnostic.level": "hint",
-  "diagnostic.messageTarget": "float",
+  "diagnostic.enableSign": true,
+  "diagnostic.signOffset": 1000,
+  "diagnostic.errorSign": "!!",
+  "diagnostic.warningSign": "@@",
+  "diagnostic.infoSign": "$$",
+  "diagnostic.hintSign": ">>",
+  "diagnostic.virtualText": false,
+  "diagnostic.virtualTextLines": 3,
+  "diagnostic.virtualTextPrefix": " ",
+  "diagnostic.virtualTextLineSeparator": " \\ ",
+  "diagnostic.locationlist": true,
+  "diagnostic.highlightOffset": 1000,
+  "diagnostic.checkCurrentLine": true,
+  "diagnostic.enableMessage": "always",
   "diagnostic.joinMessageLines": false,
+  "diagnostic.messageTarget": "float",
+  "diagnostic.maxWindowHeight": 8,
   "diagnostic.refreshOnInsertMode": false,
   "diagnostic.refreshAfterSave": false,
   "diagnostic.displayByAle": false,
@@ -50,31 +131,80 @@
   "refactor.beforeContext": 3,
   "refactor.afterContext": 3,
 
+  "signature.enable": true,
+  "signature.target": "float",
+  "signature.preferShownAbove": true,
+
+  "codeLens.enable": true,
+  "codeLens.separator": "‣",
+
   "coc.preferences.extensionUpdateCheck": "daily",
   "coc.preferences.hoverTarget": "float",
-  "coc.preferences.colorSupport": true,
   "coc.preferences.previewAutoClose": true,
+  "coc.preferences.enableFloatHighlight": true,
+  "coc.preferences.colorSupport": true,
   "coc.preferences.currentFunctionSymbolAutoUpdate": false,
+  "coc.preferences.jumpCommand": "split",
+  "coc.preferences.bracketEnterImprove": true,
+  "coc.preferences.messageLevel": "warning",
+  "coc.preferences.snippets.enable": true,
+  "coc.preferences.snippetStatusText": "SNIP",
+  "coc.preferences.useQuickfixForLocations": false,
+  "coc.preferences.formatOnType": false,
   "coc.preferences.formatOnSaveFiletypes": [
+    "c",
+    "cpp",
     "haskell",
-    "rust"
+    "json",
+    "rust",
+    "yaml"
   ],
+  //"coc.preferences.watchmanPath": "watchman",
   "coc.preferences.rootPatterns": [
     ".vim",
     ".git",
-    ".hg",
-    ".projections.json"
+    ".hg"
   ],
-  "coc.preferences.jumpCommand": "tab drop",
-  "coc.preferences.bracketEnterImprove": true,
 
   // coc-highlight extension settings
   "highlight.document.enable": false,
   "highlight.colors.enable": true,
+  "highlight.trace.server": "off",
+  "highlight.execArgv": [],
+  "highlight.disableLanguages": [],
+
+  // coc-git extension settings
+  "git.enableGutters": true,
+  "git.realtimeGutters": false,
+  "git.signOffset": 99,
+  "git.enableGlobalStatus": true,
+  "git.addedSign.text": "+",
+  "git.addedSign.hlGroup": "CocGitSignAdded",
+  "git.changedSign.text": "~",
+  "git.changedSign.hlGroup": "CocGitSignChanged",
+  "git.removedSign.text": "_",
+  "git.removedSign.hlGroup": "CocGitSignRemoved",
+  "git.topRemovedSign.text": "‾",
+  "git.topRemovedSign.hlGroup": "CocGitSignRemoved",
+  "git.changeRemovedSign.text": "≃",
+  "git.changeRemovedSign.hlGroup": "CocGitSignChangeRemoved",
+  "git.addGlameToBufferVar": false,
+  "git.addGlameToVirtualText": true,
+  "git.virtualTextPrefix": "     ",
+  "git.semanticCommit.filetypes": [
+    "gitcommit",
+    "gina-commit"
+  ],
+  "git.branchCharacter": "",
+  "git.stagedDecorator": "●",
+  "git.changedDecorator": "*",
+  "git.untrackedDecorator": "…",
+  "git.conflictedDecorator": "x",
 
   // coc-pairs extension settings
   "pairs.disableLanguages": [],
   "pairs.enableBackspace": true,
+  "pairs.alwaysPairCharacters": [],
   "pairs.enableCharacters": [
     "(",
     "[",
@@ -86,10 +216,14 @@
   ],
 
   // coc-snippets extension settings
+  "snippets.shortcut": "S",
+  "snippets.priority": 90,
   "snippets.autoTrigger": true,
+  "snippets.triggerCharacters": [],
   "snippets.snipmate.enable": false,
   "snippets.ultisnips.enable": false,
   "snippets.loadFromExtensions": true,
+  "snippets.trace": "error",
   "snippets.extends": {
     "javascriptreact": ["javascript"],
     "typescript": ["javascript"],
@@ -102,13 +236,27 @@
       "command": "hie-wrapper",
       "args": ["--lsp"],
       "filetypes": ["hs", "lhs", "haskell"],
-      "rootPatterns": [".vim", ".git", "stack.yaml", "*.cabal"],
+      "rootPatterns": [".vim", ".git", "stack.yaml", "*.cabal", ".hg"],
       "initializationOptions": {},
       "settings": {
         "languageServerHaskell": {
           "hlintOn": true,
           "completionSnippetsOn": true,
           "formattingProvider": "brittany"
+        }
+      }
+    },
+    "ccls": {
+      "command": "ccls",
+      "args": [],
+      "filetypes": ["c", "cpp", "objc", "objcpp"],
+      "rootPatterns": [".ccls", "compile_commands.json", ".vim", ".git", ".hg"],
+      "initializationOptions": {
+        "cache": {
+          "directory": "/tmp/ccls"
+        },
+        "highlight": {
+          "lsRanges": true
         }
       }
     },
@@ -128,12 +276,7 @@
   "eslint.enable": false,
   "eslint.run": "onType",
   "eslint.autoFixOnSave": true,
-  "eslint.filetypes": [
-    "javascript",
-    "javascriptreact",
-    "typescript",
-    "typescriptreact"
-  ],
+  "eslint.filetypes": [],
 
   // coc-html extension settings
   "html.enable": true,
@@ -151,7 +294,8 @@
   "json.format.enable": true,
 
   // coc-rls extension settings
-  "rust-client.logToFile": true,
+  "rust.clippy_preference": "opt-in",
+  "rust-client.logToFile": false,
   "rust-client.updateOnStartup": true,
 
   // coc-tsserver & coc-tslint-plugin extension settings
@@ -169,7 +313,7 @@
   "vimlsp.suggest.fromVimruntime": true,
 
   // coc-yaml extension settings
-  "yaml.format.enable": true,
+  "yaml.format.enable": false,
   "yaml.format.bracketSpacing": true,
   "yaml.hover": true,
   "yaml.schemas": {}

@@ -39,10 +39,10 @@ URxvt.scrollBar_align: centre
 !URxvt.fadeColor: black
 
 ! fonts
-URxvt.font: xft:TerminessTTF\ Nerd\ Font\ Mono:size=12,xft:NanumGothicCoding:size=12
-URxvt.boldFont: xft:TerminessTTF\ Nerd\ Font\ Mono:bold:size=12,xft:NanumGothicCoding:bold:size=12
-URxvt.italicFont: xft:TerminessTTF\ Nerd\ Font\ Mono:italic:size=12,xft:NanumGothicCoding:italic:size=12
-URxvt.boldItalicFont: xft:TerminessTTF\ Nerd\ Font\ Mono:bold:italic:size=12,xft:NanumGothicCoding:bold:italic:size=12
+URxvt.font: xft:TerminessTTF\ Nerd\ Font\ Mono:size=12,xft:NanumGothicCoding:size=12,xft:Noto\ Sans\ Mono:size=12
+URxvt.boldFont: xft:TerminessTTF\ Nerd\ Font\ Mono:bold:size=12,xft:NanumGothicCoding:bold:size=12,xft:Noto\ Sans\ Mono:bold:size=12
+URxvt.italicFont: xft:TerminessTTF\ Nerd\ Font\ Mono:italic:size=12,xft:NanumGothicCoding:italic:size=12,xft:Noto\ Sans\ Mono:italic:size=12
+URxvt.boldItalicFont: xft:TerminessTTF\ Nerd\ Font\ Mono:bold:italic:size=12,xft:NanumGothicCoding:bold:italic:size=12,xft:Noto\ Sans\ Mono:bold:italic:size=12
 
 ! letter spacing
 URxvt.lineSpace: 0

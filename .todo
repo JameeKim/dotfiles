@@ -1,24 +1,28 @@
-[X] create utilities to use tmux with urxvt
-[X] audio
-[X] explore `safeSpawn`
-[ ] what is firefox `--safe-mode` option?
-[X] urxvt keybindings
-[X] tmux settings (especially keybindings)
-[X] vim settings
-[ ] fix transparency issues
-[ ] change window title dynamically
-[X] layout per workspace
-[X] powerlevel10k config
-[X] icon tray
-[ ] ibus
-[X] more keybindings to xmonad
-[X] background image
-[X] change to polybar
-[ ] dunst (also volume, monitor brightness adjusting)
-[ ] map tab and backslash to super
-[ ] setup script
-[ ] multimedia keymaps
-[ ] option to print out xserver atom value
-[ ] power menu off and reboot functionalities
-[ ] polybar more components
-[ ] polybar custom
+* [X] create utilities to use tmux with urxvt
+* [X] audio
+* [X] explore `safeSpawn`
+* [ ] what is firefox `--safe-mode` option?
+* [X] urxvt keybindings
+* [X] tmux settings (especially keybindings)
+* [X] vim settings
+* [ ] fix transparency issues
+* [ ] change window title dynamically
+* [X] layout per workspace
+* [X] powerlevel10k config
+* [X] icon tray
+* [ ] ibus
+* [X] more keybindings to xmonad
+* [X] background image
+* [X] change to polybar
+* [ ] dunst (also volume, monitor brightness adjusting)
+* [ ] map tab and backslash to super
+* [ ] setup script
+* [ ] multimedia keymaps
+* [ ] option to print out xserver atom value
+* [ ] power menu off and reboot functionalities
+* [ ] polybar more components
+* [ ] polybar custom
+* [ ] zsh restructuring
+* [ ] xmonad workspace - tree
+
+<!-- vim:ft=markdown:

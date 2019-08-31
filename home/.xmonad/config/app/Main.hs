@@ -4,26 +4,31 @@ import XMonad
 import XMonad.Actions.CycleWS
 import XMonad.Actions.MyCommands
 import XMonad.Actions.WindowGo
-import XMonad.Config.Workspaces (myWorkspaces)
+import XMonad.Config.Workspaces
+    (myWorkspaces, wsMoveNext, wsMovePrev, wsMoveToChild, wsMoveToParent)
 --import XMonad.Hooks.DebugKeyEvents
---import XMonad.Hooks.DynamicLog
+import XMonad.Hooks.DynamicLog (dynamicLogWithPP)
 import XMonad.Hooks.EwmhDesktops (ewmh)
 import XMonad.Hooks.FadeInactive (fadeInactiveCurrentWSLogHook)
 import XMonad.Hooks.ManageDocks (ToggleStruts(..), avoidStruts, docks)
 import XMonad.Hooks.ManageHelpers
+    (Side(..), doCenterFloat, doRectFloat, doSideFloat, isDialog)
 import XMonad.Hooks.ServerMode
 import XMonad.Layout.MyLayouts (myLayouts)
 import XMonad.Layout.ToggleLayouts (ToggleLayout(..))
 import XMonad.Util.Cursor (setDefaultCursor, xC_left_ptr)
 import XMonad.Util.EZConfig (mkKeymap)
 import XMonad.Util.NamedScratchpad
---import XMonad.Util.Run ( spawnPipe )
+import XMonad.Util.Polybar (polybarWsLogFile, polybarWsPP)
+import XMonad.Util.Run (safeSpawn)
 --import XMonad.Util.Stalonetray
 import XMonad.Util.Tmux
 --import XMonad.Util.WorkspaceCompare ( getSortByIndex )
 
+import Control.Monad (when)
 import Data.Monoid (All)
-import System.Exit
+import System.Environment (getEnv)
+import System.Exit (exitSuccess)
 --import System.IO
 
 import qualified Data.Map as M
@@ -83,35 +88,15 @@ myManageHook = namedScratchpadManageHook myScratchpads <+> composeAll
     , className =? "TelegramDesktop" --> doShift "chat"
     , className =? "discord" --> doShift "chat"
     , className =? "code-oss" --> doShift "vscode"
+    , className =? "R_x11" --> doSideFloat SE
     , isDialog --> doCenterFloat
     ]
 
 -- | Set the log hook
-myLogHook :: X ()
-myLogHook = do
-    -- statusBarLog bar
+myLogHook :: String -> X ()
+myLogHook user = do
     fadeInactiveCurrentWSLogHook 0.9
-    {-
-    where
-    -- get the log function from the pipe handle
-    statusBarLog :: Handle -> X ()
-    statusBarLog handle = dynamicLogWithPP def
-        { ppOutput = hPutStrLn handle
-        , ppCurrent = xmobarColor "cyan" "" . wrap "[" "]"
-        , ppVisible = wrap "(" ")"
-        , ppHidden = xmobarColor "white" "" . wrap " " " "
-        , ppHiddenNoWindows = xmobarColor "grey" "" . wrap " " " "
-        , ppVisibleNoWindows = Nothing
-        , ppUrgent = xmobarColor "red" "cyan"
-        , ppSep = wrap " " " " $ xmobarFont 1 "\xf48b"
-        , ppWsSep = ""
-        , ppTitle = xmobarColor "cyan" "" . xmobarRaw . shorten 40
-        , ppTitleSanitize = id
-        , ppOrder = id
-        , ppSort = fmap (. namedScratchpadFilterOutWorkspace) getSortByIndex
-        , ppExtras = []
-        }
-    -}
+    dynamicLogWithPP $ polybarWsPP user
 
 -- | Event hooks
 myEventHook :: Event -> X All
@@ -129,10 +114,10 @@ keys' conf@(XConfig { modMask = _modm, terminal = term }) =
 
     -- stop or restart xmonad
            , ( "M-q"
-             , spawn restart_cmd
+             , spawn restartCmd
              ) -- reload xmonad
            , ( "M-S-q"
-             , io $ exitWith ExitSuccess
+             , io exitSuccess
              ) -- exit xmonad
 
     -- kill current window
@@ -189,11 +174,8 @@ keys' conf@(XConfig { modMask = _modm, terminal = term }) =
              , runOrRaise "firefox" $ className =? "Firefox"
              ) -- web browser
            , ( "M-v"
-             , spawn $ term ++ " -name Vim -e vim"
+             , spawn $ term ++ " -name Nvim -e nvim"
              ) -- vim editor
-           , ( "M-S-v"
-             , spawn $ term ++ " -name Vim -e vim ~/.xmonad/xmonad.hs"
-             ) -- edit xmonad config
 
     -- rofi
            , ( "M-d"
@@ -251,6 +233,20 @@ keys' conf@(XConfig { modMask = _modm, terminal = term }) =
              , sendMessage NextLayout
              ) -- brightness down
 
+    -- move through workspace tree
+           , ( "M-<Up>"
+             , wsMoveToParent
+             ) -- move to parent node
+           , ( "M-<Down>"
+             , wsMoveToChild
+             ) -- move to the first child
+           , ( "M-<Left>"
+             , wsMovePrev
+             ) -- move to the previous sibling
+           , ( "M-<Right>"
+             , wsMoveNext
+             ) -- move to the next sibling
+
     -- cycle through the workspaces
            , ( "M-l"
              , avoidNSP nextWS
@@ -264,9 +260,9 @@ keys' conf@(XConfig { modMask = _modm, terminal = term }) =
            , (f, shift) <- [(W.view, ""), (W.shift, "S-")]
            ]
   where
-        -- string to restart xmonad
-    restart_cmd :: String
-    restart_cmd =
+    -- string to restart xmonad
+    restartCmd :: String
+    restartCmd =
         "if type xmonad; then "
             ++ "xmonad --recompile && xmonad --restart; "
             ++ "else xmessage xmonad not in \\$PATH: \"$PATH\"; "
@@ -277,7 +273,7 @@ keys' conf@(XConfig { modMask = _modm, terminal = term }) =
     avoidNSP move = do
         move
         ws <- withWindowSet $ pure . W.currentTag
-        if ws == "NSP" then move else return ()
+        when (ws == "NSP") move
 
 -- | Mouse bindings
 mouse :: XConfig l -> M.Map (KeyMask, Button) (Window -> X ())
@@ -294,9 +290,9 @@ mouse _conf@(XConfig { modMask = modm }) = M.fromList
 -- | Main configuration
 main :: IO ()
 main = do
-    -- statusBarTop <- spawnPipe "xmobar ~/.config/xmobar/top"
-    -- trayKillAndSpawn 1
-    _ <- spawn "polybar_start"
+    user <- getEnv "USER"
+    safeSpawn "mkfifo" [polybarWsLogFile user]
+    spawn "polybar_start"
     xmonad . ewmh . docks $ def
         { modMask            = myModMask
         , terminal           = myTerminal
@@ -304,7 +300,7 @@ main = do
         , startupHook        = myStartupHook
         , manageHook         = myManageHook
         , layoutHook         = avoidStruts myLayouts
-        , logHook            = myLogHook
+        , logHook            = myLogHook user
         , handleEventHook    = myEventHook
         , keys               = keys'
         , mouseBindings      = mouse
@@ -315,4 +311,4 @@ main = do
         , focusedBorderColor = "#f0544c"
         }
 
--- vim:ts=4:shiftwidth=4:softtabstop=4:expandtab:
+-- vim:ts=4:sw=4:sts=4:et:
