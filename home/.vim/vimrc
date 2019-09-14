@@ -45,12 +45,14 @@ Plug 'tpope/vim-dispatch' "run build or other commands async
 Plug 'w0rp/ale' "lint
 
 " language specific plugins
-Plug 'jackguo380/vim-lsp-cxx-highlight' "symantic highlighting for c/c++
+Plug 'cakebaker/scss-syntax.vim' "scss syntax
 Plug 'chrisbra/csv.vim' "show data in csv
+Plug 'jackguo380/vim-lsp-cxx-highlight' "symantic highlighting for c/c++
 Plug 'jalvesaq/Nvim-R', { 'tag': '*' } "R integration
 Plug 'neovimhaskell/haskell-vim', { 'for': 'haskell' } "haskell syntax
-Plug 'rust-lang/rust.vim'
+Plug 'rust-lang/rust.vim' "rust integration
 Plug 'tpope/vim-markdown', { 'for': 'markdown' } "markdown syntax
+Plug 'zorab47/vim-gams', { 'for': 'gams' }
 
 " end of the plugin section
 call plug#end()
@@ -144,6 +146,7 @@ endif
 
 " shortcuts for closing and saving, and opening buffer
 nnoremap <silent> <leader>q :q<CR>
+nnoremap <silent> <leader>Q :q!<CR>
 nnoremap <silent> <leader>w :w<CR>
 nnoremap <silent> <leader>e :e %<CR>
 nnoremap          <leader>t :tabnew

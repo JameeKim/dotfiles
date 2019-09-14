@@ -20,6 +20,8 @@ syn keyword haskellDataKeyword      data
       \ contained
 syn keyword haskellNewtypeKeyword   newtype
       \ contained
+syn keyword haskellTypeKeyword      type
+      \ contained
 syn keyword haskellClassKeyword     class
       \ contained
 syn keyword haskellInstanceKeyword  instance
@@ -68,7 +70,7 @@ syn match haskellDerive
       \ contains=haskellImportParens
 
 syn match haskellTypeDecl
-      \ "\<[a-z][a-zA-Z0-9_']*\>\(\_s*,\_s*\<[a-z][a-zA-Z0-9_']*\>\)*\_s*::.*"
+      \ "\<[a-z][a-zA-Z0-9_']*\>\(\_s*,\_s*\<[a-z][a-zA-Z0-9_']*\>\)*\_s*::[^}]*"
       \ contains=
       \   haskellIdentifier,
       \   haskellSeparator,
@@ -92,6 +94,16 @@ syn match haskellNewtype
       \   haskellNewtypeKeyword,
       \   haskellType,
       \   haskellOperator
+syn match haskellTypeDefine
+      \ "^\s*\<type\>\_.\{-}=.*"
+      \ contains=
+      \   haskellTypeKeyword,
+      \   haskellType,
+      \   haskellTypeVar,
+      \   haskellOperator,
+      \   haskellForall,
+      \   haskellTypeParen,
+      \   haskellTypeList
 syn match haskellClass
       \ "^\s*\<class\>\_.\{-}\<where\>"
       \ contains=
@@ -206,6 +218,7 @@ hi def link haskellConditional      Conditional
 hi def link haskellImportKeyword    Include
 hi def link haskellDataKeyword      haskellKeyword
 hi def link haskellNewtypeKeyword   haskellKeyword
+hi def link haskellTypeKeyword      haskellKeyword
 hi def link haskellClassKeyword     haskellKeyword
 hi def link haskellInstanceKeyword  haskellKeyword
 hi def link haskellTodo             Todo

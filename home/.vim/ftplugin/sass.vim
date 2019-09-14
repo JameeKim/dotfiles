@@ -4,4 +4,5 @@ setlocal softtabstop=2
 setlocal expandtab
 
 setlocal iskeyword+=-
+setlocal iskeyword+=$
 let b:coc_additional_keywords = ['-']

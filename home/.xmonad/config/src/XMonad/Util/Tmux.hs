@@ -1,62 +1,54 @@
-module XMonad.Util.Tmux ( spawnNewTmuxSession
-                        , attachTmuxSession
-                        , attachOrCreateTmuxSession
-                        ) where
+module XMonad.Util.Tmux
+    ( spawnNewTmuxSession
+    , attachTmuxSession
+    , attachOrCreateTmuxSession
+    )
+where
 
-import XMonad ( X )
-import XMonad.Util.Dmenu ( menuArgs, menuMapArgs )
-import XMonad.Util.Rofi ( cmdEscape, rofiMessage )
-import XMonad.Util.Run ( runInTerm, runProcessWithInput )
+import XMonad (X)
+import XMonad.Util.Dmenu (menuArgs, menuMapArgs)
+import XMonad.Util.Rofi (cmdEscape, rofiMessage)
+import XMonad.Util.Run (runInTerm, runProcessWithInput)
 
-import Data.Map ( fromList )
+import Data.Map (fromList)
 
 -- | Create a new session and attach to it
 spawnNewTmuxSession :: X ()
 spawnNewTmuxSession = do
-    sName <- menuArgs
-        "dmenu"
-        ["-p", "New session name: "]
-        []
+    sName <- menuArgs "dmenu" ["-p", "New session name: "] []
     if null sName
-    then return ()
-    else runInTerm "" $ tmuxCreateNewSessionCmd sName
-                     ++ " && "
-                     ++ tmuxAttachToSessionCmd sName
+        then return ()
+        else
+            runInTerm ""
+            $  tmuxCreateNewSessionCmd sName
+            ++ " && "
+            ++ tmuxAttachToSessionCmd sName
 
 -- | Attach to the selected session after checking if any exist
 attachTmuxSession :: X ()
 attachTmuxSession = do
     sessions <- tmuxGetRunningSessions
     if null sessions
-    then rofiMessage "No runing sessions currently exist!"
-    else attachTmuxSession' sessions
+        then rofiMessage "No runing sessions currently exist!"
+        else attachTmuxSession' sessions
 
 -- | Attach to the selected session, not checking if any exist
 attachTmuxSession' :: [String] -> X ()
 attachTmuxSession' lsList = do
-    sName <- menuArgs
-        "dmenu"
-        ["-p", "Select session to attach to: "]
-        lsList
-        -- (fromList . map (\l -> (l, l)) $ lsList)
-    -- case sName of
-    --     Just s -> runInTerm "" $
-    --         tmuxAttachToSessionCmd $ takeWhile (/= ':') s
-    --     -- TODO: do not show this when cancelled
-    --     Nothing -> rofiMessage "Wrong session name given!"
+    sName <- menuArgs "dmenu" ["-p", "Select session to attach to: "] lsList
     if null sName
-    then return ()
-    else if sName `elem` lsList
-        then runInTerm "" $ tmuxAttachToSessionCmd $ takeWhile (/= ':') sName
-        else rofiMessage "Wrong session name given!"
+        then return ()
+        else if sName `elem` lsList
+            then runInTerm "" $ tmuxAttachToSessionCmd $ takeWhile
+                (/= ':')
+                sName
+            else rofiMessage "Wrong session name given!"
 
 -- | Attach to an existing session or create a new one
 attachOrCreateTmuxSession :: X ()
 attachOrCreateTmuxSession = do
     lsList <- tmuxGetRunningSessions
-    if length lsList > 0
-    then attachTmuxSession' lsList
-    else spawnNewTmuxSession
+    if not (null lsList) then attachTmuxSession' lsList else spawnNewTmuxSession
 
 -- | Command to create a new session with the given name
 tmuxCreateNewSessionCmd :: String -> String
@@ -68,12 +60,12 @@ tmuxAttachToSessionCmd name = "tmux attach -t " ++ cmdEscape name
 
 -- | Get a list of currently running sessions
 tmuxGetRunningSessions :: X [String]
-tmuxGetRunningSessions = fmap lines $ runProcessWithInput
+tmuxGetRunningSessions = lines <$> runProcessWithInput
     "tmux"
     [ "ls"
     , "-F"
     , "#S:#{session_id} - #{session_windows} windows"
-    ++ " - #{session_attached} attached#{?session_alerts, (#{session_alerts}),}"
+        ++ " - #{session_attached} attached#{?session_alerts, (#{session_alerts}),}"
     ]
     ""
 

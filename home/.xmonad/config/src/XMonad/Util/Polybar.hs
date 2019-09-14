@@ -1,6 +1,5 @@
 module XMonad.Util.Polybar
     ( polybarWsLogFile
-    , polybarWsPP
     , action
     , font
     , underline
@@ -13,34 +12,10 @@ module XMonad.Util.Polybar
     )
 where
 
-import XMonad (io)
-import XMonad.Config.Workspaces (wsFilterWsLevel)
-import XMonad.Hooks.DynamicLog (PP(..), wrap)
-import XMonad.Util.WorkspaceCompare (getSortByIndex)
-
-import Control.Applicative (liftA2)
+import XMonad.Hooks.DynamicLog (wrap)
 
 polybarWsLogFile :: String -> String
 polybarWsLogFile = wrap "/tmp/.xmonad-" "-ws-log"
-
-polybarWsPP :: String -> PP
-polybarWsPP user = PP
-    { ppCurrent          = (.) <$> underlineColored <*> foreground $ "#ff0000"
-    , ppVisible          = id
-    , ppHidden           = foreground "#ffffff"
-    , ppHiddenNoWindows  = id
-    , ppVisibleNoWindows = Nothing
-    , ppUrgent           = id
-    , ppSep              = " : "
-    , ppWsSep            = " "
-    , ppTitle            = const ""
-    , ppTitleSanitize    = id
-    , ppLayout           = id
-    , ppOrder            = \l -> [head l]
-    , ppOutput           = io . appendFile (polybarWsLogFile user) . (++ "\n")
-    , ppSort             = liftA2 (.) getSortByIndex wsFilterWsLevel
-    , ppExtras           = []
-    }
 
 action :: String -> String -> String -> String
 action cmd btn = wrap ("%{A" ++ btn ++ ":" ++ cmd ++ ":" ++ "}") "%{A}"

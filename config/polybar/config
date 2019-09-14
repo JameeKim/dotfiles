@@ -129,7 +129,7 @@ label-urgent-foreground = ${colors.red-0}
 [module/window-title]
 type = internal/xwindow
 
-format = %{T4}<label>%{T-}
+format = %{T3}<label>%{T-}
 format-foreground = ${colors.primary}
 label = %title:0:50:...%
 
