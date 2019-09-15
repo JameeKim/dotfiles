@@ -432,7 +432,7 @@ let g:haskell_enable_quantification = 1
 let g:haskell_indent_disable = 1
 
 " markdown syntax highlighting
-let g:markdown_fenced_languages = ['html', 'python', 'rs=rust', 'rust']
+let g:markdown_fenced_languages = ['html', 'python', 'rs=rust', 'rust', 'rdoc']
 let g:markdown_syntax_conceal = 1
 let g:markdown_minlines = 50
 

@@ -67,6 +67,7 @@ workspaceTree =
         [ Node (WSLink ["web"])             []
         , Node (WSItem "rust" "\xe7a8")     []
         , Node (WSItem "haskell" "\xe777")  []
+        , Node (WSItem "r" "\xf437")        []
         , Node (WSItem "markdown" "\xe73e") []
         ]
     , Node (WSItem "music" "\xfc58") []

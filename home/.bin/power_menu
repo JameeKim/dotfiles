@@ -27,14 +27,14 @@ execute_power_option () {
         case $1 in
             "Power Off")
                 # TODO
-                echo poweroff
+                shutdown now
                 ;;
             "Log Out")
-                xdotool key super+shift+q
+                xdotool key 'super+shift+q'
                 ;;
             "Reboot")
                 # TODO
-                echo reboot
+                reboot
                 ;;
             *)
                 ;;
