@@ -21,12 +21,6 @@ checkAndAddToPath $HOME/.cabal/bin
 checkAndAddToPath $HOME/.cargo/bin
 checkAndAddToPath $HOME/.local/bin
 
-# start gnome keyring if using gui
-if [ -n "$DESKTOP_SESSION" ] ; then
-    eval $(gnome-keyring-daemon --start)
-    export SSH_AUTH_SOCK
-fi
-
 # init nvm
 [ -z "$NVM_DIR" ] && export NVM_DIR="$HOME/.nvm"
 source /usr/share/nvm/nvm.sh

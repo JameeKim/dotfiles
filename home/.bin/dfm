@@ -10,7 +10,7 @@ check_install_middle=")\$' | rg '^[^\\( ]*("
 check_install_suffix=")\\s+[^\\[]*(\\[[iI]nstalled\\])?' -or '0\$2' | rg '^0\$'"
 
 # packages to install
-installs=(openssh wget tlp alsa-utils pulseaudio pulseaudio-alsa pulseaudio-ctl firefox zsh terminus-font nerd-fonts-terminus tmux xorg compton xdotool xorg-xinit xorg-xmessage xorg-xprop feh rxvt-unicode polybar rofi gdm ibus-hangul telegram-desktop discord lxappearance-gtk3 matcha-gtk-theme paper-icon-theme-git qt5ct kvantum-qt5 kvantum-theme-matcha seahorse dunst ghc-static pamac-gtk ripgrep)
+installs=(openssh wget tlp alsa-utils pulseaudio pulseaudio-alsa pulseaudio-ctl firefox zsh terminus-font nerd-fonts-terminus tmux xorg compton xdotool xorg-xinit xorg-xmessage xorg-xprop feh rxvt-unicode polybar rofi gdm polkit-gnome ibus-hangul telegram-desktop discord evolution lxappearance-gtk3 matcha-gtk-theme paper-icon-theme-git qt5ct kvantum-qt5 kvantum-theme-matcha seahorse dunst ghc-static pamac-gtk ripgrep)
 manjaro=(manjaro-hello manjaro-gdm-theme manjaro-gdm-tweak manjaro-alsa manjaro-pulse manjaro-application-utility manjaro-aur-support manjaro-settings-manager-notifier manjaro-browser-settings manjaro-zsh-config manjaro-gnome-assets)
 aur=(dropbox neovim-nightly nvm ttf-ms-fonts ttf-nanum ttf-nanumgothic_coding)
 

@@ -29,7 +29,7 @@ myModMask = mod4Mask
 
 -- | Set the terminal to rxvt-unicode
 myTerminal :: String
-myTerminal = "urxvt"
+myTerminal = "termite"
 
 -- | Startup hook
 myStartupHook :: X ()

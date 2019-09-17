@@ -1,7 +1,12 @@
 # enable polkit
 /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
 
+# enable ibus
+ibus-daemon --xim &
+
 # autostart apps
-#telegram-desktop &
-discord &
 pamac-tray &
+dropbox &
+discord &
+evolution &
+telegram-desktop &

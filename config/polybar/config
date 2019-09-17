@@ -86,7 +86,7 @@ bottom = true
 tray-position = none
 modules-left = desktop-apps temperature cpu
 modules-center = filesystem
-modules-right = wireless
+modules-right = wired wireless
 
 [module/ws]
 type = custom/script
@@ -94,42 +94,11 @@ exec = tail -F /tmp/.xmonad-$USER-ws-log
 exec-if = [ -p /tmp/.xmonad-$USER-ws-log ]
 tail = true
 
-[module/workspaces]
-type = internal/xworkspaces
-pin-workspaces = false
-enable-click = true
-enable-scroll = false
-
-icon-0 = dev;
-icon-1 = web;
-icon-2 = graphics;
-icon-3 = chat;
-icon-4 = vscode;
-icon-5 = etc;
-icon-6 = dev/rust;
-icon-7 = dev/haskell;
-icon-default = 
-
-format = <label-state>
-
-label-active = " %index%:%{T2}%icon%%{T-} "
-;label-active = " %index%:%{T2}%name%%{T-} "
-label-active-foreground = ${colors.primary}
-label-active-underline = ${colors.primary}
-
-label-empty = ${self.label-active}
-label-empty-foreground = ${colors.foreground}
-
-label-occupied = ${self.label-active}
-label-occupied-foreground = ${colors.yellow-0}
-
-label-urgent = ${self.label-active}
-label-urgent-foreground = ${colors.red-0}
-
 [module/window-title]
 type = internal/xwindow
 
-format = %{T3}<label>%{T-}
+format = <label>
+format-font = 3
 format-foreground = ${colors.primary}
 label = %title:0:50:...%
 
@@ -198,7 +167,7 @@ adapter = ${custom.battery-adapter}
 full-at = 99
 poll-interval = 5
 
-format-charging = <ramp-capacity> <label-charging>
+format-charging = <animation-charging> <label-charging>
 label-charging = %percentage:3%%
 format-charging-underline = ${colors.green-0}
 
@@ -209,6 +178,18 @@ format-discharging-underline = ${colors.red-0}
 format-full = <ramp-capacity> <label-full>
 label-full = ${self.label-charging}
 format-full-underline = ${colors.blue-0}
+
+animation-charging-0 = 
+animation-charging-1 = 
+animation-charging-2 = 
+animation-charging-3 = 
+animation-charging-4 = 
+animation-charging-5 = 
+animation-charging-6 = 
+animation-charging-7 = 
+animation-charging-8 = 
+animation-charging-9 = 
+animation-charging-framerate = 500
 
 ramp-capacity-0 = 
 ramp-capacity-1 = 
@@ -276,18 +257,20 @@ interval = 30
 fixed-values = false
 spacing = 2
 
-mount-0 = /
+include-file = /home/jamee/.config/polybar/fs-mount
 
 format-mounted = <label-mounted>
-label-mounted = %{F#0a81f5}%mountpoint%%{F-}: %percentage_used%% of %total%
+format-mounted-font = 3
+label-mounted = %{F#00ffff}%mountpoint%%{F-}: %percentage_used%% of %total%
 
 format-unmounted = <label-unmounted>
-label-unmounted = %mountpoint% not mounted
+format-unmounted-font = 3
+label-unmounted = %{F#e60053}%mountpoint%%{F-} not mounted
 label-unmounted-foreground = ${colors.foreground-alt}
 
 [module/wireless]
 type = internal/network
-interface = wlp1s0
+interface = ${custom.wireless-interface}
 interval = 1
 
 format-connected = <ramp-signal> <label-connected>
@@ -295,10 +278,7 @@ format-connected-underline = #9f78e1
 label-connected = %essid% %upspeed% %downspeed%
 
 format-disconnected =
-;format-disconnected = <label-disconnected>
-;format-disconnected-underline = ${self.format-connected-underline}
-;label-disconnected = %ifname% disconnected
-;label-disconnected-foreground = ${colors.foreground-alt}
+format-packetloss =
 
 ramp-signal-0 = ▁
 ramp-signal-1 = ▂
@@ -309,6 +289,18 @@ ramp-signal-5 = ▆
 ramp-signal-6 = ▇
 ramp-signal-7 = █
 ramp-signal-foreground = ${colors.foreground-alt}
+
+[module/wired]
+type = internal/network
+interface = ${custom.ethernet-interface}
+interval = 1
+
+format-connected = <label-connected>
+format-connected-underline = ${colors.yellow-0}
+label-connected = %upspeed% %downspeed%
+
+format-disconnected =
+format-packetloss =
 
 [bar/example]
 ;monitor = ${env:MONITOR:HDMI-1}

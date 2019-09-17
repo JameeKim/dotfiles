@@ -9,5 +9,7 @@ tray-maxsize = 48
 tray-scale = 1.0
 battery-battery = BAT1
 battery-adapter = ADP1
+wireless-interface = wlp1s0
+ethernet-interface = enp2s0
 
 ; vim:ft=dosini

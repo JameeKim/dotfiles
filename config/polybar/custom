@@ -1,13 +1,15 @@
 monitor = ${env:MONITOR:eDP1}
-height = 48
-font-0 = "TerminessTTF Nerd Font Mono:size=16;5"
-font-1 = "TerminessTTF Nerd Font Mono:size=20;8"
-font-2 = "Nanum Pen Script,나눔손글씨 펜:size=18;7"
+height = 28
+font-0 = "TerminessTTF Nerd Font Mono:size=16;3"
+font-1 = "TerminessTTF Nerd Font Mono:size=20;6"
+font-2 = "Nanum Pen Script,나눔손글씨 펜:size=18;5"
 font-3 = "Nanum Pen Script,나눔손글씨 펜:size=14;5"
-line-size = 6
-tray-maxsize = 48
+line-size = 3
+tray-maxsize = 28
 tray-scale = 1.0
-battery-battery = BAT1
-battery-adapter = ADP1
+battery-battery = BAT0
+battery-adapter = AC
+wireless-interface = wlo1
+ethernet-interface = enp59s0
 
 ; vim:ft=dosini

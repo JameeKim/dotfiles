@@ -6,6 +6,7 @@ module XMonad.Util.Tmux
 where
 
 import XMonad (X)
+import XMonad.Hooks.DynamicLog (wrap)
 import XMonad.Util.Dmenu (menuArgs, menuMapArgs)
 import XMonad.Util.Rofi (cmdEscape, rofiMessage)
 import XMonad.Util.Run (runInTerm, runProcessWithInput)
@@ -18,11 +19,8 @@ spawnNewTmuxSession = do
     sName <- menuArgs "dmenu" ["-p", "New session name: "] []
     if null sName
         then return ()
-        else
-            runInTerm ""
-            $  tmuxCreateNewSessionCmd sName
-            ++ " && "
-            ++ tmuxAttachToSessionCmd sName
+        else runInTerm "--title Tmux" . wrap "\"" "\"" $ tmuxCreateNewSessionCmd
+            sName
 
 -- | Attach to the selected session after checking if any exist
 attachTmuxSession :: X ()
@@ -39,9 +37,12 @@ attachTmuxSession' lsList = do
     if null sName
         then return ()
         else if sName `elem` lsList
-            then runInTerm "" $ tmuxAttachToSessionCmd $ takeWhile
-                (/= ':')
-                sName
+            then
+                runInTerm "--title Tmux"
+                . wrap "'" "'"
+                . tmuxAttachToSessionCmd
+                . takeWhile (/= ':')
+                $ sName
             else rofiMessage "Wrong session name given!"
 
 -- | Attach to an existing session or create a new one

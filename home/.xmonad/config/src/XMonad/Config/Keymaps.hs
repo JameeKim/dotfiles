@@ -153,26 +153,32 @@ myKeys conf@XConfig { terminal = term } =
 
             -- spawn programs
            , ( "M-<Return>"
-             , attachOrCreateTmuxSession
+             , spawn $ term ++ " --title Terminal"
              ) -- default terminal
-           , ( "M-S-<Return>"
+           , ( "M-'"
+             , attachOrCreateTmuxSession
+             ) -- attach to a tmux session or create one if none exist
+           , ( "M-S-'"
              , spawnNewTmuxSession
              ) -- create a new tmux session
            , ( "M-f"
              , spawn "firefox"
              ) -- web browser
            , ( "M-v"
-             , spawn $ term ++ " -name Nvim -e nvim"
+             , spawn $ term ++ " --title Nvim -e nvim"
              ) -- vim editor
 
             -- rofi
            , ( "M-d"
              , spawn "rofi -show drun -modi drun"
              ) -- open a desktop-like launcher
-           , ( "M-`"
+           , ( "M-<Tab>"
              , spawn "rofi -show run -modi run"
              ) -- open a shell prompt
-           , ( "M-<Tab>"
+           , ( "M-/"
+             , spawn "rofi -show window -modi window"
+             ) -- window list
+           , ( "M-`"
              , spawn "rofi -show run -modi run,drun,ssh,window -sidebar-mode"
              ) -- main
            , ( "M-S-/"
