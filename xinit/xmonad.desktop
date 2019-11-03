@@ -1,8 +1,8 @@
 [Desktop Entry]
 Version=1.0
 Type=Application
-Name=Xmonad w/ Xmobar
-Comment=Window manager and status bar written in Haskell
+Name=Xmonad
+Comment=Window manager written in Haskell
 Exec=/home/jamee/dotfiles/xinit/init.sh
 Icon=xmonad
 Terminal=false

@@ -10,9 +10,9 @@ check_install_middle=")\$' | rg '^[^\\( ]*("
 check_install_suffix=")\\s+[^\\[]*(\\[[iI]nstalled\\])?' -or '0\$2' | rg '^0\$'"
 
 # packages to install
-installs=(openssh wget tlp alsa-utils pulseaudio pulseaudio-alsa pulseaudio-ctl firefox zsh terminus-font nerd-fonts-terminus tmux xorg compton xdotool xorg-xinit xorg-xmessage xorg-xprop feh rxvt-unicode polybar rofi gdm polkit-gnome ibus-hangul telegram-desktop discord evolution lxappearance-gtk3 matcha-gtk-theme paper-icon-theme-git qt5ct kvantum-qt5 kvantum-theme-matcha seahorse dunst ghc-static pamac-gtk ripgrep)
-manjaro=(manjaro-hello manjaro-gdm-theme manjaro-gdm-tweak manjaro-alsa manjaro-pulse manjaro-application-utility manjaro-aur-support manjaro-settings-manager-notifier manjaro-browser-settings manjaro-zsh-config manjaro-gnome-assets)
-aur=(dropbox neovim-nightly nvm ttf-ms-fonts ttf-nanum ttf-nanumgothic_coding)
+installs=(openssh wget tlp alsa-utils pulseaudio pulseaudio-alsa pulseaudio-ctl firefox zsh terminus-font nerd-fonts-terminus tmux xorg compton xdotool xorg-xinit xorg-xmessage xorg-xprop feh termite polybar rofi gdm polkit-gnome ibus-hangul telegram-desktop discord evolution lxappearance-gtk3 matcha-gtk-theme paper-icon-theme-git qt5ct kvantum-qt5 kvantum-theme-matcha seahorse dunst ghc-static pamac-gtk ripgrep nnn)
+manjaro=(manjaro-hello manjaro-gdm-theme manjaro-gdm-tweak manjaro-alsa manjaro-pulse manjaro-application-utility manjaro-aur-support manjaro-settings-manager-notifier manjaro-browser-settings manjaro-zsh-config manjaro-gnome-assets manjaro-printer)
+aur=(dropbox neovim-nightly nvm mimeo xdg-utils-mimeo ttf-ms-fonts ttf-nanum ttf-nanumgothic_coding)
 
 
 # basic info
@@ -217,20 +217,19 @@ link_all_in_dir() {
     cd $2
     for i in $(find -P $df_dir/$3 -mindepth 1 -maxdepth 1) ; do
         tmp=$(basename $i)
-        make_symlink "$4$df_name/$3/$tmp" "$tmp"
+        make_symlink "$4$df_name/$3/$tmp" ./
         #echo "$tmp -> $4$df_name/$3/$tmp"
     done
 }
 
 make_links() {
-    local cur_src=$df_dir
-    local tmp=''
-
     link_all_in_dir "home" "$HOME" "home" ""
     echo ""
     link_all_in_dir "config" "$HOME/.config" "config" "../"
     echo ""
     link_all_in_dir "local/share" "$HOME/.local/share" "local_share" "../../"
+    echo ""
+    link_all_in_dir "local/share/applications" "$HOME/.local/share/applications" "applications" "../../../"
 
     echo ""
     echo "Creating misc symlinks..."

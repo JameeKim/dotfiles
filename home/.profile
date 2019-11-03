@@ -16,6 +16,7 @@ checkAndAddToPath() {
     fi
 }
 
+checkAndAddToPath $HOME/bin
 checkAndAddToPath $HOME/.bin
 checkAndAddToPath $HOME/.cabal/bin
 checkAndAddToPath $HOME/.cargo/bin

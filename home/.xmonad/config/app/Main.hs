@@ -45,6 +45,11 @@ myManageHook = composeAll
     , className =? "Evolution" --> doShift "chat"
     , className =? "code-oss" --> doShift "vscode"
     , className =? "R_x11" --> doSideFloat SE -- R script graphics window
+    , className =? "custom_ui" --> doCenterFloat
+    , className =? "animal-rpg" --> doCenterFloat
+    , className =? "bug-checking" --> doCenterFloat
+    , className =? "evolution-island" --> doCenterFloat
+    , className =? "Godot_Engine" --> doCenterFloat
     , isDialog --> doCenterFloat
     ]
 

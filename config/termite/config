@@ -1,0 +1,89 @@
+[options]
+allow_bold = true
+audible_bell = false
+bold_is_bright = true
+cell_height_scale = 1.0
+cell_width_scale = 1.0
+clickable_url = true
+dynamic_title = false
+font = NanumGothicCoding,나눔고딕코딩 12
+font = TerminessTTF Nerd Font Mono 12
+fullscreen = false
+icon_name = terminal
+mouse_autohide = false
+scroll_on_output = false
+scroll_on_keystroke = true
+# Length of the scrollback buffer, 0 disabled the scrollback buffer
+# and setting it to a negative value means "infinite scrollback"
+scrollback_lines = 0
+search_wrap = true
+urgent_on_bell = true
+hyperlinks = false
+
+# $BROWSER is used by default if set, with xdg-open as a fallback
+browser = firefox
+
+# "system", "on" or "off"
+cursor_blink = system
+
+# "block", "underline" or "ibeam"
+cursor_shape = block
+
+# Hide links that are no longer valid in url select overlay mode
+filter_unmatched_urls = true
+
+# Emit escape sequences for extra modified keys
+modify_other_keys = false
+
+# set size hints for the window
+size_hints = false
+
+# "off", "left" or "right"
+scrollbar = off
+
+[colors]
+# If both of these are unset, cursor falls back to the foreground color,
+# and cursor_foreground falls back to the background color.
+#cursor = #dcdccc
+#cursor_foreground = #dcdccc
+
+foreground = #f1ebeb
+#foreground_bold = #ffffff
+background = #272822
+
+# 20% background transparency (requires a compositor)
+#background = rgba(63, 63, 63, 0.8)
+
+# If unset, will reverse foreground and background
+highlight = #2f2f2f
+
+# Colors from color0 to color254 can be set
+color0 = #48483e
+color1 = #dc2566
+color2 = #8fc029
+color3 = #d4c96e
+color4 = #55bcce
+color5 = #9358fe
+color6 = #56b7a5
+color7 = #acada1
+color8 = #76715e
+color9 = #fa2772
+color10 = #a7e22e
+color11 = #e7db75
+color12 = #66d9ee
+color13 = #ae82ff
+color14 = #66efd5
+color15 = #cfd0c2
+
+[hints]
+#font = Monospace 12
+#foreground = #dcdccc
+#background = #3f3f3f
+#active_foreground = #e68080
+#active_background = #3f3f3f
+#padding = 2
+#border = #3f3f3f
+#border_width = 0.5
+#roundness = 2.0
+
+# vim: ft=dosini cms=#%s

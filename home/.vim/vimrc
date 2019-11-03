@@ -18,6 +18,7 @@ Plug 'junegunn/vim-plug' "get help text of vim-plug
 " general
 Plug 'junegunn/fzf' "nice selection ui
 Plug 'junegunn/fzf.vim' " fzf wrapper for vim
+Plug 'mcchrish/nnn.vim' " nnn integration
 Plug 'scrooloose/nerdtree' "directory viewer
 Plug 'terryma/vim-multiple-cursors' "multiple cursors
 Plug 'tpope/vim-eunuch' "add unix file operations
@@ -46,10 +47,12 @@ Plug 'w0rp/ale' "lint
 
 " language specific plugins
 Plug 'cakebaker/scss-syntax.vim' "scss syntax
+Plug 'cespare/vim-toml' "toml syntax
 Plug 'chrisbra/csv.vim' "show data in csv
 Plug 'jackguo380/vim-lsp-cxx-highlight' "symantic highlighting for c/c++
 Plug 'jalvesaq/Nvim-R', { 'tag': '*' } "R integration
 Plug 'neovimhaskell/haskell-vim', { 'for': 'haskell' } "haskell syntax
+Plug 'ron-rs/ron.vim' "ron syntax
 Plug 'rust-lang/rust.vim' "rust integration
 Plug 'tpope/vim-markdown', { 'for': 'markdown' } "markdown syntax
 Plug 'zorab47/vim-gams', { 'for': 'gams' }
@@ -152,6 +155,9 @@ nnoremap <silent> <leader>e :e %<CR>
 nnoremap          <leader>t :tabnew
 "nnoremap <silent> <leader>l :ls<CR>
 
+" use escape key to get out from terminal mode
+tnoremap <silent> <ESC> <C-\><C-n>
+
 " source this config file
 nnoremap <silent> <leader>r :source $MYVIMRC<CR>
 
@@ -236,7 +242,7 @@ endfunction
 " NERDTree (directory tree)
 let g:NERDTreeNaturalSort = 1
 let g:NERDTreeSortHiddenFirst = 1
-let g:NERDTreeIgnore = ['\~$', '^\.git$']
+let g:NERDTreeIgnore = ['\~$', '^\.git$', '\.kra$']
 let g:NERDTreeMouseMode = 2
 let g:NERDTreeShowBookmarks = 1
 let g:NERDTreeShowFiles = 1
@@ -261,6 +267,14 @@ let g:NERDTreeIndicatorMapCustom = {
       \ 'Clean'     : '✔',
       \ 'Ignored'   : '',
       \ 'Unknown'   : '?'
+      \ }
+
+" nnn.vim settings
+let g:nnn#layout = { 'left': '~15%' }
+let g:nnn#action = {
+      \ 't': 'tab split',
+      \ 'i': 'split',
+      \ 's': 'vsplit',
       \ }
 
 " vim-gitgutter (git status on the left side)
@@ -438,7 +452,7 @@ let g:markdown_minlines = 50
 
 " R config
 let R_in_buffer = 1
-let R_esc_term = 1
+let R_esc_term = 0
 let R_close_term = 1
 let R_assign = 3
 let R_assign_map = '_'

@@ -1,0 +1,10 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Power Menu
+Comment=An interactive script for computer power options
+Exec=power_menu
+Terminal=false
+Icon=system-shutdown
+Type=Application
+StartupNotify=false
+Categories=System;Utilities;

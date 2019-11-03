@@ -188,8 +188,8 @@
   "git.topRemovedSign.hlGroup": "CocGitSignRemoved",
   "git.changeRemovedSign.text": "≃",
   "git.changeRemovedSign.hlGroup": "CocGitSignChangeRemoved",
-  "git.addGlameToBufferVar": false,
-  "git.addGlameToVirtualText": true,
+  "git.addGBlameToBufferVar": false,
+  "git.addGBlameToVirtualText": true,
   "git.virtualTextPrefix": "     ",
   "git.semanticCommit.filetypes": [
     "gitcommit",

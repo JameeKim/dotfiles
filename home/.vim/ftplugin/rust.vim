@@ -3,6 +3,11 @@
 "setlocal softtabstop=4
 "setlocal expandtab
 
+let b:coc_pairs_disabled = ["'"]
+
+" rls restart
+nnoremap <buffer><silent> <localleader>rr :CocCommand rls.restart<CR>
+
 " cargo bench
 nnoremap <buffer><silent> <localleader>rn :Make bench<CR>
 nnoremap <buffer><expr>   <localleader>rN ":Make bench "

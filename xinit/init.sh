@@ -1,5 +1,7 @@
 #! /usr/bin/env sh
 
+export XDG_CURRENT_DESKTOP="XMonad"
+
 URXVT_COLOR_SCHEME=hund
 
 # set the dotfiles dir env var if not defined already
