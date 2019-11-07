@@ -46,6 +46,8 @@ data MyWsLogHookConfig = WsLogHookConfig
     , wsLevelFmt        :: StrFormatter
     , wsShowLayout      :: Bool
     , wsLayoutFmt       :: StrFormatter
+    , wsShowWsName      :: Bool
+    , wsWsNameFmt       :: StrFormatter
     }
 
 instance Default MyWsLogHookConfig where
@@ -67,6 +69,8 @@ instance Default MyWsLogHookConfig where
         , wsLevelFmt        = id
         , wsShowLayout      = False
         , wsLayoutFmt       = id
+        , wsShowWsName      = False
+        , wsWsNameFmt       = id
         }
 
 
@@ -108,6 +112,11 @@ myWsLogLayout config =
         . W.workspace
         . W.current
 
+-- | Return the name of the current workspace
+myWsWsName :: MyWsLogHookConfig -> WindowSet -> X String
+myWsWsName config =
+    return . wsWsNameFmt config . W.tag . W.workspace . W.current
+
 -- | Make the log string
 myWsLogMakeMsg :: MyWsLogHookConfig -> X String
 myWsLogMakeMsg config = do
@@ -125,6 +134,9 @@ myWsLogMakeMsg config = do
         wsStrings =
             [ if wsShowLevel config then Just $ myWsLogLevel config else Nothing
             , Just . return $ wsList
+            , if wsShowWsName config
+                then Just $ myWsWsName config winset
+                else Nothing
             , if wsShowLayout config
                 then Just $ myWsLogLayout config winset
                 else Nothing

@@ -22,9 +22,10 @@ myLayouts
            )
            a
 myLayouts = applySpacing $ onWorkspaces ["web"] layoutWeb $ onWorkspaces
-    ["graphics", "chat", "vscode"]
+    ["chat", "game", "game/engine", "game/paint"]
     Full
     layoutFullAndTall
+    -- FIXME applying layouts to children workspaces not working
 
 -- | "web" workspace layout
 layoutWeb :: Show a => ToggleLayouts (Choose Tall (Mirror Tall)) Full a

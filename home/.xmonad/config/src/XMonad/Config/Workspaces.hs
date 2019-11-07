@@ -70,6 +70,13 @@ workspaceTree =
         , Node (WSItem "r" "\xf437")        []
         , Node (WSItem "markdown" "\xe73e") []
         ]
+    , Node
+        (WSItem "game" "\xf11b")
+        [ Node (WSLink ["web"])           []
+        , Node (WSItem "engine" "\xfbad") []
+        , Node (WSItem "paint" "\xf1fc")  []
+        , Node (WSItem "dev" "\xe795")    []
+        ]
     , Node (WSItem "music" "\xfc58") []
     , Node
         (WSItem "study" "\xf8e9")

@@ -49,7 +49,8 @@ myManageHook = composeAll
     , className =? "animal-rpg" --> doCenterFloat
     , className =? "bug-checking" --> doCenterFloat
     , className =? "evolution-island" --> doCenterFloat
-    , className =? "Godot_Engine" --> doCenterFloat
+    , appName =? "Godot_Engine" --> doCenterFloat
+    , appName =? "Godot_Engine" --> doShift "game/engine"
     , isDialog --> doCenterFloat
     ]
 
@@ -83,6 +84,8 @@ myLogHook user = do
             . action "xmonad-client layout_full"  "3"
             . action "xmonad-client layout_reset" "2"
             . font 4
+        , wsShowWsName      = False
+        , wsWsNameFmt       = font 4
         }
   where
     moveToWsCmd :: Int -> String
