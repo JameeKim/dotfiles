@@ -1,7 +1,9 @@
 export EDITOR=nvim
+export VISUAL=$EDITOR
 export QT_QPA_PLATFORMTHEME="qt5ct"
 export RUSTC_WRAPPER=sccache
-export VISUAL=$EDITOR
+export ANDROID_HOME=$HOME/Android/Sdk
+export JAVA_HOME=/usr/lib/jvm/java-8-openjdk
 
 export DOTFILES_DIR=$HOME/dotfiles
 
@@ -21,6 +23,9 @@ checkAndAddToPath $HOME/.bin
 checkAndAddToPath $HOME/.cabal/bin
 checkAndAddToPath $HOME/.cargo/bin
 checkAndAddToPath $HOME/.local/bin
+checkAndAddToPath $ANDROID_HOME/tools
+checkAndAddToPath $ANDROID_HOME/tools/bin
+checkAndAddToPath $ANDROID_HOME/platform-tools
 
 # init nvm
 [ -z "$NVM_DIR" ] && export NVM_DIR="$HOME/.nvm"

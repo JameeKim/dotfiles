@@ -163,7 +163,8 @@
   "coc.preferences.rootPatterns": [
     ".vim",
     ".git",
-    ".hg"
+    ".hg",
+    "package.json"
   ],
 
   // coc-highlight extension settings
