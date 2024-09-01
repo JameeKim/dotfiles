@@ -38,7 +38,8 @@ end
 ---@type LazyPluginSpec[]
 return {
   {
-    dir = "~/Local/gapstyle.nvim",
+    "JameeKim/gapstyle.nvim",
+    dev = true,
     lazy = lazy(themes.gapstyle),
     priority = priority(themes.gapstyle),
     config = function(_, opts)

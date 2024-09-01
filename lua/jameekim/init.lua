@@ -46,6 +46,10 @@ require("lazy").setup({
       },
     },
   },
+  dev = {
+    path = "~/dev",
+    patterns = {},
+  },
   profiling = {
     loader = false,
     require = false,
