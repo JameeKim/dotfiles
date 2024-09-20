@@ -82,7 +82,7 @@ return {
         end,
         -- Not managed by mason
         rust_analyzer = utils.noop,
-        tsserver = utils.noop,
+        ts_ls = utils.noop,
         -- TODO: move this to the project-local config
         sqls = function(name)
           require("lsp-zero").configure(name, {
