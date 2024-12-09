@@ -31,7 +31,8 @@ vim.opt.shiftwidth = 4
 
 -- Don't wrap; just write properly styled code, you know
 vim.opt.wrap = false
-vim.opt.colorcolumn = "80"
+---@diagnostic disable-next-line: missing-fields
+vim.opt.colorcolumn = { "80" }
 
 -- Search highlighting
 vim.opt.hlsearch = false
@@ -45,3 +46,12 @@ vim.opt.cursorline = true
 
 -- Time for CursorHold event
 vim.opt.updatetime = 100
+
+-- Show whitespaces
+vim.opt.list = true
+---@diagnostic disable-next-line: missing-fields
+vim.opt.listchars = {
+  tab = "<->",
+  trail = "-",
+  nbsp = "+",
+}

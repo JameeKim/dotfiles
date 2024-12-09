@@ -1,2 +1,2 @@
 ---@diagnostic disable-next-line: missing-fields
-vim.opt_local.colorcolumn = { "80", "100" }
+vim.opt_local.colorcolumn = { "72" }

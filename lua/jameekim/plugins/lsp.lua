@@ -106,6 +106,7 @@ return {
       -- Language servers not managed by mason should be specified here.
       configure_opts = {
         gdscript = {},
+        clangd = {},
       },
     },
   },
