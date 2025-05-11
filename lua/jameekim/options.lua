@@ -18,21 +18,41 @@ vim.opt.exrc = true
 -- Gutter options
 vim.opt.number = true
 vim.opt.relativenumber = true
-vim.opt.signcolumn = "yes"
+vim.opt.signcolumn = "auto:1-4"
+vim.opt.foldcolumn = "auto:5"
+local fillchars = vim.opt.fillchars:get()
+fillchars.foldopen = "v"
+fillchars.foldclose = ">"
+vim.opt.fillchars = fillchars
 
 -- Scrolling
 vim.opt.scrolloff = 4
+vim.opt.sidescroll = 1
+vim.opt.sidescrolloff = 1
+
+-- Folding
+vim.opt.foldmethod = "marker"
 
 -- Indenting
 vim.opt.expandtab = true
 vim.opt.tabstop = 4
-vim.opt.softtabstop = 4
 vim.opt.shiftwidth = 4
+vim.opt.softtabstop = -1
 
--- Don't wrap; just write properly styled code, you know
-vim.opt.wrap = false
----@diagnostic disable-next-line: missing-fields
-vim.opt.colorcolumn = { "80" }
+-- Show whitespaces
+vim.opt.list = true
+vim.opt.listchars = { ---@diagnostic disable-line: missing-fields
+  tab = "<->",
+  trail = "-",
+  nbsp = "+",
+  precedes = "<",
+  extends = ">",
+}
+
+-- Display settings
+vim.opt.display:append("uhex") -- Show unprintable characters as hexadecimals.
+vim.opt.wrap = false -- Don't wrap; just write properly styled code, you know.
+vim.opt.colorcolumn = { "80" } ---@diagnostic disable-line: missing-fields
 
 -- Search highlighting
 vim.opt.hlsearch = false
@@ -46,12 +66,3 @@ vim.opt.cursorline = true
 
 -- Time for CursorHold event
 vim.opt.updatetime = 100
-
--- Show whitespaces
-vim.opt.list = true
----@diagnostic disable-next-line: missing-fields
-vim.opt.listchars = {
-  tab = "<->",
-  trail = "-",
-  nbsp = "+",
-}
