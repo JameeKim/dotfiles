@@ -77,6 +77,10 @@ return {
           pattern = "^(.+)%.(.+)$",
           files = { "%1.%2.import" },
         },
+        ["Godot.uid"] = {
+          pattern = "^(.+)%.(.+)$",
+          files = { "%1.%2.uid" },
+        },
       },
       ---@type NeoTreeFileSystemConfig
       filesystem = {
