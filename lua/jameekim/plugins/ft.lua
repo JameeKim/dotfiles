@@ -5,6 +5,5 @@ return {
   {
     "martinlroth/vim-acpi-asl",
     lazy = false,
-    config = require("jameekim.utils").noop,
   },
 }

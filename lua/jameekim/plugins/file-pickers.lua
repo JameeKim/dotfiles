@@ -21,6 +21,11 @@ return {
         "<Cmd>Neotree toggle git_status<CR>",
         desc = "Toggle NeoTree git status",
       },
+      {
+        "<Leader>t",
+        "<Cmd>Neotree toggle show document_symbols<CR>",
+        desc = "Toggle document symbols",
+      },
     },
     dependencies = {
       "nvim-lua/plenary.nvim",

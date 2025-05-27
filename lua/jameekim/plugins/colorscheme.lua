@@ -1,4 +1,5 @@
 -- Color scheme plugins
+-- TODO: Move gapstyle plugin to local config?
 
 ---Choices of color schemes.
 ---@enum themes

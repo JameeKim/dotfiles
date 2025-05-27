@@ -18,7 +18,7 @@ vim.opt.exrc = true
 -- Gutter options
 vim.opt.number = true
 vim.opt.relativenumber = true
-vim.opt.signcolumn = "auto:1-4"
+vim.opt.signcolumn = "yes"
 vim.opt.foldcolumn = "auto:5"
 local fillchars = vim.opt.fillchars:get()
 fillchars.foldopen = "v"
@@ -29,6 +29,9 @@ vim.opt.fillchars = fillchars
 vim.opt.scrolloff = 4
 vim.opt.sidescroll = 1
 vim.opt.sidescrolloff = 1
+
+-- Jumping
+vim.opt.jumpoptions:append("stack")
 
 -- Folding
 vim.opt.foldmethod = "marker"
@@ -54,15 +57,40 @@ vim.opt.display:append("uhex") -- Show unprintable characters as hexadecimals.
 vim.opt.wrap = false -- Don't wrap; just write properly styled code, you know.
 vim.opt.colorcolumn = { "80" } ---@diagnostic disable-line: missing-fields
 
+-- Floating windows
+vim.o.winborder = "rounded"
+
 -- Search highlighting
 vim.opt.hlsearch = false
 vim.opt.incsearch = true
-
--- Colors
-vim.opt.termguicolors = true
 
 -- Highlight for current cursor position
 vim.opt.cursorline = true
 
 -- Time for CursorHold event
 vim.opt.updatetime = 100
+
+-- Diagnostics settings
+vim.diagnostic.config({
+  severity_sort = true,
+  signs = {
+    text = {
+      [vim.diagnostic.severity.ERROR] = "",
+      [vim.diagnostic.severity.WARN] = "",
+      [vim.diagnostic.severity.INFO] = "",
+      [vim.diagnostic.severity.HINT] = "󰌵",
+    },
+  },
+  jump = {
+    float = true,
+    wrap = true,
+  },
+  float = {
+    scope = "line",
+    source = "if_many",
+  },
+  virtual_lines = {
+    severity = { min = vim.diagnostic.severity.WARN },
+    current_line = true,
+  },
+})

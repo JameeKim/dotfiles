@@ -3,14 +3,17 @@
 ---@type LazyPluginSpec[]
 return {
   {
-    "williamboman/mason.nvim",
+    "mason-org/mason.nvim",
     lazy = false,
-    config = true,
+    cmd = { "Mason" },
+    ---@type MasonSettings
+    opts = {},
   },
   {
     "VonHeikemen/lsp-zero.nvim",
+    enabled = false,
     branch = "v3.x",
-    init = function()
+    init = function(_)
       vim.g.lsp_zero_extend_cmp = 0
       vim.g.lsp_zero_extend_lspconfig = 0
     end,

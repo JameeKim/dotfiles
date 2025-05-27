@@ -7,9 +7,83 @@ vim.g.maplocalleader = "\\"
 -- Remove Ex-Command mode
 vim.keymap.set("n", "gQ", "<Nop>")
 
--- Moving between buffers
-vim.keymap.set("n", "<Leader>bp", "<Cmd>bprev<CR>")
-vim.keymap.set("n", "<Leader>bn", "<Cmd>bnext<CR>")
+-- Create text object for selecting the whole buffer
+vim.keymap.set(
+  "o",
+  "\\\\",
+  "<Cmd>normal! ggVG<CR>",
+  { desc = "Select the whole buffer" }
+)
+vim.keymap.set(
+  "x",
+  "\\\\",
+  function()
+    local mode = vim.fn.mode(1)
+    if mode:sub(1, 1) ~= "V" then
+      vim.cmd.normal({ args = { "V" }, bang = true })
+    end
+    if mode:sub(#mode) == "s" then
+      vim.cmd.exe({ args = { "'normal! \\<C-g>'" } })
+    end
+    vim.cmd.normal({ args = { "ggoG" }, bang = true })
+  end,
+  { desc = "Select the whole buffer" }
+)
+
+-- Force buffer names to be relative to current working directory
+vim.keymap.set("n", "<Leader>cd", "<Cmd>exe 'cd' getcwd()<CR>")
+
+-- LSP mappings in addition to default ones
+vim.keymap.set(
+  "n",
+  "grd",
+  function() vim.lsp.buf.definition() end,
+  { desc = "vim.lsp.buf.definition()" }
+)
+vim.keymap.set(
+  "n",
+  "grD",
+  function() vim.lsp.buf.declaration() end,
+  { desc = "vim.lsp.buf.declaration()" }
+)
+vim.keymap.set(
+  "n",
+  "gro",
+  function() vim.lsp.buf.type_definition() end,
+  { desc = "vim.lsp.buf.type_definition()" }
+)
+vim.keymap.set(
+  "n",
+  "gs",
+  function() vim.lsp.buf.signature_help() end,
+  { desc = "vim.lsp.buf.signature_help()" }
+)
+vim.keymap.set(
+  "n",
+  "gl",
+  function() vim.diagnostic.open_float() end,
+  { desc = "vim.diagnostic.open_float()" }
+)
+vim.keymap.set(
+  "n",
+  "<Leader>d",
+  function()
+    vim.diagnostic.setqflist({
+      severity = { min = vim.diagnostic.severity.INFO },
+    })
+  end,
+  { desc = "Show diagnostics in quickfix" }
+)
+vim.keymap.set(
+  "n",
+  "<Leader>D",
+  function()
+    vim.diagnostic.setloclist({
+      severity = { min = vim.diagnostic.severity.INFO },
+    })
+  end,
+  { desc = "Show buffer diagnostics in location list" }
+)
 
 -- Conveniently get out of terminal mode
 vim.keymap.set("t", "<C-w>", "<C-\\><C-n><C-w>")
@@ -34,7 +108,9 @@ vim.keymap.set(
       local action = qf.winid > 0 and "lclose" or "lopen"
       vim.cmd[action]({ mods = { split = "belowright" } })
     else
-      vim.api.nvim_err_writeln("No location list to open")
+      vim.api.nvim_echo({
+        { "No location list to open", "WarningMsg" },
+      }, false, {})
     end
   end,
   { desc = "Toggle location list" }

@@ -1,96 +1,194 @@
 -- Plugins for Rust development
 
-local utils = require("jameekim.utils");
-
----@param args string|string[]
----@param bang boolean
----@return fun()
-local function RustLspInner(args, bang)
-  if type(args) == "string" then
-    args = { args }
-  end
-  return function()
-    vim.cmd.RustLsp({ args = args, bang = bang })
-  end
+local function prompt_search_types()
+  vim.ui.input(
+    { prompt = "Search workspace for types: " },
+    ---@param input? string
+    function(input)
+      if input and input ~= "" then
+        vim.cmd.RustLsp({
+          args = { "workspaceSymbol", "onlyTypes", input },
+          bang = true,
+        })
+      end
+    end
+  )
 end
 
----Creates a callback that executes `:RustLsp` command with the given argument.
----@param args string|string[]
----@return fun()
-local function RustLsp(args)
-  return RustLspInner(args, false)
-end
-
----Creates a callback that executes `:RustLsp!` command with the given argument.
----@param args string|string[]
----@return fun()
-local function RustLspB(args)
-  return RustLspInner(args, true)
+local function prompt_search_symbols()
+  vim.ui.input(
+    { prompt = "Search workspace for symbols: " },
+    ---@param input? string
+    function(input)
+      if input and input ~= "" then
+        vim.cmd.RustLsp({
+          args = { "workspaceSymbol", "allSymbols", input },
+          bang = true,
+        })
+      end
+    end
+  )
 end
 
 ---Callback for when LSP client is attached to a buffer.
----@param client lsp.Client
----@param bufnr number
+---@param client vim.lsp.Client
+---@param bufnr integer
 local function rust_lsp_on_attach(client, bufnr)
-  -- Default setup
-  utils.lsp_on_attach(client, bufnr)
-  -- Automatically format before saving
-  require("lsp-zero").buffer_autoformat(client, bufnr)
+  -- TODO: Automatically format before saving
 
-  -- Extra keymaps
-  ---@type { [1]: string|string[], [2]: string, [3]: string|fun() }[]
-  local keymaps = {
-    { { "n", "x" }, "<LocalLeader>C", ":RustLsp " },
-    { { "n", "x" }, "<F4>",           RustLsp("codeAction") },
-    { { "n", "x" }, "gA",             RustLsp("codeAction") },
-    { "n",          "<LocalLeader>l", RustLsp("renderDiagnostic") },
-    { "n",          "<LocalLeader>c", RustLsp("openCargo") },
-    { "n",          "<LocalLeader>e", RustLsp("explainError") },
-    { "n",          "<LocalLeader>p", RustLsp("parentModule") },
-    { "n",          "<LocalLeader>r", RustLsp("runnables") },
-    { "n",          "<LocalLeader>R", RustLspB("runnables") },
-    { "n",          "<LocalLeader>d", RustLsp("debuggables") },
-    { "n",          "<LocalLeader>D", RustLspB("debuggables") },
-    { "n",          "<LocalLeader>t", RustLsp("testables") },
-    { "n",          "<LocalLeader>T", RustLspB("testables") },
-    { "n",          "<LocalLeader>/", ":RustLsp! workspaceSymbol onlyTypes " },
-    { "n",          "<LocalLeader>?", ":RustLsp! workspaceSymbol allSymbols " },
-  }
-  local opts = { buffer = bufnr }
-  for _, keymap in ipairs(keymaps) do
-    vim.keymap.set(keymap[1], keymap[2], keymap[3], opts)
-  end
+  -- Keymaps: augmented features
+  vim.keymap.set(
+    { "n", "x" },
+    "gra",
+    "<Cmd>RustLsp codeAction<CR>",
+    { buffer = bufnr }
+  )
+  vim.keymap.set(
+    { "n", "x" },
+    "J",
+    "<Cmd>RustLsp joinLines<CR>",
+    { buffer = bufnr }
+  )
+
+  -- Keymaps: navigating
+  vim.keymap.set(
+    "n",
+    "<LocalLeader>c",
+    "<Cmd>RustLsp openCargo<CR>",
+    { buffer = bufnr }
+  )
+  vim.keymap.set(
+    "n",
+    "<LocalLeader>p",
+    "<Cmd>RustLsp parentModule<CR>",
+    { buffer = bufnr }
+  )
+
+  -- Keymaps: searching
+  vim.keymap.set(
+    "n",
+    "<LocalLeader>/",
+    prompt_search_types,
+    { desc = "RustLsp! workspaceSymbol onlyTypes", buffer = bufnr }
+  )
+  vim.keymap.set(
+    "n",
+    "<LocalLeader>?",
+    prompt_search_symbols,
+    { desc = "RustLsp! workspaceSymbol allSymbols", buffer = bufnr }
+  )
+
+  -- Keymaps: diagnostics
+  vim.keymap.set(
+    "n",
+    "<LocalLeader>l",
+    "<Cmd>RustLsp renderDiagnostic current<CR>",
+    { buffer = bufnr }
+  )
+  vim.keymap.set(
+    "n",
+    "<LocalLeader>L",
+    "<Cmd>RustLsp relatedDiagnostics<CR>",
+    { buffer = bufnr }
+  )
+  vim.keymap.set(
+    "n",
+    "<LocalLeader>e",
+    "<Cmd>RustLsp explainError current<CR>",
+    { buffer = bufnr }
+  )
+
+  -- Keymaps: running
+  vim.keymap.set(
+    "n",
+    "<LocalLeader>r",
+    "<Cmd>RustLsp runnables<CR>",
+    { buffer = bufnr }
+  )
+  vim.keymap.set(
+    "n",
+    "<LocalLeader>t",
+    "<Cmd>RustLsp testables<CR>",
+    { buffer = bufnr }
+  )
+  vim.keymap.set(
+    "n",
+    "<LocalLeader>d",
+    "<Cmd>RustLsp debuggables<CR>",
+    { buffer = bufnr }
+  )
 end
 
 ---@type LazyPluginSpec[]
 return {
   {
     "mrcjkb/rustaceanvim",
-    version = "^4",
+    version = "^6",
+    lazy = false,
     cmd = { "RustLsp", "RustAnalyzer" },
     ft = { "rust", "toml" },
     dependencies = {
-      "neovim/nvim-lspconfig",
+      --"neovim/nvim-lspconfig",
     },
-    ---@param opts RustaceanOpts
+    ---@param opts rustaceanvim.Opts
     config = function(_, opts)
       vim.g.rustaceanvim = opts or {}
+
+      local augroup = vim.api.nvim_create_augroup(
+        "jameekim.lsp_on_attach.rust-analyzer",
+        { clear = true }
+      )
+      vim.api.nvim_create_autocmd("LspAttach", {
+        group = augroup,
+        callback = function(args)
+          local client = vim.lsp.get_client_by_id(args.data.client_id)
+          if client and client.name == "rust-analyzer" then
+            rust_lsp_on_attach(client, args.buf)
+          end
+        end,
+      })
     end,
-    ---@type RustaceanOpts
+    ---@type rustaceanvim.Opts
     opts = {
       tools = {
         enable_clippy = true,
         reload_workspace_from_cargo_toml = true,
+        code_actions = {
+          keys = {},
+          ui_select_fallback = false,
+        },
         float_win_config = {
-          auto_focus = true,
+          auto_focus = false,
+        },
+        rustc = {
+          default_edition = "2024",
         },
       },
       server = {
         standalone = false,
-        on_attach = rust_lsp_on_attach,
+        load_vscode_settings = true,
       },
       dap = {
         autoload_configurations = true,
+      },
+    },
+  },
+  {
+    "saecki/crates.nvim",
+    version = "*",
+    event = { "BufRead Cargo.toml" },
+    ---@type crates.UserConfig
+    opts = {
+      lsp = {
+        enabled = true,
+        actions = true,
+        completion = true,
+        hover = true,
+      },
+      completion = {
+        crates = {
+          enabled = true,
+        },
       },
     },
   },

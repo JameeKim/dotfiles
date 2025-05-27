@@ -1,7 +1,5 @@
 -- Plugins for Nodejs development
 
-local utils = require("jameekim.utils")
-
 ---@type LazyPluginSpec[]
 return {
   {
@@ -18,7 +16,6 @@ return {
       "neovim/nvim-lspconfig",
     },
     opts = {
-      on_attach = utils.lsp_on_attach,
       ---@type Settings
       ---@diagnostic disable-next-line: missing-fields
       settings = {
