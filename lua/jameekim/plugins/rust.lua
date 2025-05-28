@@ -1,5 +1,10 @@
 -- Plugins for Rust development
 
+local auto_format_augroup = vim.api.nvim_create_augroup(
+  "jameekim.lsp.auto_format.rust-analyzer",
+  { clear = false }
+)
+
 local function prompt_search_types()
   vim.ui.input(
     { prompt = "Search workspace for types: " },
@@ -34,7 +39,20 @@ end
 ---@param client vim.lsp.Client
 ---@param bufnr integer
 local function rust_lsp_on_attach(client, bufnr)
-  -- TODO: Automatically format before saving
+  -- Automatically format before saving.
+  if client:supports_method("textDocument/formatting") then
+    vim.api.nvim_create_autocmd("BufWritePre", {
+      group = auto_format_augroup,
+      buffer = bufnr,
+      callback = function(_)
+        vim.lsp.buf.format({
+          async = false,
+          bufnr = bufnr,
+          id = client.id,
+        })
+      end,
+    })
+  end
 
   -- Keymaps: augmented features
   vim.keymap.set(
@@ -119,6 +137,18 @@ local function rust_lsp_on_attach(client, bufnr)
   )
 end
 
+---Callback for when LSP client is detached from a buffer.
+---@param client vim.lsp.Client
+---@param bufnr integer
+local function rust_lsp_on_detach(client, bufnr)
+  -- Clear the auto-format autocmd.
+  vim.api.nvim_clear_autocmds({
+    group = auto_format_augroup,
+    buffer = bufnr,
+    event = "BufWritePre",
+  })
+end
+
 ---@type LazyPluginSpec[]
 return {
   {
@@ -144,6 +174,15 @@ return {
           local client = vim.lsp.get_client_by_id(args.data.client_id)
           if client and client.name == "rust-analyzer" then
             rust_lsp_on_attach(client, args.buf)
+          end
+        end,
+      })
+      vim.api.nvim_create_autocmd("LspDetach", {
+        group = augroup,
+        callback = function(args)
+          local client = vim.lsp.get_client_by_id(args.data.client_id)
+          if client and client.name == "rust-analyzer" then
+            rust_lsp_on_detach(client, args.buf)
           end
         end,
       })
