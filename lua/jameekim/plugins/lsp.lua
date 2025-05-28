@@ -6,6 +6,7 @@ local utils = require("jameekim.utils")
 return {
   {
     "neovim/nvim-lspconfig",
+    lazy = false,
     cmd = { "LspInfo", "LspStart", "LspStop", "LspRestart" },
     event = { "BufReadPre", "BufNewFile" },
     dependencies = {
@@ -18,10 +19,10 @@ return {
       })
 
       for name, config in pairs(opts.servers) do
-        if not vim.tbl_isempty(config) then
+        if type(config) == "table" and not vim.tbl_isempty(config) then
           vim.lsp.config(name, config)
         end
-        if name ~= "*" then
+        if name ~= "*" and config then
           vim.lsp.enable(name)
         end
       end
@@ -44,7 +45,7 @@ return {
     opts = {
       -- Map of language server names to respective configurations.
       -- `vim.lsp.enable()` is called on all language servers specified here.
-      ---@type table<string, vim.lsp.Config>
+      ---@type table<string, vim.lsp.Config|boolean>
       servers = {
         ["*"] = {},
         gdscript = {},
