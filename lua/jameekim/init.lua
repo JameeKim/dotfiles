@@ -2,6 +2,7 @@ require("jameekim.lazy")
 
 require("jameekim.options")
 require("jameekim.keymaps")
+require("jameekim.terminal")
 
 require("lazy").setup({ import = "jameekim.plugins" }, {
   defaults = {
