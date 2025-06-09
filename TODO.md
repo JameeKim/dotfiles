@@ -1,0 +1,3 @@
+- [x] Set 'scrolloff' to `0` for terminal windows
+- [ ] Move lsp-related utilities to "jameekim.lsp" so that in can be used in 'exrc' files
+- [ ] Try out kotlin_lsp some time later again
