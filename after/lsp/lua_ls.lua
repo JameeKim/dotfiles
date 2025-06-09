@@ -8,6 +8,7 @@ return {
     return true
   end,
   --root_dir = function(bufnr, cb)
+  --  -- TODO: Set root_dir to my Neovim config folder if file is a plugin.
   --  -- Since `reuse_client` above always returns `true`, this is only relevant
   --  -- when opening a Lua file for the first time.
   --  local root = vim.fs.root(bufnr, { ".luarc.json", ".luarc.jsonc" })
