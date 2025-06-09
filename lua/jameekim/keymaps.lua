@@ -1,4 +1,4 @@
--- Generic keymaps
+-- Global keymaps
 
 -- <Leader> key
 vim.g.mapleader = " "

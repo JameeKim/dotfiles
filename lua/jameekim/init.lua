@@ -3,41 +3,36 @@ require("jameekim.lazy")
 require("jameekim.options")
 require("jameekim.keymaps")
 
-require("lazy").setup(
-  {
-    { import = "jameekim.plugins" },
+require("lazy").setup({ import = "jameekim.plugins" }, {
+  defaults = {
+    lazy = true,
   },
-  {
-    defaults = {
-      lazy = true,
-    },
-    install = {
-      colorscheme = { "gapstyle" },
-    },
-    checker = {
-      enabled = true,
-      frequency = 3600,
-    },
-    performance = {
-      rtp = {
-        disabled_plugins = {
-          "gzip",
-          --"matchit",
-          --"matchparen",
-          --"netrwPlugin",
-          "tarPlugin",
-          "tohtml",
-          "tutor",
-          "zipPlugin",
-        },
+  install = {
+    colorscheme = { "gapstyle" },
+  },
+  checker = {
+    enabled = true,
+    frequency = 3600,
+  },
+  performance = {
+    rtp = {
+      disabled_plugins = {
+        "gzip",
+        --"matchit",
+        --"matchparen",
+        --"netrwPlugin",
+        "tarPlugin",
+        "tohtml",
+        "tutor",
+        "zipPlugin",
       },
     },
-    dev = {
-      path = "~/dev",
-      patterns = { "jameekim" },
-    },
-    rocks = {
-      enabled = false,
-    },
-  }
-)
+  },
+  dev = {
+    path = "~/dev",
+    patterns = { "jameekim" },
+  },
+  rocks = {
+    enabled = false,
+  },
+})
