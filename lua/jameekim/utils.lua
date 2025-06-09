@@ -25,7 +25,7 @@ function M.lsp_on_attach(client, bufnr)
   -- Enable highlights for the symbol under the cursor.
   if client:supports_method("textDocument/documentHighlight") then
     local augroup = vim.api.nvim_create_augroup(
-      "jameekim.lsp_highlight",
+      "jameekim.lsp.highlight",
       { clear = false }
     )
     vim.api.nvim_clear_autocmds({ buffer = bufnr, group = augroup })
