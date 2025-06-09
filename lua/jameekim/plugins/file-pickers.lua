@@ -32,7 +32,7 @@ return {
       "nvim-tree/nvim-web-devicons",
       "MunifTanjim/nui.nvim",
     },
-    ---@type NeoTreeConfig
+    ---@type neotree.Config
     opts = {
       sources = {
         "filesystem",
@@ -50,11 +50,11 @@ return {
           use_git_status_colors = true,
         },
       },
-      ---@type NeoTreeWindowConfig
       window = {
         position = "float",
         same_level = true,
         insert_as = "child",
+        ---@diagnostic disable-next-line: missing-fields
         popup = {
           size = { width = "60%" },
         },
@@ -78,16 +78,11 @@ return {
           pattern = "^Cargo%.toml$",
           files = { "Cargo.lock" },
         },
-        ["Godot.import"] = {
+        ["Godot meta files"] = {
           pattern = "^(.+)%.(.+)$",
-          files = { "%1.%2.import" },
-        },
-        ["Godot.uid"] = {
-          pattern = "^(.+)%.(.+)$",
-          files = { "%1.%2.uid" },
+          files = { "%1.%2.import", "%1.%2.uid" },
         },
       },
-      ---@type NeoTreeFileSystemConfig
       filesystem = {
         use_libuv_file_watcher = true,
         hijack_netrw_behavior = "disabled",
