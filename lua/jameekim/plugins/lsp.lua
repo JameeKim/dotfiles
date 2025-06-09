@@ -28,7 +28,7 @@ return {
       end
 
       local augroup = vim.api.nvim_create_augroup(
-        "jameekim.lsp_on_attach",
+        "jameekim.lsp.on_attach",
         { clear = true }
       )
       vim.api.nvim_create_autocmd("LspAttach", {
@@ -56,7 +56,7 @@ return {
   {
     "mason-org/mason-lspconfig.nvim",
     cmd = { "LspInstall", "LspUninstall" },
-    event = { "BufReadPre", "BufNewFile" },
+    event = { "VeryLazy", "BufReadPre", "BufNewFile" },
     dependencies = {
       "mason-org/mason.nvim",
       "neovim/nvim-lspconfig",

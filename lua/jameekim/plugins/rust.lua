@@ -165,7 +165,7 @@ return {
       vim.g.rustaceanvim = opts or {}
 
       local augroup = vim.api.nvim_create_augroup(
-        "jameekim.lsp_on_attach.rust-analyzer",
+        "jameekim.lsp.on_attach.rust-analyzer",
         { clear = true }
       )
       vim.api.nvim_create_autocmd("LspAttach", {
