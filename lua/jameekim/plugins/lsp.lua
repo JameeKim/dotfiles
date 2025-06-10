@@ -70,6 +70,7 @@ return {
           "clangd",
           "ts_ls",
           "denols",
+          "tailwindcss",
         },
       },
     },
