@@ -75,6 +75,10 @@ return {
     },
   },
   {
+    -- JSON, YAML: Provides SchemaStore catalog.
+    "b0o/schemastore.nvim",
+  },
+  {
     -- C#: Provides navigating to decompiled assembly.
     "Hoffs/omnisharp-extended-lsp.nvim",
   },
