@@ -49,7 +49,6 @@ return {
       line_numbers = true,
       trim_scope = "outer",
       mode = "cursor",
-      separator = "-",
     },
   },
   {

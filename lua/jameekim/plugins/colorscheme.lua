@@ -27,6 +27,7 @@ return {
       highlight_overrides = function(groups, colors, _)
         groups["Title"].fg = colors.red
         groups["LazyButtonActive"] = { fg = colors.primary, bg = colors.fg_hard, bold = true, reverse = true }
+        groups["TreesitterContextBottom"] = { underline = true, sp = colors.fg }
         return groups
       end,
     },
