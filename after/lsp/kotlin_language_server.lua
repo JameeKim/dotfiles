@@ -8,6 +8,7 @@ return {
   cmd_env = {
     ["JAVA_HOME"] = "/usr/lib/jvm/java-17-openjdk",
   },
+  ---@class jameekim.lsp.init_options.kotlin_language_server
   init_options = {
     -- The default value in nvim-lspconfig returns `nil` if `root_markers` are
     -- not found for the buffer that was open when the config file was read.
@@ -16,13 +17,11 @@ return {
     -- Since we want the database to reside in project root, we assign this
     -- value in `before_init` dynamically. This empty string is just here to
     -- overwrite the value from nvim-lspconfig.
+    ---@type string?
     storagePath = "",
   },
   before_init = function(params, config)
-    if config.root_dir then
-      params.initializationOptions.storagePath = config.root_dir
-    else
-      params.initializationOptions.storagePath = vim.fn.stdpath("cache")
-    end
+    local init_options = params.initializationOptions --[[@as jameekim.lsp.init_options.kotlin_language_server]]
+    init_options.storagePath = config.root_dir or vim.fn.stdpath("cache")
   end,
 }
