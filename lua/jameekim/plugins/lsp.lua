@@ -41,15 +41,46 @@ return {
         end,
       })
     end,
+    ---Options for `nvim-lspconfig` plugin.
     ---@class jameekim.plugins.LspconfigOpts
+    ---@field servers? jameekim.plugins.LspconfigOpts.servers
     opts = {
-      -- Map of language server names to respective configurations.
-      -- `vim.lsp.enable()` is called on all language servers specified here.
-      ---@type table<string, vim.lsp.Config|boolean>
+      ---@alias jameekim.plugins.LspconfigOpts.Server (vim.lsp.Config|boolean)?
+      ---Map of language server names to respective configurations.
+      ---`vim.lsp.enable()` is called on all language servers specified here
+      ---except those with `false`.
+      ---@class jameekim.plugins.LspconfigOpts.servers
       servers = {
+        ---@type vim.lsp.Config
         ["*"] = {},
-        gdscript = {},
-        clangd = {},
+        ---@type jameekim.plugins.LspconfigOpts.Server
+        bashls = true,
+        ---@type jameekim.plugins.LspconfigOpts.Server
+        clangd = true,
+        ---@type jameekim.plugins.LspconfigOpts.Server
+        cssls = true,
+        ---@type jameekim.plugins.LspconfigOpts.Server
+        gdscript = true,
+        ---@type jameekim.plugins.LspconfigOpts.Server
+        hyprls = false,
+        ---@type jameekim.plugins.LspconfigOpts.Server
+        jsonls = true,
+        ---@type jameekim.plugins.LspconfigOpts.Server
+        kotlin_language_server = true,
+        ---@type jameekim.plugins.LspconfigOpts.Server
+        lua_ls = true,
+        ---@type jameekim.plugins.LspconfigOpts.Server
+        sqls = true,
+        ---@type jameekim.plugins.LspconfigOpts.Server
+        tailwindcss = false,
+        ---@type jameekim.plugins.LspconfigOpts.Server
+        taplo = true,
+        ---@type jameekim.plugins.LspconfigOpts.Server
+        ts_ls = false,
+        ---@type jameekim.plugins.LspconfigOpts.Server
+        wgsl_analyzer = false,
+        ---@type jameekim.plugins.LspconfigOpts.Server
+        yamlls = true,
       },
     },
   },
@@ -63,16 +94,8 @@ return {
     },
     ---@type MasonLspconfigSettings
     opts = {
-      ensure_installed = {},
-      automatic_enable = {
-        exclude = {
-          "rust_analyzer",
-          "clangd",
-          "ts_ls",
-          "denols",
-          "tailwindcss",
-        },
-      },
+      ensure_installed = { "lua_ls" },
+      automatic_enable = false,
     },
   },
   {
