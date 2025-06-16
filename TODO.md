@@ -2,3 +2,6 @@
 - [ ] Move lsp-related utilities to "jameekim.lsp" so that in can be used in 'exrc' files
 - [ ] Try out kotlin_lsp some time later again
 - [x] Add schemastore plugin to lsp configs
+- [ ] Figure out pretty highlight for markdown code block (background applied to the whole line)
+- [ ] Floating preview for various LSP jump operations
+- [ ] Alternatives to file tree viewer
