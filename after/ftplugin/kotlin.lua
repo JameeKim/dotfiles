@@ -1,7 +1,13 @@
-vim.opt_local.foldmethod = "marker"
-vim.opt_local.foldmarker = "//region,//endregion"
+-- Folds.
+vim.wo[0][0].foldmethod = "marker"
+vim.wo[0][0].foldmarker = "//region,//endregion"
 
----@diagnostic disable-next-line: missing-fields
-vim.opt_local.colorcolumn = { "100" }
+-- Text width guide.
+vim.wo[0][0].colorcolumn = "100"
 
-vim.opt_local.commentstring = "//%s"
+-- Comments.
+vim.bo.commentstring = "//%s"
+
+-- Revert settings.
+vim.b.undo_ftplugin = (vim.b.undo_ftplugin or "")
+  .. " | setl fdm< fmr< cc< cms<"
