@@ -8,6 +8,7 @@ vim.g.maplocalleader = "\\"
 vim.keymap.set("n", "gQ", "<Nop>")
 
 -- Create text object for selecting the whole buffer
+-- TODO: Set marks directly instead of using normal commands.
 vim.keymap.set(
   "o",
   "\\\\",
@@ -84,9 +85,6 @@ vim.keymap.set(
   end,
   { desc = "Show buffer diagnostics in location list" }
 )
-
--- Conveniently get out of terminal mode
-vim.keymap.set("t", "<C-w>", "<C-\\><C-n><C-w>")
 
 -- Toggle quickfix list
 vim.keymap.set(
