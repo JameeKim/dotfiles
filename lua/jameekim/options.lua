@@ -6,11 +6,15 @@ vim.g.loaded_ruby_provider = 0
 vim.g.loaded_node_provider = 0
 vim.g.loaded_perl_provider = 0
 
--- Disable swapfiles and enable undofiles
-vim.opt.swapfile = false
-vim.opt.backup = false
-vim.opt.undodir = vim.fn.stdpath("cache") .. "/undodir"
-vim.opt.undofile = true
+-- Backup-related files
+vim.o.swapfile = true
+vim.o.directory = vim.fn.stdpath("state") .. "/swap//"
+vim.o.undofile = true
+vim.o.undodir = vim.fn.stdpath("state") .. "/undo//"
+vim.o.backup = false -- No permanent backup
+vim.o.writebackup = true -- Backup when writing
+vim.o.backupdir = vim.fn.stdpath("state") .. "/backup//"
+vim.o.backupcopy = "yes" -- Always write to original file
 
 -- Project-local configs with `.nvim.lua` files
 vim.opt.exrc = true
