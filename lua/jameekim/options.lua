@@ -17,62 +17,53 @@ vim.o.backupdir = vim.fn.stdpath("state") .. "/backup//"
 vim.o.backupcopy = "yes" -- Always write to original file
 
 -- Project-local configs with `.nvim.lua` files
-vim.opt.exrc = true
+vim.o.exrc = true
 
 -- Gutter options
-vim.opt.number = true
-vim.opt.relativenumber = true
-vim.opt.signcolumn = "yes"
-vim.opt.foldcolumn = "auto:5"
-local fillchars = vim.opt.fillchars:get()
-fillchars.foldopen = "v"
-fillchars.foldclose = ">"
-vim.opt.fillchars = fillchars
+vim.o.number = true
+vim.o.relativenumber = true
+vim.o.signcolumn = "yes"
+vim.o.foldcolumn = "auto:5"
+vim.o.fillchars = "foldopen:v,foldclose:>"
 
 -- Scrolling
-vim.opt.scrolloff = 4
-vim.opt.sidescroll = 1
-vim.opt.sidescrolloff = 1
+vim.o.scrolloff = 4
+vim.o.sidescroll = 1
+vim.o.sidescrolloff = 1
 
 -- Jumping
-vim.opt.jumpoptions:append("stack")
+vim.o.jumpoptions = "clean,stack"
 
 -- Folding
-vim.opt.foldmethod = "marker"
+vim.o.foldmethod = "marker"
 
 -- Indenting
-vim.opt.expandtab = true
-vim.opt.tabstop = 4
-vim.opt.shiftwidth = 4
-vim.opt.softtabstop = -1
+vim.o.expandtab = true
+vim.o.tabstop = 4
+vim.o.shiftwidth = 4
+vim.o.softtabstop = -1
 
 -- Show whitespaces
-vim.opt.list = true
-vim.opt.listchars = { ---@diagnostic disable-line: missing-fields
-  tab = "<->",
-  trail = "-",
-  nbsp = "+",
-  precedes = "<",
-  extends = ">",
-}
+vim.o.list = true
+vim.o.listchars = "tab:<->,trail:-,nbsp:+,precedes:<,extends:>"
 
 -- Display settings
-vim.opt.display:append("uhex") -- Show unprintable characters as hexadecimals.
-vim.opt.wrap = false -- Don't wrap; just write properly styled code, you know.
-vim.opt.colorcolumn = { "80" } ---@diagnostic disable-line: missing-fields
+vim.o.display = "lastline,uhex" -- Show unprintable characters as hexadecimals.
+vim.o.wrap = false -- Don't wrap; just write properly styled code, you know.
+vim.o.colorcolumn = "80"
 
 -- Floating windows
 vim.o.winborder = "rounded"
 
 -- Search highlighting
-vim.opt.hlsearch = false
-vim.opt.incsearch = true
+vim.o.hlsearch = false
+vim.o.incsearch = true
 
 -- Highlight for current cursor position
-vim.opt.cursorline = true
+vim.o.cursorline = true
 
 -- Time for CursorHold event
-vim.opt.updatetime = 100
+vim.o.updatetime = 100
 
 -- Diagnostics settings
 vim.diagnostic.config({
