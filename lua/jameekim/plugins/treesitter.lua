@@ -56,6 +56,11 @@ return {
     branch = "main",
     lazy = false,
     build = ":TSUpdate",
+    ---@param opts TSConfig
+    config = function(_, opts)
+      require("nvim-treesitter").setup(opts)
+      vim.treesitter.language.register("ini", { "dosini" })
+    end,
     ---@type TSConfig
     ---@diagnostic disable-next-line: missing-fields
     opts = {},
