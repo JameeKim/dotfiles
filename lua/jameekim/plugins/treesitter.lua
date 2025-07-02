@@ -60,6 +60,28 @@ return {
     config = function(_, opts)
       require("nvim-treesitter").setup(opts)
       vim.treesitter.language.register("ini", { "dosini" })
+
+      -- Modify parser info.
+      vim.api.nvim_create_autocmd("User", {
+        pattern = "TSUpdate",
+        group = vim.api.nvim_create_augroup("jameekim.treesitter.ts_update", {
+          clear = true,
+        }),
+        callback = function(_)
+          local parsers = require("nvim-treesitter.parsers")
+
+          -- markdown: Add tag and wikilink.
+          local md = parsers.markdown.install_info
+          md.generate = true
+          md.generate_from_json = false
+          local md_inline = parsers.markdown_inline.install_info
+          md_inline.generate = true
+          md_inline.generate_from_json = false
+          -- No way yet to set env vars only for generating parsers.
+          vim.env.EXTENSION_TAGS = 1
+          vim.env.EXTENSION_WIKI_LINK = 1
+        end,
+      })
     end,
     ---@type TSConfig
     ---@diagnostic disable-next-line: missing-fields
