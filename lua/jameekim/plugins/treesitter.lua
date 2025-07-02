@@ -59,7 +59,7 @@ return {
     ---@param opts TSConfig
     config = function(_, opts)
       require("nvim-treesitter").setup(opts)
-      vim.treesitter.language.register("ini", { "dosini" })
+      vim.treesitter.language.register("ini", { "dosini", "systemd" })
 
       -- Modify parser info.
       vim.api.nvim_create_autocmd("User", {
