@@ -52,6 +52,12 @@ vim.o.display = "lastline,uhex" -- Show unprintable characters as hexadecimals.
 vim.o.wrap = false -- Don't wrap; just write properly styled code, you know.
 vim.o.colorcolumn = "80"
 
+-- Enable RGB color for tmux
+-- tmux will gracefully handle it for non-RGB terminals.
+if vim.env.TERM == "tmux-256color" then
+  vim.o.termguicolors = true
+end
+
 -- Floating windows
 vim.o.winborder = "rounded"
 
