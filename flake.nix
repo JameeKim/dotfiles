@@ -23,17 +23,52 @@
     {
       formatter.${system} = pkgs.treefmt.withConfig {
         runtimeInputs = [ pkgs.nixfmt ];
-        settings = pkgs.lib.importTOML ./treefmt.toml;
+        settings = nixpkgs.lib.importTOML ./treefmt.toml;
       };
 
-      homeConfigurations.jameekim = home-manager.lib.homeManagerConfiguration {
-        inherit pkgs;
-        modules = [
-          ./users/jameekim/home.nix
-          ./hosts/z790-eos/home.nix
-          ./modules/home
-        ];
-      };
+      homeConfigurations =
+        let
+          commonModules = builtins.attrValues self.homeModules ++ [
+            {
+              _class = "homeManager";
+              _file = self;
+              config._module.args.flake = self;
+            }
+          ];
+          toModule = n: v: {
+            _class = "homeManager";
+            _file = "${builtins.toString self}#homeConfigurations.${n}";
+            imports = [ v ];
+          };
+        in
+        {
+          jameekim = home-manager.lib.homeManagerConfiguration {
+            inherit pkgs;
+            modules = commonModules ++ [
+              ./home/jameekim
+              ./home/z790-eos
+              (toModule "jameekim" {
+                features = {
+                  desktop.enable = true;
+                  gaming.enable = true;
+                };
+              })
+            ];
+          };
+        };
+
+      homeModules =
+        let
+          toModule = n: v: {
+            _class = "homeManager";
+            _file = "${builtins.toString self}#homeModules.${n}";
+            imports = [ v ];
+          };
+        in
+        builtins.mapAttrs toModule {
+          arch-linux = ./home/arch-linux;
+          features = ./home/features;
+        };
 
       devShells.${system} = {
         default = self.devShells.${system}.dev;
