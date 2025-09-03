@@ -123,6 +123,9 @@
         bind '"\e[A":history-search-backward'
         bind '"\e[B":history-search-forward'
 
+        # Make <C-l> execute `clear`.
+        bind -x '"\C-l":clear'
+
         # Set prompt.
         PS1='[\u@\h \w]\$ '
       '';
