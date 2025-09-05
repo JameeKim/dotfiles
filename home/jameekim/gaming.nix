@@ -8,7 +8,7 @@ in
     let
       # Environment variables.
       env = {
-        # Force using Xbox controller button scheme for Nintento Switch controllers.
+        # Force using Xbox controller button scheme for Nintento Switch JoyCons.
         SDL_GAMECONTROLLER_USE_BUTTON_LABELS = 0;
       };
     in

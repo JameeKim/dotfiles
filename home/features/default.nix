@@ -3,6 +3,7 @@
 { ... }:
 {
   imports = [
+    ./dev.nix
     ./desktop.nix
     ./gaming.nix
   ];

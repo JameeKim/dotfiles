@@ -15,45 +15,12 @@
       }
     )
 
-    # android
-    (
-      { config, ... }:
-      {
-        # Set path for Android SDK.
-        home.sessionVariables.ANDROID_HOME = "${config.xdg.dataHome}/Android/Sdk";
-      }
-    )
-
-    # asdf
-    (
-      { config, ... }:
-      {
-        # Set env vars for `asdf`.
-        home.sessionVariables = {
-          ASDF_CONFIG_FILE = "${config.xdg.configHome}/asdf/asdfrc";
-          ASDF_DIR = "${config.xdg.dataHome}/asdf";
-          ASDF_DATA_DIR = "${config.xdg.stateHome}/asdf";
-        };
-        # Add `asdf` programs to `$PATH`.
-        home.sessionPath = [ "${config.home.sessionVariables.ASDF_DATA_DIR}/shims" ];
-      }
-    )
-
     # w3m
     (
       { config, ... }:
       {
         # Tell `w3m` to store files in `$XDG_CONFIG_HOME`.
         home.sessionVariables.W3M_DIR = "${config.xdg.configHome}/w3m";
-      }
-    )
-
-    # cargo
-    (
-      { config, ... }:
-      {
-        # Prepend cargo bin directory to `$PATH`.
-        home.sessionPath = [ "${config.home.homeDirectory}/.cargo/bin" ];
       }
     )
 
@@ -66,31 +33,11 @@
       }
     )
 
-    # gui session
-    (
-      { config, lib, ... }:
-      {
-        # Automatically start GUI session if in 1st tty.
-        programs.bash.initExtra =
-          lib.mkOrder 9999 # bash
-            ''
-              if [ "$TERM" = "linux" ] \
-                && [ "$XDG_SESSION_TYPE" = "tty" ] \
-                && [ "$XDG_VTNR" = "1" ]
-              then
-                if uwsm check may-start 1 && uwsm select ; then
-                  systemd-cat -t uwsm_start uwsm start default
-                fi
-              fi
-            '';
-      }
-    )
-
     ./tty-colors.nix
   ];
 
   # Prepend local bin directory to "$PATH".
-  # This overrides other executables if same names exist.
+  # This overrides executables from other paths if same names exist.
   home.sessionPath = lib.mkBefore [ "${config.home.homeDirectory}/.local/bin" ];
 
   home.shellAliases = {
@@ -130,6 +77,8 @@
         PS1='[\u@\h \w]\$ '
       '';
   };
+
+  # TODO: Add direnv.
 
   programs.jq = {
     enable = true;
