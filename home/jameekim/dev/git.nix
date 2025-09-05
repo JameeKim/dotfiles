@@ -22,6 +22,7 @@ in
         init.defaultBranch = "main";
         alias = {
           st = "status";
+          staus = "status";
           stauts = "status";
         };
       };
