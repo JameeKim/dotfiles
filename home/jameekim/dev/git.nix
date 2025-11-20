@@ -28,11 +28,11 @@ in
       };
 
       ignores = [
-        "/.nvim.lua"
-        "/.lazy.lua"
-        "/.tmux.conf"
-        "/.tmuxp.yaml"
-        "/.tmuxp.yml"
+        ".nvim.lua"
+        ".lazy.lua"
+        ".tmux.conf"
+        ".tmuxp.yaml"
+        ".tmuxp.yml"
       ];
     };
 
