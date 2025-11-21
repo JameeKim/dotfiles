@@ -5,6 +5,7 @@
     ./dev
     ./desktop.nix
     ./gaming.nix
+    ./study.nix
     ./nix.nix
     ./xdg.nix
   ];

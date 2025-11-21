@@ -6,5 +6,6 @@
     ./dev.nix
     ./desktop.nix
     ./gaming.nix
+    ./study.nix
   ];
 }
