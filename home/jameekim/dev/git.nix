@@ -14,7 +14,7 @@ in
       package = pkgs.gitFull;
       lfs.enable = true;
 
-      extraConfig = {
+      settings = {
         user = {
           email = "jameekim@nodaplife.me";
           name = "Jamee Kim";
