@@ -3,6 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    flake-parts.url = "github:hercules-ci/flake-parts";
     home-manager = {
       url = "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -10,77 +11,85 @@
   };
 
   outputs =
-    {
+    inputs@{
       self,
-      nixpkgs,
+      flake-parts,
       home-manager,
       ...
     }:
-    let
-      system = "x86_64-linux";
-      pkgs = nixpkgs.legacyPackages.${system};
-    in
-    {
-      formatter.${system} = pkgs.treefmt.withConfig {
-        runtimeInputs = [ pkgs.nixfmt ];
-        settings = nixpkgs.lib.importTOML ./treefmt.toml;
-      };
+    flake-parts.lib.mkFlake { inherit inputs; } (
+      { withSystem, ... }:
+      {
+        imports = [
+          home-manager.flakeModules.home-manager
+        ];
 
-      homeConfigurations =
-        let
-          commonModules = builtins.attrValues self.homeModules ++ [
+        flake = {
+          homeConfigurations =
+            let
+              commonModules = builtins.attrValues self.homeModules ++ [
+                {
+                  _class = "homeManager";
+                  _file = self;
+                  config._module.args.flake = self;
+                }
+              ];
+              toModule = n: v: {
+                _class = "homeManager";
+                _file = "${builtins.toString self}#homeConfigurations.${n}";
+                imports = [ v ];
+              };
+            in
             {
-              _class = "homeManager";
-              _file = self;
-              config._module.args.flake = self;
-            }
-          ];
-          toModule = n: v: {
-            _class = "homeManager";
-            _file = "${builtins.toString self}#homeConfigurations.${n}";
-            imports = [ v ];
-          };
-        in
-        {
-          jameekim = home-manager.lib.homeManagerConfiguration {
-            inherit pkgs;
-            modules = commonModules ++ [
-              ./home/jameekim
-              ./home/z790-eos
-              (toModule "jameekim" {
-                features = {
-                  dev.enable = true;
-                  desktop.enable = true;
-                  gaming.enable = true;
-                  study.enable = true;
-                };
-              })
-            ];
+              jameekim = withSystem "x86_64-linux" (
+                { pkgs, ... }:
+                home-manager.lib.homeManagerConfiguration {
+                  inherit pkgs;
+                  modules = commonModules ++ [
+                    ./home/jameekim
+                    ./home/z790-eos
+                    (toModule "jameekim" {
+                      features = {
+                        dev.enable = true;
+                        desktop.enable = true;
+                        gaming.enable = true;
+                        study.enable = true;
+                      };
+                    })
+                  ];
+                }
+              );
+            };
+
+          homeModules = {
+            arch-linux = ./home/arch-linux;
+            features = ./home/features;
           };
         };
 
-      homeModules =
-        let
-          toModule = n: v: {
-            _class = "homeManager";
-            _file = "${builtins.toString self}#homeModules.${n}";
-            imports = [ v ];
-          };
-        in
-        builtins.mapAttrs toModule {
-          arch-linux = ./home/arch-linux;
-          features = ./home/features;
-        };
+        systems = [ "x86_64-linux" ];
+        perSystem =
+          {
+            self',
+            pkgs,
+            system,
+            ...
+          }:
+          {
+            formatter = pkgs.treefmt.withConfig {
+              runtimeInputs = [ pkgs.nixfmt ];
+              configFile = ./treefmt.toml;
+            };
 
-      devShells.${system} = {
-        default = self.devShells.${system}.dev;
-        dev = pkgs.mkShell {
-          packages = [
-            self.formatter.${system}
-            pkgs.nixd
-            home-manager.packages.${system}.home-manager
-          ];
-        };
-      };
-    };
+            devShells.default = self'.devShells.dev;
+            devShells.dev = pkgs.mkShell {
+              packages = [
+                self'.formatter
+                pkgs.nixd
+                home-manager.packages.${system}.home-manager
+              ];
+            };
+          };
+      }
+    );
 }
