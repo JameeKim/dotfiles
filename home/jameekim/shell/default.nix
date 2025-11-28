@@ -75,6 +75,11 @@
 
         # Set prompt.
         PS1='[\u@\h \w]\$ '
+        # Set hostname to "(nix)" if in a nix devShell.
+        # This is not an accurate way to determine, but it does the job for me.
+        if [[ -n $NIX_GCROOT ]]; then
+          PS1="${"$"}{PS1//'\h'/'(nix)'}"
+        fi
       '';
   };
 
