@@ -1,6 +1,7 @@
 { ... }:
 {
   imports = [
+    ./lib.nix
     ./shell
     ./dev
     ./desktop.nix
