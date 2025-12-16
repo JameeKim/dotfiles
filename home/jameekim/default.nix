@@ -4,7 +4,7 @@
     ./lib.nix
     ./shell
     ./dev
-    ./desktop.nix
+    ./desktop
     ./gaming.nix
     ./study.nix
     ./nix.nix

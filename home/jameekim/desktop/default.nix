@@ -19,6 +19,9 @@ in
           fi
         '';
 
+    # Symlink niri config files.
+    xdg.configFile."niri".source = config.lib.file.mkDotfilesSymlink ./niri;
+
     # TODO: desktop environment
   };
 }
