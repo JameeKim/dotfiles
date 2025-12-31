@@ -11,6 +11,11 @@ let
     version = "590.48.01";
     sha256 = "sha256-ueL4BpN4FDHMh/TNKRCeEz3Oy1ClDWto1LO/LWlr1ok=";
   };
+
+  gpuCfg = config.targets.genericLinux.gpu;
+  setupPackage = gpuCfg.packages.callPackage ./setup {
+    nonNixosGpu = gpuCfg.setupPackage;
+  };
 in
 {
   config = lib.mkIf useGPU {
@@ -25,5 +30,16 @@ in
       allowUnfree = true;
       nvidia.acceptLicense = true;
     };
+
+    home.packages = [ setupPackage ];
+    home.activation.notifyEosGpuSetup =
+      let
+        setupPath = "${lib.getExe setupPackage}";
+      in
+      lib.hm.dag.entryAfter [ "checkExistingGpuDrivers" ] ''
+        warnEcho "If you see a message to run a script for GPU drivers,"
+        warnEcho "run this instead:"
+        warnEcho "  sudo ${setupPath}"
+      '';
   };
 }

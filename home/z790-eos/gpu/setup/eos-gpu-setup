@@ -1,0 +1,24 @@
+#!/bin/bash
+set -e
+
+# The script provided by home-manager's `targets.genericLinux.gpu` works but
+# incompletely because the service unit file is symlinked to a nix store in
+# `/nix` directory which is an automounted btrfs subvolume from the fstab. As a
+# result, the service is not automatically started on reboot.
+#
+# This script aims to work around the problem by directly copying the service
+# unit file to `/etc/systemd/system` directory instead of creating a symlink.
+
+unit_path='/etc/systemd/system/non-nixos-gpu.service'
+orig_path='@@storepath@@/resources/non-nixos-gpu.service'
+rm -f "$unit_path"
+cat "$orig_path" > "$unit_path"
+echo -n "
+[X-CopiedFromNix]
+DerivationPath=@@drvpath@@
+StoreFilePath=$orig_path
+" >> $unit_path
+
+systemctl daemon-reload
+systemctl enable non-nixos-gpu.service
+systemctl restart non-nixos-gpu.service
