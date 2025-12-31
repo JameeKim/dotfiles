@@ -41,6 +41,9 @@
   home.sessionPath = lib.mkBefore [ "${config.home.homeDirectory}/.local/bin" ];
 
   home.shellAliases = {
+    # `home-manager` with this dotfiles git repository.
+    hm = "home-manager --flake ${config.lib.file.dotfilesPath}#${config.home.username}";
+
     # `grep`
     grep = "grep --color=auto";
 

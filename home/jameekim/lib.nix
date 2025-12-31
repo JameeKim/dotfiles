@@ -1,5 +1,10 @@
 # Additions to `config.lib`.
-{ flake, config, lib, ... }:
+{
+  flake,
+  config,
+  lib,
+  ...
+}:
 {
   config.lib.file = {
     # Absolute path to this dotfiles git repository.
