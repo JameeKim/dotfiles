@@ -40,6 +40,7 @@ in
     )
 
     ./git.nix
+    ./game-assets.nix
   ];
 
   config = lib.mkIf cfg.enable {

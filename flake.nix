@@ -50,7 +50,10 @@
                     ./home/z790-eos
                     (toModule "jameekim" {
                       features = {
-                        dev.enable = true;
+                        dev = {
+                          enable = true;
+                          game-assets.enable = true;
+                        };
                         desktop.enable = true;
                         gaming.enable = true;
                         study.enable = true;
