@@ -10,7 +10,7 @@ set -e
 # unit file to `/etc/systemd/system` directory instead of creating a symlink.
 
 unit_path='/etc/systemd/system/non-nixos-gpu.service'
-orig_path='@@storepath@@/resources/non-nixos-gpu.service'
+orig_path='@@storepath@@/lib/systemd/system/non-nixos-gpu.service'
 rm -f "$unit_path"
 cat "$orig_path" > "$unit_path"
 echo -n "
