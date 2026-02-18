@@ -36,13 +36,6 @@ in
           };
         };
       };
-
-      # Temporary fix for papis test failing for version 0.14.1 at `test_git_cli`.
-      package = pkgs.papis.overrideAttrs (
-        f: p: {
-          disabledTests = p.disabledTests ++ [ "test_git_cli" ];
-        }
-      );
     };
   };
 }
