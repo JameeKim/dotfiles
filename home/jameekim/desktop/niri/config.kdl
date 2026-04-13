@@ -152,7 +152,7 @@ spawn-at-startup "wl-paste" "--type" "image" "--watch" "cliphist" "-max-items" "
 
 // Wallpaper.
 spawn-at-startup "sh" "-c" \
-    "sleep 1 && swww img -t fade --transition-duration 1 ${XDG_DATA_HOME:-$HOME/.local/share}/wallpapers/EndeavourOS-Galileo.png"
+    "sleep 1 && awww img -t fade --transition-duration 1 ${XDG_DATA_HOME:-$HOME/.local/share}/wallpapers/EndeavourOS-Galileo.png"
 
 // Tell uwsm to export some env vars to systemd.
 spawn-at-startup "uwsm" "finalize" "DISPLAY"
