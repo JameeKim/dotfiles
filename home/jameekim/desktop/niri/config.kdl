@@ -123,7 +123,7 @@ environment {
     MOZ_DISABLE_RDD_SANDBOX "1"
 
     // Toolkits
-    GDK_BACKEND "wayland,x11,*"
+    /-GDK_BACKEND "wayland,x11,*"
     QT_QPA_PLATFORM "wayland;xcb"
     QT_QPA_PLATFORMTHEME "qt6ct"
     QT_WAYLAND_DISABLE_WINDOWDECORATION "1"
