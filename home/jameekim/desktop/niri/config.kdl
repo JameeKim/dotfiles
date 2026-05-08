@@ -806,6 +806,27 @@ window-rule {
     open-on-workspace "game"
 }
 
+// Taskbars from programs launched through Wine using wayland.
+window-rule {
+    match app-id=r#"^explorer\.exe$"# title="^$"
+    match app-id=r#"^steam_app_"# title="^$"
+
+    open-floating true
+    default-floating-position x=10 y=10 relative-to="bottom-right"
+}
+
+// }}}3
+
+// ProtonUp-Qt. {{{3
+
+// Float.
+window-rule {
+    match app-id=r#"^net\.davidotek\.pupgui2$"# // All additional dialogs.
+    exclude title=r#"^ProtonUp-Qt - "# // Except for the main window.
+
+    open-floating true
+}
+
 // }}}3
 
 // Zenless Zone Zero. {{{3
@@ -815,7 +836,23 @@ window-rule {
     match title=r#"^ZenlessZoneZero$"#
 
     open-on-workspace "game"
-} // }}}3
+}
+window-rule {
+    match app-id=r#"^steam_"# title=r#"^HoYoPlay$"#
+
+    open-floating true
+}
+// }}}3
+
+// Arknights: Endfield {{{3
+window-rule {
+    match title=r#"^GRYPHLINE$"#
+    match title=r#"^Endfield$"#
+
+    open-on-workspace "game"
+}
+// TODO: WebView window `open-focused true`
+// }}}3
 
 // Limo mod manager. {{{3
 
@@ -836,6 +873,7 @@ window-rule {
 // Workspace.
 window-rule {
     match app-id=r#"^org\.telegram\.desktop$"#
+    match app-id=r#"^com\.discordapp\.Discord$"#
     match app-id=r#"^weechat$"#
     match app-id=r#"^Element$"#
 
@@ -844,15 +882,17 @@ window-rule {
 
 // Force focus on open.
 window-rule {
-    match app-id=r#"^org\.telegram\.desktop$"# title=r#"^Telegram$"#
+    match app-id=r#"^org\.telegram\.desktop$"# title=r#"^Telegram( \([0-9]+\))?$"#
+    match app-id=r#"^com\.discordapp\.Discord$"# title=r#" - Discord$"#
 
     open-focused true
 }
 
 // Float.
 window-rule {
+    // Any Telegram windows other than the main one.
     match app-id=r#"^org\.telegram\.desktop$"#
-    exclude app-id=r#"^org\.telegram\.desktop$"# title=r#"^Telegram$"#
+    exclude app-id=r#"^org\.telegram\.desktop$"# title=r#"^Telegram( \([0-9]+\))$"#
 
     open-floating true
 }
