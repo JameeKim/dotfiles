@@ -783,6 +783,20 @@ window-rule {
     open-on-workspace "game"
 }
 
+// Notifications.
+window-rule {
+    match app-id=r#"^steam$"# title=r#"^notificationtoasts_\d+_desktop$"#
+
+    // This is not really working perfectly with motinors with non-1.0 scale
+    // probably b/c of xwayland... but whatever.
+    default-floating-position x=10 y=10 relative-to="bottom-right"
+    // Suggesting initial size doesn't work.
+    //default-column-width { fixed 240; }; default-window-height { fixed 60; }
+    // Forcing size moves it to top center for reasons unknown to me.
+    //min-width 240; max-width 240; min-height 60; max-height 60
+    open-focused false
+}
+
 // Float.
 window-rule {
     match app-id=r#"^steam$"# title=r#"^Friends List$"#
