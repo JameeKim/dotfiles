@@ -2,7 +2,7 @@
 { ... }:
 {
   imports = [
-    ./gpu
+    ./gpu.nix
   ];
 
   targets.archLinux.enable = true;
