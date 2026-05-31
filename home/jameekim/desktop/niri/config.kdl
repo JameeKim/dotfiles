@@ -825,6 +825,7 @@ window-rule {
     match app-id=r#"^explorer\.exe$"# title="^$"
     match app-id=r#"^steam_app_"# title="^$"
 
+    open-focused false
     open-floating true
     default-floating-position x=10 y=10 relative-to="bottom-right"
 }
@@ -865,7 +866,12 @@ window-rule {
 
     open-on-workspace "game"
 }
-// TODO: WebView window `open-focused true`
+// Force focus WebView window.
+window-rule {
+    match app-id=r#"^steam_"# title=r#"^Form$"#
+
+    open-focused true
+}
 // }}}3
 
 // Limo mod manager. {{{3
@@ -878,6 +884,16 @@ window-rule {
     open-floating true
 }
 
+// }}}3
+
+// Waydroid. {{{3
+window-rule {
+    match app-id=r#"^Waydroid$"#
+    match app-id=r#"^waydroid\."#
+
+    open-on-workspace "game"
+    open-fullscreen true
+}
 // }}}3
 
 // }}}2
@@ -894,12 +910,13 @@ window-rule {
     open-on-workspace "chat"
 }
 
-// Force focus on open.
+// Force focus on open and prevent floating for main windows.
 window-rule {
     match app-id=r#"^org\.telegram\.desktop$"# title=r#"^Telegram( \([0-9]+\))?$"#
     match app-id=r#"^com\.discordapp\.Discord$"# title=r#" - Discord$"#
 
     open-focused true
+    open-floating false
 }
 
 // Float.
