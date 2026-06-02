@@ -6,5 +6,9 @@
     game-assets = {
       enable = lib.mkEnableOption "programs for developing game assets";
     };
+
+    llm = {
+      enable = lib.mkEnableOption "programs for using LLM";
+    };
   };
 }

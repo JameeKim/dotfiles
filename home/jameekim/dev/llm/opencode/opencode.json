@@ -1,0 +1,44 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "provider": {
+    "ollama": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "Ollama",
+      "options": {
+        "baseURL": "http://localhost:11434/v1"
+      },
+      "models": {
+        "ministral-3:8b": {
+          "name": "Ministral 3 8B (4k ctx)"
+        },
+        "ministral-3:8b-16k": {
+          "name": "Ministral 3 8B (16k ctx)"
+        },
+        "ministral-3:8b-32k": {
+          "name": "Ministral 3 8B (32k ctx)"
+        },
+        "qwen3:8b": {
+          "name": "Qwen 3 8B (4k ctx)"
+        },
+        "qwen3:8b-16k": {
+          "name": "Qwen 3 8B (16k ctx)"
+        },
+        "qwen3.5:9b": {
+          "name": "Qwen 3.5 9B (4k ctx)"
+        },
+        "qwen3.5:9b-16k": {
+          "name": "Qwen 3.5 9B (16k ctx)"
+        },
+        "mistral-nemo:12b-instruct-2407-q4_K_M": {
+          "name": "Mistral NeMo 12B (4k ctx)"
+        },
+        "mistral-nemo:12b-instruct-2407-q4_K_M-16k": {
+          "name": "Mistral NeMo 12B (16k ctx)"
+        },
+        "mistral-nemo:12b-instruct-2407-q4_K_M-32k": {
+          "name": "Mistral NeMo 12B (32k ctx)"
+        }
+      }
+    }
+  }
+}

@@ -41,6 +41,7 @@ in
 
     ./git.nix
     ./game-assets.nix
+    ./llm
   ];
 
   config = lib.mkIf cfg.enable {

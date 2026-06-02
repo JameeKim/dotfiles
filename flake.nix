@@ -53,6 +53,7 @@
                         dev = {
                           enable = true;
                           game-assets.enable = true;
+                          llm.enable = true;
                         };
                         desktop.enable = true;
                         gaming.enable = true;
