@@ -17,6 +17,7 @@ return {
     opts = {
       ---@diagnostic disable-next-line: missing-fields
       styles = {
+        keyword = { bold = false },
         comment = { italic = false },
       },
       colors_overrides = function(colors, _)
@@ -28,6 +29,8 @@ return {
         groups["Title"].fg = colors.red
         groups["LazyButtonActive"] = { fg = colors.primary, bg = colors.fg_hard, bold = true, reverse = true }
         groups["TreesitterContextBottom"] = { underline = true, sp = colors.fg }
+        groups["@markup.raw.block"].bg = groups["@markup.raw"].bg
+        groups["LspSignatureActiveParameter"] = { underline = true }
         return groups
       end,
     },

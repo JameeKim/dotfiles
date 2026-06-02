@@ -32,7 +32,7 @@ vim.o.sidescroll = 1
 vim.o.sidescrolloff = 1
 
 -- Jumping
-vim.o.jumpoptions = "clean,stack"
+vim.o.jumpoptions = "clean,view"
 
 -- Folding
 vim.o.foldmethod = "marker"
@@ -62,7 +62,7 @@ end
 vim.o.winborder = "rounded"
 
 -- Search highlighting
-vim.o.hlsearch = false
+vim.o.hlsearch = true
 vim.o.incsearch = true
 
 -- Highlight for current cursor position
