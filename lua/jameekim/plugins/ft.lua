@@ -39,7 +39,7 @@ return {
     opts = {
       start_on_launch = false,
       update_on_save = false,
-      sync_cursor = true,
+      sync_cursor = false,
       report_eval_errors = true,
       headless = false,
       strudel_url = "https://strudel.cc",
