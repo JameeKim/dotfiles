@@ -923,7 +923,7 @@ window-rule {
 window-rule {
     // Any Telegram windows other than the main one.
     match app-id=r#"^org\.telegram\.desktop$"#
-    exclude app-id=r#"^org\.telegram\.desktop$"# title=r#"^Telegram( \([0-9]+\))$"#
+    exclude app-id=r#"^org\.telegram\.desktop$"# title=r#"^Telegram( \([0-9]+\))?$"#
 
     open-floating true
 }
