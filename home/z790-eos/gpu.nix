@@ -8,8 +8,8 @@ let
   # with the version string as an argument.
   # ex) ./scripts/fetch-nvidia-driver.sh 580.105.08
   nvidia = {
-    version = "615.71.09";
-    sha256 = "sha256-zc7tIrvrYSSNGm3qvCWWZz46ZQFpjucayNL9wo87cP4=";
+    version = "615.78.08";
+    sha256 = "sha256-Pj9t3cLudnoIGFMAr3vjyyhuznZpjS3eNSRZl4LQf/4=";
   };
 in
 {
